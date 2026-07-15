@@ -1,0 +1,35 @@
+<main class="recommendations">
+    <div class="recommendations-container">
+
+        <section class="content-section">
+            <h1>Recomendações</h1>
+            <span class="divisor-line"></span>
+            <h2>Materiais Didáticos</h2>
+
+            <div id="container-material">
+                @for(material of materials; track material.title) {
+                    <app-mat-card
+                        [material]="material"
+                    ></app-mat-card>
+                }
+            </div>
+        </section>
+
+        <section class="content-section">
+            <span class="divisor-line"></span>
+            <h2>Videoaulas</h2>
+
+            <div id="container-vids">
+                <div id="container-vids">
+                    @for(video of videos; track video.title) {
+                        <app-vid-card
+                            [video]="video"
+                        ></app-vid-card>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer"></footer>
+</main>

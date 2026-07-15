@@ -1,0 +1,137 @@
+<!-- header -->
+<ion-header>
+    <ion-toolbar class="toolbar">
+        @if (pagesConfig[selectedIndex].hasFilterOptions) {
+            <div class="toolbar-content">
+                <ion-button class="filter-btn"
+                fill="clear"
+                (click)="showFilterUpdate()">
+                    <ion-icon name="filter-outline"></ion-icon>
+                </ion-button>
+
+                <span class="page-name">
+                    {{pageName[selectedIndex]}}
+                </span>
+
+                <img class="profile-picture"
+                [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+                matButton
+                [matMenuTriggerFor]="menu">
+            </div>
+        } @else {
+            <span class="page-name"
+            slot="start" 
+            [style.text-align]="'left'">
+                {{pageName[selectedIndex]}}
+            </span>
+
+            <img class="profile-picture"
+            slot="end"
+            [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+            matButton
+            alt="imagem do usuário - clique para abrir as opções de usuário"
+            [matMenuTriggerFor]="menu">
+        }
+    </ion-toolbar>
+
+    @if (showFilters) {
+        <!-- filters subheader -->
+        <ion-toolbar class="search-toolbar">
+            <div class="search-container">
+                <div class="search-bar">
+                    <ion-input
+                    class="search-input"
+                    placeholder="pesquisa"
+                    [(ngModel)]="searchQuery"
+                    (ngModelChange)="searchUpdate()">
+                    </ion-input>
+
+                    <button class="search-btn">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </button>
+                </div>
+
+                <div class="filters-container">
+                    <ion-select
+                    class="filter-select"
+                    interface="popover"
+                    placeholder="Módulo"
+                    [(ngModel)]="selectedModule"
+                    (ngModelChange)="searchUpdate()">
+                        <ion-select-option
+                        *ngFor="let modulo of modules"
+                        [value]="modulo">
+                            {{ modulo }}
+                        </ion-select-option>
+                    </ion-select>
+
+                    <ion-select
+                    class="filter-select"
+                    interface="popover"
+                    placeholder="Categoria"
+                    [(ngModel)]="selectedCategory"
+                    (ngModelChange)="searchUpdate()">
+                        <ion-select-option
+                        *ngFor="let categoria of categories"
+                        [value]="categoria">
+                            {{ categoria }}
+                        </ion-select-option>
+                    </ion-select>
+                </div>
+            </div>
+        </ion-toolbar>
+    }
+</ion-header>
+
+<ion-content>
+    <router-outlet></router-outlet>
+</ion-content>
+
+<!-- footer -->
+<ion-footer>
+    <nav class="bottom-nav">
+        <ion-tab-button
+        (click)="go(0)"
+        [class.active]="selectedIndex == 0">
+            <ion-icon name="home-outline"></ion-icon>
+
+        </ion-tab-button>
+
+        <ion-tab-button
+        (click)="go(1)"
+        [class.active]="selectedIndex==1">
+            <ion-icon name="play-circle-outline"></ion-icon>
+
+        </ion-tab-button>
+
+        <ion-tab-button
+        (click)="go(2)"
+        [class.active]="selectedIndex==2">
+            <ion-icon name="document-text-outline"></ion-icon>
+
+        </ion-tab-button>
+
+        <ion-tab-button
+        (click)="go(3)"
+        [class.active]="selectedIndex==3">
+            <ion-icon name="download-outline"></ion-icon>
+            
+        </ion-tab-button>
+    </nav>
+</ion-footer>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item class="profile-dialogbtn" (click)="Configuracoes()">
+        <ion-icon name="cog-outline"></ion-icon>
+        <span>
+            Configurações
+        </span>
+    </button>
+
+    <button mat-menu-item class="profile-dialogbtn" (click)="Logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <span>
+            Logout
+        </span>
+    </button>
+</mat-menu>

@@ -1,0 +1,9 @@
+<main id="videos-page">
+    <div id="container-vids">
+        @for(video of videos; track video.title) {
+            <app-vid-card
+                [video]="video"
+            ></app-vid-card>
+        }
+    </div>
+</main>

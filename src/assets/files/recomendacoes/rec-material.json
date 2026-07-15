@@ -1,0 +1,26 @@
+[
+    {
+        "image": "assets/images/placeholder.png",
+        "title": "Title Title Title",
+        "abstract": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex...",
+        "tags": "tag1, tag2, tag3, tag4, tag5"
+    },
+    {
+        "image": "assets/images/placeholder.png",
+        "title": "Title Title Title",
+        "abstract": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex...",
+        "tags": "tag1, tag2, tag3, tag4, tag5"
+    },
+    {
+        "image": "assets/images/placeholder.png",
+        "title": "Title Title Title",
+        "abstract": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex...",
+        "tags": "tag1, tag2, tag3, tag4, tag5"
+    },
+    {
+        "image": "assets/images/placeholder.png",
+        "title": "Title Title Title",
+        "abstract": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex...",
+        "tags": "tag1, tag2, tag3, tag4, tag5"
+    }
+]

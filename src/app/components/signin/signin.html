@@ -1,0 +1,135 @@
+<main>
+    @if (mobile) {
+        <app-accessheader-mobile
+            [headerConfig]="headerConfig"
+        ></app-accessheader-mobile>
+        
+    } @else {
+        <app-accessheader-desktop
+            [headerConfig]="headerConfig"
+        ></app-accessheader-desktop>
+    }
+
+    <!-- container direita -->
+    <div class="right-container">
+        <!-- container - formulário + título -->
+        <div class="right-container-son">
+            <!-- titulo -->
+            <div class="form-title-container">
+                <h2 class="form-title">
+                    Entrar na sua conta
+                </h2>
+                
+                <p class="form-subtitle">
+                    Preencha seus dados
+                </p>
+            </div>
+
+            <div id="signin-with-google">
+                <img id="google-logo" 
+                src="../../../assets/images/google-icon-white.png" alt="" />
+
+                <span id="signin-google-text">Cadastrar-se com o Google</span>
+            </div>
+
+            <!-- formulario -->
+            <form (submit)="onRegister()">
+                <!-- Username -->
+                <div class="emailinput-container input-containers">
+                    <mat-icon class="input-icons">person</mat-icon>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>
+                            Nome
+                        </mat-label>
+
+                        <input
+                        matInput
+                        [(ngModel)]="userName"
+                        name="userName"
+                        required/>
+                    </mat-form-field>
+                </div>
+
+                <!-- Email -->
+                <div class="emailinput-container input-containers">
+                    <mat-icon class="input-icons">mail</mat-icon>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>
+                            Email
+                        </mat-label>
+
+                        <input
+                        matInput
+                        [(ngModel)]="email"
+                        name="email"
+                        type="email"
+                        required/>
+
+                    </mat-form-field>
+                </div>
+
+                <!-- Senha -->
+                <div class="passwordinput-container input-containers">
+                    <mat-icon class="input-icons">lock</mat-icon>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>
+                            Senha
+                        </mat-label>
+
+                        <input
+                        matInput
+                        [(ngModel)]="password"
+                        name="password"
+                        [type]="hidePassword ? 'password' : 'text'"
+                        required/>
+
+                        <button 
+                        class="eye-button"
+                        mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="togglePassword(false)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+
+                <!-- Confirmar Senha -->
+                <div class="confirm-passwordinput-container input-containers">
+                    <mat-icon class="input-icons">lock</mat-icon>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>
+                            Confirmar senha
+                        </mat-label>
+                        
+                        <input
+                        matInput
+                        [(ngModel)]="confirmPassword"
+                        name="password"
+                        [type]="hideConfirmPassword ? 'password' : 'text'"
+                        required/>
+                        <button 
+                        class="eye-button"
+                        mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="togglePassword(true)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hideConfirmPassword">
+                            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+
+                <button class="login-button" 
+                mat-raised-button 
+                color="primary" type="submit">
+                    CADASTRAR
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,445 @@
+<header class="side-padding">
+    <img class="studdle-logo-header translateYhover" 
+    src="assets/images/studdleLogo-removed-background.png" 
+    alt="logo studdle - clique para voltar pro menu">
+
+    <img class="profile-picture translateYhover"
+    [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+    alt="imagem do usuário - clique para abrir as opções de usuário"
+    matButton
+    [matMenuTriggerFor]="menu">
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="Configuracoes()">
+        <mat-icon>settings</mat-icon>
+        Configurações
+      </button>
+      <button mat-menu-item (click)="Logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+</header>
+
+<main>
+    <div class="container-info">
+        <img class="main-image" src="assets/images/wide-placeholder.png" alt="">
+        <p class="image-origen">
+            origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem 
+            origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem
+        </p>
+
+        <h1>
+            Título do material didático. Título do material didático. Título do material didático
+        </h1>
+
+        <div class="abstract">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                quis nostrud exercitation ullamco laboris nisi ut aliquip exLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip exLorem ipsum dolor sit amet, 
+                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+            </p>
+        </div>
+
+        <div class="main-content-container">
+            <p class="main-content">
+                Conteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo 
+                da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaC
+                onteúdo da página
+            </p>
+        </div>
+    </div>
+
+    <div id="container-comments" [style]="{
+    backgroundColor: 'var(--color-gray-2)',
+    paddingBottom: '100px',
+    width: '100%',
+    borderRadius: '7px',
+    marginTop: '100px'}">
+
+    <div class="comment-input" [style]="{
+    marginLeft: '60px',
+    marginBottom: '80px',
+    width: '90%',
+    paddingTop: '40px'}">
+
+        <div class="comment-elements" [style]="{
+        backgroundColor: 'transparent',
+        width: '100%',
+        height: '60px',
+        display: 'flex'}">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+            height: '100%',
+            borderRadius: '100%',
+            marginRight: '10px'}" alt="">
+
+            <div [style]="{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            width: '100%'}">
+
+                <input type="text" [style]="{
+                    margin: '0',
+                    color: 'var(--color-white)',
+                    width: '90%',
+                    height: '100%',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    borderBottom: 'solid var(--color-white) 2px'
+                }" class="comment-content" placeholder="Escreva o seu comentário"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment" [style]="{
+    marginLeft: '60px',
+    marginBottom: '10px'}">
+        <div class="comment-elements" [style]="{
+        backgroundColor: 'transparent',
+        width: '100%',
+        height: '60px',
+        display: 'flex'}">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+            height: '100%',
+            borderRadius: '100%',
+            marginRight: '10px'}" alt="">
+            <div [style]="{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'}">
+
+                <h4 [style]="{
+                margin: '0'}" class="user-name">
+                    Rodrigo Engelmann
+                </h4>
+                
+                <p [style]="{
+                margin: '0'}" class="comment-content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib
+                </p>
+            </div>
+        </div>
+
+        <!-- respostas/responder -->
+        <div [style]="{
+        display: 'flex'}">
+
+            <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'}">
+                chevron_right
+            </mat-icon>
+
+            <p [style]="{
+                margin: '0',
+                userSelect: 'none',
+                cursor: 'pointer'
+            }">1 respostas</p>
+
+            <p [style]="{
+            margin: '0',
+            marginLeft: '20px',
+            userSelect: 'none',
+            cursor: 'pointer'}">
+                responder
+            </p>
+        </div>
+
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+        <div class="comment" [style]="{
+        marginLeft: '60px',
+        marginBottom: '10px'}">
+
+        <div class="comment-elements" [style]="{
+        backgroundColor: 'transparent',
+        width: '100%',
+        height: '60px',
+        display: 'flex'}">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+            height: '100%',
+            borderRadius: '100%',
+            marginRight: '10px'}" alt="">
+            <div [style]="{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'}">
+
+                <h4 [style]="{
+                margin: '0'}" class="user-name">
+                    Rodrigo Engelmann
+                </h4>
+
+                <p [style]="{
+                margin: '0'}" class="comment-content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib
+                </p>
+            </div>
+        </div>
+                <!-- respostas/responder -->
+        <div [style]="{
+        display: 'flex'}">
+
+            <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'}">
+                chevron_right
+            </mat-icon>
+
+            <p [style]="{
+            margin: '0',
+            userSelect: 'none',
+            cursor: 'pointer'}">
+                1 respostas
+            </p>
+
+            <p [style]="{
+                margin: '0',
+                marginLeft: '20px',
+                userSelect: 'none',
+                cursor: 'pointer'
+            }">responder</p>
+        </div>
+
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+             <div class="comment" [style]="{
+        marginLeft: '60px',
+        marginBottom: '10px'
+    }">
+        <div class="comment-elements" [style]="{
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '60px',
+            display: 'flex'
+        }">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+                height: '100%',
+                borderRadius: '100%',
+                marginRight: '10px'
+            }" alt="">
+            <div [style]="{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }">
+                <h4 [style]="{
+                    margin: '0'
+                }" class="user-name">Rodrigo Engelmann</h4>
+                <p [style]="{
+                    margin: '0'
+                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
+            </div>
+            
+        </div>
+        <!-- respostas/responder -->
+        <div [style]="{
+            display: 'flex'
+        }">
+        <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">chevron_right</mat-icon>
+        <p [style]="{
+            margin: '0',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">1 respostas</p>
+
+        <p [style]="{
+            margin: '0',
+            marginLeft: '20px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">responder</p>
+        </div>
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+         
+    </div>
+    </div>
+    </div>
+    
+    <div class="comment" [style]="{
+        marginLeft: '60px',
+        marginBottom: '10px'
+    }">
+        <div class="comment-elements" [style]="{
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '60px',
+            display: 'flex'
+        }">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+                height: '100%',
+                borderRadius: '100%',
+                marginRight: '10px'
+            }" alt="">
+            <div [style]="{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }">
+                <h4 [style]="{
+                    margin: '0'
+                }" class="user-name">Rodrigo Engelmann</h4>
+                <p [style]="{
+                    margin: '0'
+                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
+            </div>
+            
+        </div>
+
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+                 <!-- respostas/responder -->
+        <div [style]="{
+            display: 'flex'
+        }">
+        <!-- <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">chevron_right</mat-icon>
+        <p [style]="{
+            margin: '0',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">1 respostas</p> -->
+
+        <p [style]="{
+            margin: '0',
+            marginLeft: '69px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">responder</p>
+        </div>
+    </div>
+        <div class="comment" [style]="{
+        marginLeft: '60px',
+        marginBottom: '10px'
+    }">
+        <div class="comment-elements" [style]="{
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '60px',
+            display: 'flex'
+        }">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+                height: '100%',
+                borderRadius: '100%',
+                marginRight: '10px'
+            }" alt="">
+            <div [style]="{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }">
+                <h4 [style]="{
+                    margin: '0'
+                }" class="user-name">Rodrigo Engelmann</h4>
+                <p [style]="{
+                    margin: '0'
+                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
+            </div>
+            
+        </div>
+                <div [style]="{
+            display: 'flex'
+        }">
+        <!-- <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">chevron_right</mat-icon>
+        <p [style]="{
+            margin: '0',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">1 respostas</p> -->
+
+        <p [style]="{
+            margin: '0',
+            marginLeft: '69px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">responder</p>
+        </div>
+
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+         
+    </div>
+        <div class="comment" [style]="{
+        marginLeft: '60px',
+        marginBottom: '10px'
+    }">
+        <div class="comment-elements" [style]="{
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '60px',
+            display: 'flex'
+        }">
+            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
+                height: '100%',
+                borderRadius: '100%',
+                marginRight: '10px'
+            }" alt="">
+            <div [style]="{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }">
+                <h4 [style]="{
+                    margin: '0'
+                }" class="user-name">Rodrigo Engelmann</h4>
+                <p [style]="{
+                    margin: '0'
+                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
+            </div>
+            
+        </div>
+        <div [style]="{
+            display: 'flex'
+        }">
+        <!-- <mat-icon [style]="{
+            margin: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-4px',
+            marginLeft: '60px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">chevron_right</mat-icon>
+        <p [style]="{
+            margin: '0',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">1 respostas</p> -->
+
+        <p [style]="{
+            margin: '0',
+            marginLeft: '69px',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }">responder</p>
+        </div>
+        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
+         
+    </div>
+</div>
+</main>

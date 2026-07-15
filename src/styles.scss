@@ -1,0 +1,126 @@
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+
+/* Esse CSS serve somente para as cores, será importado para cada HTML e usado neles */
+:root{
+  --color-white: #FFFFFF;
+  --color-light_gray: #B1B1B1;
+  --color-gray-0: #5D5D5D;
+  --color-gray-1: #3C3C3C;
+  --color-gray-2: #2F2F2F;
+  --color-gray-3: #363636;
+  --color-dark_gray-0: #191819;
+  --color-dark_gray-1: #100F10;
+  --color-dark_gray-2: #0F0F10;
+  --color-dark_gray-3: #0C0012;
+  --color-dark-gray-4: #161416;
+  --color-dark-gray-5: #212121;
+  --color-transparent-dark-gray: #191819d8;
+  --color-black: #000000;
+
+  --color-purple1: #371A51;
+  --color-purple2: #A340FF;
+  --color-purple3: #6D00F9;
+  --color-dark_purple: #3D3048;
+
+  --color-warning: #BE3A3C;
+}
+
+*{
+  font-size: 15px;
+}
+
+
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--color-dark_gray-1);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+/* You can add global styles to this file, and also import other style files */
+
+
+
+html, body{
+    width: 100%;
+    font-family: "Inter", sans-serif;
+
+    color: var(--color-white);
+
+    margin: 0;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+
+
+// colorblind settings:
+
+body.protanopia {
+  --color-purple1: #2E3A8C;
+  --color-purple2: #4F7BFF;
+  --color-purple3: #3366FF;
+  --color-dark_purple: #2A355F;
+
+  --color-warning: #C67E00;
+}
+body.deuteranopia {
+  --color-purple1: #31448F;
+  --color-purple2: #5A7DFF;
+  --color-purple3: #4169E1;
+  --color-dark_purple: #30406A;
+
+  --color-warning: #CC7A00;
+}
+body.tritanopia {
+  --color-purple1: #6D2358;
+  --color-purple2: #E35CA3;
+  --color-purple3: #D63384;
+  --color-dark_purple: #563B47;
+
+  --color-warning: #C44E00;
+}
+body.acromatopsia {
+  --color-purple1: #444444;
+  --color-purple2: #9A9A9A;
+  --color-purple3: #666666;
+  --color-dark_purple: #2F2F2F;
+
+  --color-warning: #777777;
+}

@@ -1,0 +1,87 @@
+<header>
+    <div class="main-header side-padding">
+        <img class="studdle-logo-header translateYhover"
+        src="assets/images/studdleLogo-removed-background.png"
+        alt="logo studdle - clique para voltar pro menu">
+
+        <mat-tab-group
+        [selectedIndex]="selectedIndex"
+        (selectedIndexChange)="go($event)"
+        animationDuration="400ms">
+            <mat-tab label="Recomendações"></mat-tab>
+            <mat-tab label="Vídeos"></mat-tab>
+            <mat-tab label="Materiais"></mat-tab>
+            <mat-tab label="Engine"></mat-tab>
+        </mat-tab-group>
+
+        <div class="rightheader-content">
+            @if (pagesConfig[selectedIndex].hasFilterOptions) {
+                <mat-icon class="filter-icon" (click)="showFilterUpdate()">filter_list</mat-icon>
+            } @else {
+                <div class="filter-icon"></div>
+            }
+            
+            <img class="profile-picture translateYhover"
+            [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+            alt="imagem do usuário - clique para abrir as opções de usuário"
+            matButton [matMenuTriggerFor]="menu">
+        </div>
+        
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="Configuracoes()">
+                <mat-icon>settings</mat-icon>
+                Configurações
+            </button>
+
+            <button mat-menu-item (click)="Logout()">
+                <mat-icon>logout</mat-icon>
+                Logout
+            </button>
+
+        </mat-menu>
+    </div>
+
+    @if (showFilters) {
+        <div class="search-header">
+            <form class="search-form side-padding">
+                <!-- Campo de busca -->
+                <mat-form-field appearance="outline" class="search-input search-header-input">
+                    <mat-label class="text-origin">Pesquisar</mat-label>
+                    <input class="writing-color" matInput placeholder="Digite algo..." [(ngModel)]="searchQuery" name="search">
+                    <button class="search-icon-container" mat-icon-button matSuffix (click)="searchUpdate()" aria-label="Buscar">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- Filtro 1 -->
+                <mat-form-field appearance="outline" class="filter search-header-input">
+                    <mat-label class="text-origin">Módulo</mat-label>
+                    <mat-select [(ngModel)]="selectedCategory" name="category">
+                        <mat-option *ngFor="let category of modules" [value]="category">
+                            {{ category }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Filtro 2 -->
+                <mat-form-field appearance="outline" class="filter search-header-input">
+                    <mat-label class="text-origin">
+                        Categoria
+                    </mat-label>
+
+                    <mat-select [(ngModel)]="selectedModule" name="order">
+                        @for (order of categories; track order) {
+                            <mat-option [value]="order">
+                                {{ order }}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </div>
+    }
+</header>
+
+<div class="page-container">
+    <router-outlet></router-outlet>
+</div>

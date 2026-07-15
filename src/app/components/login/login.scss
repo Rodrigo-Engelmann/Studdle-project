@@ -1,0 +1,354 @@
+/* Esse CSS serve somente para as cores, será importado para cada HTML e usado neles */
+
+main{
+    width: 100%;
+    height: 100vh;
+    
+    display: flex;
+    flex-direction: row;
+}
+
+
+.left-container{
+    background: linear-gradient(var(--color-purple1), var(--color-purple2));
+    width: 30%;
+    height: 93.5%;
+    margin-top: auto;
+
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-text{
+    text-align: center;
+
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+header{
+    position: absolute;
+    height: 6.5%;
+    width: 100%;
+
+    border-bottom: solid var(--color-purple1) 2px;
+
+    background: linear-gradient(to right, var(--color-purple1), var(--color-purple2));
+
+    display: flex;
+    align-items: center;
+}
+
+.studdle-logo{
+    margin-left: 1.1vw;
+    height: 70%;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.welcome-title{
+    font-size: 32px;
+    margin: 0;
+}
+
+.switchpage-info{
+    font-size: 20px;
+    margin: 0;
+}
+
+.switchpage-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35%;
+    height: 55px;
+    margin-top: 12vw;
+    font-size: 20px;
+
+    border: solid var(--color-white) 2px;
+    border-radius: 10px;
+    user-select: none;
+
+    transition: 0.08s;
+    cursor: pointer;
+}
+
+.switchpage-button:hover{
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.411);
+    transform: scale(1.02);
+}
+
+
+
+.right-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    margin: 0;
+
+    background-color: var(--color-dark_gray-0);
+    width: 100%;
+    height: 100%;
+}
+
+.right-container-son{
+    width: 80%;
+}
+
+// form title
+
+.form-title-container{
+    margin-bottom: 3%;
+    width: 100%;
+}
+
+.form-title{
+    font-size: 32px;
+    margin: 0;
+    width: 35vw;
+}
+
+.form-subtitle{
+    font-size: 20px;
+    margin: 0;
+}
+
+// signin with google
+#signin-with-google{
+    width: 100%;
+    height: auto;
+
+    margin-bottom: 7%;
+
+    display: flex;
+    align-items: center;
+
+    user-select: none;
+}
+#signin-with-google:hover{
+    cursor: pointer;
+
+    #google-logo {
+        transform: rotate(360deg) scale(1.2);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.205);
+    }
+}
+#google-logo{
+    transition-duration: 0.5s;
+
+    width: 40px;
+    height: auto;
+
+    margin-right: 10px;
+    border-radius: 19999vw;
+}
+#signin-google-text{
+    height: auto;
+    width: auto;
+    font-size: 13px;
+}
+
+// form
+
+form{
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    
+    width: 100%;
+    color: var(--color-white);
+}
+
+
+// alterar o sistema de formulário com o materials
+
+
+.passwordinput-container, .emailinput-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    
+    width: 100%;
+    height: 60px;
+    margin: 20px 0;
+
+    background-color: var(--color-white);
+    border-radius: 100vw;
+    color: var(--color-light_gray);
+}
+
+.input-icons {
+    position: relative;
+    display: flex;
+    color: var(--color-light_gray) !important;
+    margin-left: 20px;
+
+    transform: scale(1.4);
+}
+
+.passwordinput-container{
+    margin-bottom: 15%;
+}
+
+.login-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // background-color: var(--color-purple2);
+    background: transparent;
+    border: solid var(--color-purple2) 2px;
+    box-shadow: 0 0 5px var(--color-purple2);
+    color: var(--color-purple2);
+
+    width: 30%;
+    height: 65px;
+    font-size: 20px;
+
+    border-radius: 40px;
+    user-select: none;
+
+    transition: 0.08s;
+    cursor: pointer;
+}
+
+.login-button:hover{
+    box-shadow: 0 0 20px var(--color-purple1);
+    transform: scale(1.02);
+}
+
+
+.mat-mdc-form-field{
+    width: 95%;
+    height: 55px;
+    align-self: center;
+    font-size: 20px;
+}
+
+#forgot-password-text{
+    color: var(--color-white);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+#forgot-password-text:hover{
+    transition-duration: 0.06s;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: transparent;
+    border-radius: 40px !important;
+    border: none;
+}
+
+
+::ng-deep .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+
+// remover a borda dos elementos
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border: none !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: transparent;
+}
+
+// remover borda do botão de ver senha:
+::ng-deep .eye-button {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    transform: scale(1.4);
+
+    margin-right: 20px;
+
+    color: var(--color-light_gray) !important;
+}
+
+// para alterar a cor do preview "email" e "senha" pra algo mais claro
+mat-label{
+    color: var(--color-light_gray) !important;
+    background-color: var(--color-white);
+    padding: 0 10px !important;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+// remove a cor diferente lá daquela barra que exibe o local de edição que você está dentro do texto (aquela barra que fica piscando)
+::ng-deep .mat-mdc-input-element {
+    caret-color: auto !important;
+    font-size: 16px !important;
+}
+
+
+::ng-deep .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
+    content: "" !important;
+}
+
+
+
+
+// MOBILE
+@media (max-width: 768px) {
+    .right-container{
+        display: flex;
+        align-items: start;
+        padding-top: 25px;
+    }
+    .right-container-son{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+
+        width: 90%;
+    }
+    .form-title{
+        font-size: 33px !important;
+        width: 100% !important;
+    }
+    .form-subtitle{
+        margin-bottom: 20px;
+    }
+    #signin-with-google{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    #signin-google-text{
+        font-size: 17px !important;
+    }
+    main {
+        flex-direction: column !important;
+    }
+    .login-button{
+        width: 90%;
+        height: 55px;
+    }
+    .input-containers{
+        height: 50px;
+        margin: 10px 0 25px 0;
+    }
+    form {
+        display: flex;
+        align-items: center;
+    }
+}

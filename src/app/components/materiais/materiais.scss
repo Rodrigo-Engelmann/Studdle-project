@@ -1,0 +1,47 @@
+:host {
+    display: flex;
+    justify-content: center;
+}
+
+#material-page {
+    width: 98%;
+    padding-bottom: 70px;
+}
+
+@media (max-width: 768px) {
+    #container-material {
+        grid-template-columns: 1fr !important;
+        padding: 0.5rem !important;
+        gap: 0.5rem !important;
+    }
+
+    .material-sing {
+        padding: 8px !important;
+    }
+
+    .mat-title {
+        font-size: 24px !important;
+    }
+
+    .mat-desc {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .mat-title {
+        font-size: 20px !important;
+    }
+}
+
+
+#container-material {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+
+    gap: .02rem;
+    padding: .2rem;
+
+    width: 100%;
+    box-sizing: border-box;
+}

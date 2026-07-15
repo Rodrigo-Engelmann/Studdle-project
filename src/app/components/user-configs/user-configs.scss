@@ -1,0 +1,446 @@
+html,body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    flex-direction: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.upload-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    
+    text-transform: none;
+    transition: background 0.2s, transform 0.15s;
+
+    mat-icon {
+        width: 100%;
+        font-size: 40px;
+        margin: 0;
+    }
+
+    &:hover {
+        transform: scale(1.02);
+        filter: brightness(1.05);
+    }
+
+    &:active {
+        filter: brightness(0.95);
+        transform: scale(0.96);
+    }
+}
+
+
+
+
+
+
+
+header{
+    height: 4.3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--color-dark_gray-1);
+    border-bottom: solid var(--color-purple2) 2px;
+}
+
+.studdle-logo-header {
+    height: 44px;
+}
+
+
+
+
+
+
+.translateYhover{
+    transition: transform 0.08s ease-in-out, transform 0.08s ease-in-out;
+    cursor: pointer;
+}
+.translateYhover:hover{
+    transform:scale(1.03);
+}
+
+.side-padding {
+    display: flex;
+    justify-content: space-between;
+    max-width: calc(100% - 60px);
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+
+// form
+
+.passwordinput-container, .emailinput-container, .nameinput-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+
+    background-color: var(--color-transparent-dark-gray);
+    border: solid var(--color-gray-2) 1.5px;
+    margin: 10px 0;
+    border-radius: 2px;
+
+    color: var(--color-light_gray);
+}
+
+.mat-mdc-form-field{
+    width: 100%;
+    height: 55px;
+    align-self: flex-start;
+    font-size: 20px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: transparent;
+    border-radius: 40px !important;
+    border: none;
+}
+
+
+::ng-deep .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+
+// remover a borda dos elementos
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border: none !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: transparent;
+}
+
+// remover borda do botão de ver senha:
+::ng-deep .eye-button {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    transform: scale(1.6);
+
+    color: var(--color-light_gray) !important;
+}
+
+// para alterar a cor do preview "email" e "senha" pra algo mais claro
+mat-label{
+    color: var(--color-gray-0) !important;
+    font-size: 14px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+// remove a cor diferente lá daquela barra que exibe o local de edição que você está dentro do texto (aquela barra que fica piscando)
+::ng-deep .mat-mdc-input-element {
+  caret-color: auto !important;
+}
+
+
+::ng-deep .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
+  content: "" !important;
+}
+
+::ng-deep .mat-mdc-input-element{
+    color: var(--color-light_gray) !important;
+}
+
+
+// main containers
+main{
+    width: 100%;
+    background-color: var(--color-dark_gray-1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    height: 80vh;
+    margin: 30px 0;
+
+    // background-color: var(--color-dark_gray-0);
+    background: linear-gradient(to left, var(--color-purple1) 42%, var(--color-dark_gray-1) 52%);
+    border-top: solid var(--color-purple1) 2px;
+    border-bottom: solid var(--color-purple1) 2px;
+}
+
+.container-btn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin-top: 70px;
+}
+
+.save-n-cancel-btn-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100%;
+}
+
+// título
+
+h1{
+    font-size: 23px;
+}
+
+// info
+
+.input-column-name{
+    justify-content: flex-start !important;
+    margin-top: 38.5px !important;
+}
+
+.IC{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0;
+}
+
+.input-title{
+    font-size: 20px;
+    text-align: start;
+    width: 100%;
+    margin: 40px 0 0 0;
+}
+
+.input-title-left{
+    font-size: 20px;
+    text-align: start;
+    width: 100%;
+    margin: 0;
+}
+
+// upload input
+.input-upload, input{
+    width: 100%;
+    height: 140px;
+
+    button {
+        width: 80%;
+        height: 100%;
+    }
+}
+
+::ng-deep .mat-mdc-raised-button:not(:disabled){
+    color: var(--color-light_gray) !important;
+}
+
+::ng-deep .mat-mdc-button-persistent-ripple {
+    background-color: var(--color-transparent-dark-gray);
+    border: dotted var(--color-gray-2) 3px;
+    border-radius: 7px;
+    height: 100%;
+}
+
+::ng-deep .mat-mdc-raised-button:not(:disabled) {
+    background-color: transparent !important;
+}
+
+// profile-picture
+.profile-picture{
+    aspect-ratio: 1 / 1;
+    width: 30%;
+    border-radius: 50%;
+
+    border: solid var(--color-purple2) 4px;
+}
+
+.input-columns-upload{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+
+    text-align: start;
+}
+
+.input-upload-content{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+// save changes button
+.save-changes{
+    border: solid var(--color-purple2) 2px;
+    color: var(--color-purple2);
+}
+
+.cancel-changes{
+    border: solid var(--color-gray-0) 2px;
+    color: var(--color-gray-0);
+}
+
+.delete-account{
+    border: solid var(--color-warning) 2px;
+    color: var(--color-warning);
+    
+    background-color: transparent;
+    
+    width: 170px;
+    height: 42px;
+    margin-left: 90px;
+    border-radius: 0px;
+    margin-bottom: 40px;
+    font-size: 16px;
+
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+
+    align-self: end;
+
+    transition: 0.12s;
+}
+.delete-account:hover{
+    transform: scale(1.02);
+    // box-shadow: 0 0 8px 0px var(--color-warning);
+    text-shadow: 0 0 8px var(--color-warning);
+}
+
+.save-changes, .cancel-changes {
+    background-color: transparent;
+
+    width: 45%;
+    height: 75%;
+    border-radius: 23px;
+    margin-bottom: 40px;
+
+    font-weight: bold;
+    font-size: 18px;
+
+    user-select: none;
+    cursor: pointer;
+    transition: 0.12s;
+}
+
+.save-changes:hover{
+    transform: scale(1.02);
+    box-shadow: 0 0 8px var(--color-purple2);
+    text-shadow: 0 0 8px var(--color-purple2);
+}
+
+.cancel-changes:hover{
+    transform: scale(1.02);
+    box-shadow: 0 0 8px var(--color-gray-0);
+    text-shadow: 0 0 8px var(--color-gray-0);
+}
+
+
+// footer
+
+footer{
+    background-color: var(--color-dark_gray-1);
+    border-top: solid var(--color-purple2) 2px;
+
+    height: 40px;
+    width: 100%;
+}
+
+
+
+
+
+// new changes:
+
+.input-sections{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: start;
+
+    width: 35%;
+    height: 90%;
+}
+
+.input-columns{
+    width: 100%;
+}
+.input-columns-big{
+    width: 100%;
+}
+
+.container-input{
+    margin-top: 18px;
+}
+
+.colorblindinput-container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+
+    mat-select{
+        margin-top: 20px;
+        color: var(--color-light_gray);
+    }
+}
+
+
+
+
+// MOBILE
+@media (max-width: 768px) {
+    .container-info{
+        flex-direction: column;
+        
+        height: fit-content;
+        // padding
+        background: linear-gradient(to top, var(--color-purple1) 42%, var(--color-dark_gray-1) 52%);
+    }
+    .input-sections{
+        width: 90%;
+    }
+    .profile-picture{
+        width: 50%;
+    }
+    .delete-account{
+        position: absolute;
+        top: 10px;
+    }
+    .cancel-changes, .save-changes {
+        height: 50px !important;
+        width: 48%;
+    }
+}

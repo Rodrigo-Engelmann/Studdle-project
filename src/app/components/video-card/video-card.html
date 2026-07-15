@@ -1,0 +1,12 @@
+<article class="video-card"
+         (click)="openVideo()">
+
+    <img [src]="video.image" 
+         [alt]="video.title">
+
+    <h2>{{ video.title }}</h2>
+
+    <p class="video-date">
+        {{ video.date }}
+    </p>
+</article>

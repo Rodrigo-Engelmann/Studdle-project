@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Rodrigo Engelmann",
+    "profile_picture": "assets/images/profile-picture-placeholder.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Gustavo Moraes",
+    "profile_picture": "assets/images/profile-picture-placeholder.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Lorenzo Gall",
+    "profile_picture": "assets/images/profile-picture-placeholder.jpg"
+  }
+]

@@ -1,0 +1,212 @@
+:host {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+}
+
+//header
+ion-header {
+    box-shadow: none;
+}
+
+.toolbar {
+    --background: var(--color-dark_gray-1);
+    border-bottom: 3px solid var(--color-purple2);
+    padding: 10px 18px;
+}
+
+.toolbar-content {
+    display: flex;
+    align-items: center;
+}
+
+.page-name {
+    flex: 1;
+    text-align: center;
+    font-size: 20px;
+    color: var(--color-light_gray);
+}
+
+.logo {
+    height: 42px;
+}
+
+.profile-picture {
+    width: 42px;
+    height: 42px;
+    margin-left: 30px;
+    border-radius: 50%;
+    border: 3px solid var(--color-purple2);
+    object-fit: cover;
+    transition-duration: 0.02s;
+}
+.profile-picture:active{
+    transform: scale(0.95);
+}
+
+ion-content {
+    --background: var(--color-dark_gray-0);
+}
+
+.filter-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+
+    --color: var(--color-light_gray);
+    transition-duration: 0.02s;
+}
+.filter-btn:active{
+    transform: scale(0.95);
+}
+
+.profile-dialogbtn {
+    display: flex;
+    align-items: center;
+    
+    justify-content: center;
+    padding: 20px 0px;
+}
+.profile-dialogbtn span{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-size: 18px;
+
+    height: 100%;
+}
+.profile-dialogbtn ion-icon{
+    width: 200px;
+}
+
+// footer
+ion-footer {
+    box-shadow: none;
+}
+
+.bottom-nav {
+    background: var(--color-dark_gray-1) !important;
+    border-top: 3px solid var(--color-purple2);
+
+    height: 70px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bottom-nav button {
+    flex: 1;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    color: var(--color-light_gray);
+
+    transition: color .15s ease;
+}
+
+.bottom-nav button.active {
+    color: var(--color-purple2);
+}
+
+ion-icon {
+    font-size: 30px;
+}
+
+span {
+    font-size: 11px;
+}
+
+.active {
+    color: var(--color-purple2);
+}
+
+
+// FILTRO (subheader):
+.search-toolbar {
+    --min-height: auto;
+    padding: 14px 18px;
+    
+    --background: var(--color-dark-gray-4);
+    border-bottom: 1.5px var(--color-gray-3) solid;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: 1.5px solid var(--color-gray-3);
+    background: var(--color-dark-gray-4);
+    border-radius: 40px;
+    padding: 0px 0px 0px 16px;
+}
+
+.search-input {
+    flex: 1;
+    --color: var(--color-white);
+    --placeholder-color: var(--color-light_gray);
+    --padding-start: 0;
+    font-size: 14px;
+    --highlight-color: var(--color-purple2);
+}
+
+.search-btn {
+    flex-shrink: 0;
+    width: 45px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--color-gray-3);
+    border: none;
+    border-radius: 0px 20px 20px 0px;
+    cursor: pointer;
+
+    ion-icon {
+        font-size: 20px;
+        color: var(--color-white);
+    }
+}
+
+.filters-container {
+    display: flex;
+    gap: 80px;
+}
+
+.filter-select {
+    flex: 1;
+
+    --background: transparent;
+    --color: var(--color-light_gray);
+    --placeholder-color: var(--color-gray-0);
+    --placeholder-opacity: 1;
+    --highlight-color: var(--color-purple2);
+
+    border: 1.5px solid var(--color-gray-3);
+    border-radius: 40px;
+    padding: 6px 14px;
+    font-size: 16px;
+}

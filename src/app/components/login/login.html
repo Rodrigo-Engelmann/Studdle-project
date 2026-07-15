@@ -1,0 +1,77 @@
+<main>
+    @if (mobile) {
+        <app-accessheader-mobile
+            [headerConfig]="headerConfig"
+        ></app-accessheader-mobile>
+        
+    } @else {
+        <app-accessheader-desktop
+            [headerConfig]="headerConfig"
+        ></app-accessheader-desktop>
+    }
+    <!-- container direita -->
+    <div class="right-container">
+        <!-- container - formulário + título -->
+        <div class="right-container-son">
+        <!-- titulo -->
+        <div class="form-title-container">
+            <h2 class="form-title">Entrar na sua conta</h2>
+            <p class="form-subtitle">Preencha seus dados</p>
+        </div>
+
+        <div id="signin-with-google">
+            <img id="google-logo" src="../../../assets/images/google-icon-white.png" alt="" />
+            <span id="signin-google-text">Cadastrar-se com o Google</span>
+        </div>
+
+        <!-- formulario -->
+        <form (submit)="onLogin()">
+            <!-- Email -->
+            <div class="emailinput-container">
+                <mat-icon class="input-icons">mail</mat-icon>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="email"
+                        name="email"
+                        type="email"
+                        required
+                    />
+                </mat-form-field>
+            </div>
+
+            <!-- Senha -->
+            <div class="passwordinput-container">
+                <mat-icon class="input-icons">lock</mat-icon>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Senha</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="password"
+                        name="password"
+                        [type]="hidePassword ? 'password' : 'text'"
+                        required
+                    />
+                    <button 
+                        class="eye-button"
+                        mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="togglePassword()"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hidePassword"
+                    >
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+            <span id="forgot-password-text">Esqueceu sua senha? Recuperar senha</span>
+            <button mat-raised-button color="primary" class="login-button" type="submit">
+                ENTRAR
+            </button>
+        </form>
+        </div>
+    </div>
+</main>

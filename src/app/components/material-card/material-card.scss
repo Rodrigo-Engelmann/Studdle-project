@@ -1,0 +1,47 @@
+.material-sing {
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 5px;
+
+    cursor: pointer;
+    transition: transform .2s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    img {
+        width: 100%;
+        margin: 0;
+
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom: 3px solid var(--color-dark_gray-1);
+    }
+
+    .mat-info {
+        display: flex;
+        flex-direction: column;
+
+        color: var(--color-white);
+        text-align: justify;
+        user-select: none;
+
+        h2 {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .mat-tags {
+            margin: 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "reply_to": null,
+    "text": "Adorei a didática da aula, foi ótimo pro meu jogo"
+  },
+  {
+    "id": 2,
+    "user_id": 2,
+    "reply_to": 1,
+    "text": "Verdade! Boa demais, usei esse conceito num jogo que produzo há 3 anos já"
+  },
+  {
+    "id": 3,
+    "user_id": 3,
+    "reply_to": null,
+    "text": "Sabe quando sai um tutorial de condicionais pro módulo 2?"
+  },
+  {
+    "id": 4,
+    "user_id": 1,
+    "reply_to": 3,
+    "text": "Não sei ainda, mas garanto que vou tentar fazer logo!"
+  }
+]

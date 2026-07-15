@@ -1,0 +1,22 @@
+<header class="desktop-header">
+    <img class="studdle-logo" 
+    src="assets/images/studdleLogo-removed-background.png" alt="">
+</header>
+
+<!-- container esquerda -->
+<div class="left-container">
+    <!-- bem vindo de volta - mensagem -->
+    <div class="welcome-text">
+        <h2 class="welcome-title">
+            {{headerConfig.sideTitle}}
+        </h2>
+        <p class="switchpage-info">
+            {{headerConfig.sideSubtitle}}
+        </p>
+
+        <div class="switchpage-button" 
+        (click)="accessHeaderService.goTo(headerConfig)">
+            {{headerConfig.buttonText}}
+        </div>
+    </div>
+</div>

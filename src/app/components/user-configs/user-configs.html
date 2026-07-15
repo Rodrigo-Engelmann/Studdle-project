@@ -1,0 +1,149 @@
+<header class="side-padding">
+    <img class="studdle-logo-header translateYhover" 
+         src="assets/images/studdleLogo-removed-background.png" 
+         alt="logo studdle - clique para voltar pro menu">
+</header>
+
+<main>
+    <div class="container-info">
+        <section class="input-sections input-sections-left">
+            <!-- title -->
+            <h1>
+                Configurações de conta
+            </h1>
+
+            <!-- user name -->
+            <div class="input-columns-big input-column-name IC">
+                <div class="container-input">
+                    <p class="input-title-left">
+                        Nome do Usuário
+                    </p>
+                    
+                    <div class="passwordinput-container">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>
+                                Alterar Nome
+                            </mat-label>
+
+                            <input matInput 
+                            [(ngModel)]="db_user_name" 
+                            placeholder="  ...">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- profile picture - multer sys -->
+                <div class="input-columns-big input-columns-upload IC container-input">
+                    <p class="input-title">
+                        Foto de Perfil
+                    </p>
+
+                    <div class='input-upload-content'>
+                        <div class="input-upload">
+                            <input #fileInput 
+                            type="file" hidden 
+                            accept="image/*"
+                            (change)="onFilesSelected($event)" />
+
+                            <button class="upload-btn" 
+                            mat-raised-button color="primary"
+                            (click)="openFileDialog(fileInput)">
+                                <mat-icon>
+                                    upload
+                                </mat-icon>
+
+                                Importar Arquivo
+                            </button>
+                        </div>
+
+                        <img class="profile-picture" 
+                        [src]="previewImage || profile_picture"
+                        alt="foto de perfil">
+                    </div>
+
+                </div>
+
+                <!-- colorblind options -->
+                <div class="input-columns-big input-column-name IC">
+                    <p class="input-title">
+                        Filtros para Daltonismo
+                    </p>
+
+                    <mat-form-field class="colorblindinput-container passwordinput-container" appearance="outline">
+                        <mat-select [(ngModel)]="colorBlindSelected" name="category">
+                            <mat-option *ngFor="let category of colorblindOptions" [value]="category">
+                                {{ category }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="input-sections input-sections-right">
+            <!-- delete account -->
+            <button class="delete-account" 
+            (click)="deleteAccount()">
+                DELETAR CONTA
+            </button>
+
+            <!-- email -->
+            <div class="input-columns IC">
+                <div class="container-input">
+                    <p class="input-title">Email</p>
+                    <div class="passwordinput-container">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Alterar Email</mat-label>
+                            <input matInput [(ngModel)]="db_email" placeholder="  ...">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <!-- password -->
+            <div class="input-columns IC">
+                <div class="container-input">
+                    <p class="input-title">Senha</p>
+                    <div class="passwordinput-container">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Insira a sua Senha</mat-label>
+                            <input matInput [(ngModel)]="db_password" placeholder="  ...">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- new password -->
+            <div class="input-columns IC">
+                <div class="container-input">
+                    <p class="input-title">Nova Senha</p>
+                    <div class="passwordinput-container">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Insira a sua Nova Senha</mat-label>
+                            <input matInput [(ngModel)]="db_newPassword" placeholder="  ...">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- cancel and save buttons -->
+            <div class="container-btn">
+                <div class="save-n-cancel-btn-container">
+                    <button class="save-changes" (click)="saveChanges()">
+                        Salvar Mudanças
+                    </button>
+
+                    <button class="cancel-changes" (click)="getBackToHome()">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</main>
+
+<footer></footer>

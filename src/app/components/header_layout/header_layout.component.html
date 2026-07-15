@@ -1,0 +1,8 @@
+<div class="header-page" [ngClass]="mobile ? 'mobile-headerpage' : null">
+    @if(mobile){
+        <app-tab-header-mobile />
+    }
+    @else{
+        <app-tab-header />
+    }
+</div>

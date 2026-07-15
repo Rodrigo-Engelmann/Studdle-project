@@ -1,0 +1,26 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#videos-page {
+    width: 98%;
+}
+
+#container-vids {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+
+    gap: .02rem;
+    padding: .2rem;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 838px) {
+    #container-vids {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}

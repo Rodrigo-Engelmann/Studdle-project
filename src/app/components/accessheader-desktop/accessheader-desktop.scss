@@ -1,0 +1,79 @@
+.desktop-header{
+    position: absolute;
+    height: 6.5%;
+    width: 100%;
+
+    border-bottom: solid var(--color-purple1) 2px;
+
+    background: linear-gradient(to right, var(--color-purple1), var(--color-purple2));
+
+    display: flex;
+    align-items: center;
+}
+
+.studdle-logo{
+    margin-left: 1.1vw;
+    height: 70%;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.left-container{
+    background: linear-gradient(var(--color-purple1), var(--color-purple2));
+    width: 400px;
+    height: 100%;
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.welcome-text{
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+
+    width: 95%;
+}
+
+.welcome-title{
+    font-size: 32px;
+    margin: 0;
+}
+
+.switchpage-info{
+    font-size: 20px;
+    width: 90%;
+    margin: 0;
+}
+
+.switchpage-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35%;
+    height: 55px;
+    margin-top: 12vw;
+    font-size: 20px;
+
+    border: solid var(--color-white) 2px;
+    border-radius: 10px;
+    user-select: none;
+
+    transition: 0.08s;
+    cursor: pointer;
+}
+
+.switchpage-button:hover{
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.411);
+    transform: scale(1.02);
+}
+

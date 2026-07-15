@@ -1,0 +1,9 @@
+<main id="material-page">
+    <div id="container-material">
+        @for(material of materials; track material.title) {
+            <app-mat-card
+                [material]="material"
+            ></app-mat-card>
+        }
+    </div>
+</main>
