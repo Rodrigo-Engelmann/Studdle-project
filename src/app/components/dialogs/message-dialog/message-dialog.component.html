@@ -1,0 +1,24 @@
+<div class="header">
+    <span class="badge" [class]="variant" aria-hidden="true">
+        {{ glyph }}
+    </span>
+
+    <h2 mat-dialog-title>
+        {{ config.title }}
+    </h2>
+</div>
+
+<mat-dialog-content>
+    <p class="message">{{ config.message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    @if (config.cancelLabel) {
+        <button mat-button type="button" (click)="cancel()">
+            {{ config.cancelLabel }}
+        </button>
+    }
+    <button mat-flat-button [color]="buttonColor" type="button" (click)="confirm()">
+        {{ config.confirmLabel ?? 'Entendi' }}
+    </button>
+</mat-dialog-actions>

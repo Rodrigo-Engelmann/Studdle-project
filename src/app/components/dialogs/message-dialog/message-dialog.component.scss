@@ -1,0 +1,46 @@
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 24px 0;
+}
+
+.header h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.badge {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: #616161;
+}
+
+// .badge.info {
+//     background: #1976d2;
+// }
+// .badge.success {
+//     background: #2e7d32;
+// }
+// .badge.warning {
+//     background: #ed6c02;
+// }
+// .badge.error {
+//     background: #c62828;
+// }
+// .badge.confirm {
+//     background: #5e35b1;
+// }
+
+.message {
+    margin: 8px 0 0;
+    line-height: 1.5;
+    white-space: pre-line;
+}

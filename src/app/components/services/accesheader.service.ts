@@ -1,5 +1,5 @@
 // angular
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 // class

@@ -1,0 +1,87 @@
+:host {
+    display: block;
+}
+
+.subtitle {
+    margin: 0 0 16px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* grid de 12 colunas: cada campo escolhe quantas ocupa */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 16px;
+}
+
+.field {
+    grid-column: span 12;
+}
+.field.half {
+    grid-column: span 6;
+}
+.field.third {
+    grid-column: span 4;
+}
+
+/* em telas estreitas tudo vira largura total */
+@media (max-width: 599px) {
+    .field,
+    .field.half,
+    .field.third {
+        grid-column: span 12;
+    }
+}
+
+mat-form-field {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.inline-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.group-label {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+
+.input-container{
+    padding-top: 10px;
+    background-color: var(--color-light_gray_1) !important;
+    border-radius: 4px;
+}
+
+.mat-mdc-form-field.mat-form-field-animations-enabled .mdc-text-field__input {
+    color: black !important;
+}
+::ng-deep .mat-mdc-select-min-line, .mat-mdc-input-element{
+    color: black !important;
+}
+
+
+::ng-deep .mat-mdc-dialog-container .mat-mdc-dialog-title{
+    box-shadow: 0 0 10px var(--color-light_gray_1) !important;
+    border-radius: 0 !important;
+}
+.mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end, .mat-mdc-dialog-actions[align=end] {
+    box-shadow: 0 0 10px var(--color-light_gray_1) !important;
+}

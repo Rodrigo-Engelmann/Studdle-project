@@ -15,6 +15,9 @@ export class Material {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ length: 500, nullable: true })
+  link!: string;
+
   @Column({ length: 255 })
   main_image!: string;
 

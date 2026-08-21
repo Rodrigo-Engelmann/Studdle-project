@@ -16,6 +16,9 @@ export class Video {
   id!: number;
 
   @Column({ length: 500, nullable: true })
+  link!: string;
+
+  @Column({ length: 500, nullable: true })
   video_url!: string;
 
   @Column({ length: 500, nullable: true })
