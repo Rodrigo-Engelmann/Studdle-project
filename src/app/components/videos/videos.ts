@@ -1,6 +1,6 @@
 // angular
-import { Component } from '@angular/core';
-// import { Route, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
 import { VideoCard } from '../video-card/video-card';
@@ -12,50 +12,70 @@ import { DialogService } from '../services/dialog.service'
 import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
 
 // others
-import videos from '../../../assets/files/videos.json';
 import { video } from '../../../../common/video';
 import { VideoService } from '../../../app/services/videos/videos.service'
-
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-videos',
   imports: [
-    VideoCard,
+    VideoCard
+    , MatProgressSpinnerModule
   ],
   standalone: true,
   templateUrl: './videos.html',
   styleUrl: './videos.scss'
 })
-export class Videos {
-  videos: video[] = videos as video[];
+export class Videos implements OnInit {
+  videos: video[] = [];
+  videoPrefix: string = 'https://www.youtube.com/watch?v=';
+  isLoading: boolean = true;
 
   constructor(private dialogService: DialogService
             , private videoService: VideoService
   ) {}
 
+  ngOnInit(): void {
+    this.loadVideos();
+  }
 
-  newVideoDialog() {
+  async loadVideos() {
+    await this.videoService.findAll().subscribe((res: any) => {
+      res.map((a: any)=>this.videos.push(a));
+      this.isLoading = false;
+    });
+  }
+
+  async newVideoDialog() {
     this.dialogService.openForm<any>({
-      title: 'Adicionar vídeo',
+      title: 'Criar vídeo',
       size: DialogSize.LARGE,
       fields: [
-        { key: 'title', label: 'Título', type: FieldType.TEXT, required: true, width: FieldWidth.HALF },
-        { key: 'description', label: 'Descrição', type: FieldType.TEXTAREA, rows: 4 },
-        { key: 'video_url', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF },
-        { key: 'categoria', label: 'Categoria', type: FieldType.SELECT, required: false,
-          options: 
-            [
-              { label: 'JavaScript', value: 'js' }
-              , { label: 'Banco de dados', value: 'db' }
-            ] 
-        },
-        { key: 'sequence', label: 'Categoria', type: FieldType.NUMBER, required: false }
+        { key: 'link', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF },
+        { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: false }
       ],
-    }).subscribe(res => {
-      this.videoService.create(res?.data).subscribe((postRes) => {
-        console.log("postRes: ", postRes)
-      })
-      // console.log("!!! res: ", res);
+    }).subscribe(async (res: any) => {
+      const formData = res.data;
+      const URL = formData.link.replace(this.videoPrefix,'');
+      formData.video_url = URL;
+
+      const YTvideoData: any = await this.getYTdata(formData.link);
+      if (YTvideoData) {
+        formData.title       = YTvideoData.title;
+        formData.description = YTvideoData.description;
+        formData.thumbnail   = YTvideoData.thumbnail;
+      }
+
+      this.videoService.create(formData).subscribe((postRes: any) => {
+        this.videos.push(postRes);
+      });
     });
+  }
+
+  async getYTdata(videoUrl: string): Promise<object> {
+    const ytData = await firstValueFrom(
+      this.videoService.getYTvideoData(videoUrl)
+    );
+    return ytData;
   }
 }

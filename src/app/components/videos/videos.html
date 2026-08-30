@@ -1,11 +1,21 @@
 <main id="videos-page">
-    <div id="container-vids">
-        @for(video of videos; track video.title) {
-            <app-vid-card
-                [video]="video"
-            ></app-vid-card>
+    @if (videos.length) {
+        <div id="container-vids">
+            @for(video of videos; track video.title) {
+                <app-vid-card class="video-card"
+                    [video]="video"
+                ></app-vid-card>
+            }
+        </div>
+    } @else {
+        @if (isLoading) {
+            <mat-spinner class="spinner"
+            mode="indeterminate">
+            </mat-spinner>
+        } @else {
+            <span class="noLinesText">Nenhuma linha para exibir...</span>
         }
-    </div>
+    }
 
     <div class="addvideo-btn" (click)="newVideoDialog()"></div>
 </main>

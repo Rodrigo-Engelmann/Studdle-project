@@ -5,8 +5,6 @@ import { Route, Router } from '@angular/router';
 // others
 import materials from '../../../assets/files/recomendacoes/rec-material.json';
 import { material } from '../../../../common/material';
-
-import videos from '../../../assets/files/recomendacoes/rec-videos.json';
 import { video } from '../../../../common/video';
 
 // components
@@ -24,7 +22,7 @@ import { MaterialCard } from '../material-card/material-card';
 })
 export class Recomendacoes {
   materials: material[] = materials as material[];
-  videos: video[] = videos as video[];
+  videos: video[] = [];
 
   constructor(private router: Router) {}
 

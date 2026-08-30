@@ -21,11 +21,14 @@ export class Video {
   @Column({ length: 500, nullable: true })
   video_url!: string;
 
-  @Column({ length: 500, nullable: true })
+  @Column({ type: 'text', nullable: true })
   description!: string;
 
   @Column({ length: 100 })
   title!: string;
+
+  @Column({ length: 200 })
+  thumbnail!: string;
 
   @CreateDateColumn()
   createdDate!: Date;

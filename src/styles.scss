@@ -17,6 +17,7 @@
   --color-gray-2: #2F2F2F;
   --color-gray-3: #363636;
   --color-dark_gray-0: #191819;
+  --color-dark_gray-05: #161516;
   --color-dark_gray-1: #100F10;
   --color-dark_gray-2: #0F0F10;
   --color-dark_gray-3: #0C0012;
@@ -31,6 +32,12 @@
   --color-dark_purple: #3D3048;
 
   --color-warning: #BE3A3C;
+
+  --selected-video: #a340ff2c;
+
+  --spinner: var(--color-purple2);
+
+  --link-text: rgb(176, 128, 240);
 }
 
 *{
@@ -124,4 +131,31 @@ body.acromatopsia {
   --color-dark_purple: #2F2F2F;
 
   --color-warning: #777777;
+}
+
+
+
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 8px;
+}
+
+/* Fundo da scrollbar */
+::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+/* Barra que você arrasta */
+::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 10px;
+    border: 2px solid #111111;
+}
+
+/* Hover na barra */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--selected-video);
 }

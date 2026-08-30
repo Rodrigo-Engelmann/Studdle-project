@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface Video {
   id?: number;
+  link: string;
   video_url?: string;
   description?: string;
   title: string;
@@ -41,6 +42,10 @@ export class VideoService {
     return this.http.get<Video>(`${this.api}/${id}`);
   }
 
+  findByURL(url: string): Observable<Video> {
+    return this.http.get<Video>(`${this.api}/findByURL/${url}`)
+  }
+
   // UPDATE
   update(id: number, data: Partial<Video>): Observable<Video> {
     return this.http.patch<Video>(`${this.api}/${id}`, data);
@@ -69,5 +74,13 @@ export class VideoService {
   // GET STATUS DE CONCLUSÃO
   getStatus(id: number, userId: number): Observable<VideoStatus> {
     return this.http.get<VideoStatus>(`${this.api}/${id}/status/${userId}`);
+  }
+
+  // GET VIDEO DATA
+  getYTvideoData(url: string) {
+    return this.http.get<any>(
+      `${this.api}/getYoutubeData`,
+      { params: { url: url } }
+    );
   }
 }

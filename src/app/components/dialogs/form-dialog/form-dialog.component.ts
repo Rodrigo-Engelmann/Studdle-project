@@ -105,7 +105,7 @@ export class FormDialogComponent {
       validators.push(Validators.email);
 
     if (field.type === FieldType.URL) 
-      validators.push(Validators.pattern(/^https?:\/\/\S+$/i));
+      validators.push(Validators.pattern(/^https:\/\/www\.youtube\.com\/watch\?v=/i));
 
     if (field.validators?.length) 
       validators.push(...field.validators);
@@ -138,7 +138,7 @@ export class FormDialogComponent {
       case 'max':
         return `O valor máximo é ${detail.max}.`;
       case 'pattern':
-        return field.type === FieldType.URL ? 'A URL deve começar com http:// ou https://.'
+        return field.type === FieldType.URL ? 'URL inválida'
                                             : 'O formato informado não é aceito.';
       default:
         return 'Revise este campo.';

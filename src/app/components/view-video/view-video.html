@@ -21,30 +21,37 @@
 
 <main>
     <div class="container-info">
-        <!-- <img class="main-image" src="assets/images/wide-placeholder.png" alt=""> -->
-        <video class="main-image" controls>
-            <source src="assets/videos/video-placeholder.mp4" type="video/mp4">
-        </video>
-        <h1>
-            Título do material didático. Título do material didático. Título do material didático
+        <iframe class="video-player"
+        [src]="embedUrl"
+        width="560"
+        height="315"
+        frameborder="0"
+        allowfullscreen
+        ></iframe>
+
+        <h1 class="title">
+            {{ videoData.title }}
         </h1>
 
-        <p>
-            Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. 
-            Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. 
-            Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. Descrição do vídeo. 
-        </p>
+        @if (videoData.description.length) {
+            <div class="description-container" #descriptionContainer>
+                <p class="video-description"
+                [class.expanded]="descriptionExpanded">
+                    {{ videoData.description }}
+                </p>
 
+            </div>
+            <!-- @if (displayReadMore) { -->
+                <button class="read-more"
+                (click)="descriptionExpanded = !descriptionExpanded">
+                    {{ descriptionExpanded ? 'Mostrar menos' : 'Ler mais' }}
+                </button>
+            <!-- } -->
+        }
 
     </div>
 
-    <div id="container-comments" [style]="{
-    backgroundColor: 'var(--color-gray-2)',
-    paddingBottom: '100px',
-    width: '100%',
-    borderRadius: '7px',
-    marginTop: '100px'
-}">
+    <div class="container-comments">
 
     <div class="comment-input" [style]="{
         marginLeft: '60px',
