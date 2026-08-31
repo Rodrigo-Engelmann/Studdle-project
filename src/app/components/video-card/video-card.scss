@@ -83,3 +83,33 @@
         transform: scale(1.1) translate(0, 0) rotate(360deg);
     }
 }
+
+
+.video-menu-btn{
+    z-index: 123123;
+    background-color: transparent;
+    color: var(--color-white);
+    border: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    transition-duration: 0.2s;
+
+    border-radius: 50%;
+
+    &:hover{
+        transform: scale(1.1);
+        background-color: var(--selected-video);
+        box-shadow: 0 0 10px 0 var(--selected-video);
+    }
+    &:active{
+        transform: scale(0.9);
+    }
+}
+
+.date-n-adm{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

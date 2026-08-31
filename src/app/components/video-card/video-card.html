@@ -6,7 +6,29 @@
 
     <h2>{{ video.title }}</h2>
 
-    <p class="video-date">
-        {{ createdDateFormat }}
-    </p>
+    <div class="date-n-adm">
+        <p class="video-date">
+            {{ createdDateFormat }}
+        </p>
+        <!-- menu btn -->
+        <button class="video-menu-btn" matButton
+        [matMenuTriggerFor]="menu"
+        (click)="$event.stopPropagation()">
+            <mat-icon>
+                more_vert
+            </mat-icon>
+        </button>
+    </div>    
 </article>
+
+<!-- video adm menu -->
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="settingsSelect()">
+        <mat-icon>settings</mat-icon>
+        <span>Configurações</span>
+    </button>
+    <button mat-menu-item (click)="deleteSelect()">
+        <mat-icon>delete</mat-icon>
+        <span>Deletar</span>
+    </button>
+</mat-menu>

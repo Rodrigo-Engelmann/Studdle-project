@@ -245,6 +245,12 @@ header{
 
 // video
 .video-player {
+    background: radial-gradient( circle, var(--selected-video), var(--color-black)),
+    url(../../../assets/program/images/loading-gif.gif);
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, 100px;
+    background-position: center, center;
+
     display: block;
     border: none;
 

@@ -30,7 +30,6 @@ export class ViewVideo implements OnInit {
   embedUrl!: SafeResourceUrl;
   videoData!: video;
   descriptionExpanded = false;
-  displayReadMore = false;
 
   @ViewChild('descriptionContainer')
   descriptionContainer!: ElementRef<HTMLDivElement>;

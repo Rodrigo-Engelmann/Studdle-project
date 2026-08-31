@@ -21,19 +21,35 @@
 
 .addvideo-btn{
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    right: 30px;
+    bottom: 30px;
 
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
 
-    background-color: red;
     cursor: pointer;
-
     border-radius: 50%;
-}
-.addvideo-btn:hover{
-    background-color: rgb(71, 3, 3);
+
+    mat-icon{
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        font-size: 50px;
+
+        text-align: center;
+        align-items: center !important;
+        justify-content: center !important;
+
+        transition-duration: 0.2s;
+
+        &:hover{
+            transform: scale(1.1);
+        }
+        &:active{
+            transform: scale(0.7);
+        }
+    }
 }
 
 

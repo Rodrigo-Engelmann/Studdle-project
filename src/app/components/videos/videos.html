@@ -3,7 +3,8 @@
         <div id="container-vids">
             @for(video of videos; track video.title) {
                 <app-vid-card class="video-card"
-                    [video]="video"
+                [video]="video"
+                (updateData)="updateSingular($event)"
                 ></app-vid-card>
             }
         </div>
@@ -17,5 +18,10 @@
         }
     }
 
-    <div class="addvideo-btn" (click)="newVideoDialog()"></div>
+    <div class="addvideo-btn"
+    (click)="newVideoDialog()">
+        <mat-icon>
+            add
+        </mat-icon>
+    </div>
 </main>

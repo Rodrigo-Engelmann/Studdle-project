@@ -1,6 +1,7 @@
 // angular
 import { Component, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 // components
 import { VideoCard } from '../video-card/video-card';
@@ -21,6 +22,7 @@ import { firstValueFrom } from 'rxjs';
   imports: [
     VideoCard
     , MatProgressSpinnerModule
+    , MatIconModule
   ],
   standalone: true,
   templateUrl: './videos.html',
@@ -77,5 +79,15 @@ export class Videos implements OnInit {
       this.videoService.getYTvideoData(videoUrl)
     );
     return ytData;
+  }
+
+  updateSingular(event: any): void {
+    const index: number = this.videos.findIndex((v)=>v.id===event.id)
+    if (event.deletedVideo) {
+      this.videos.splice(index,1);
+      return;
+    }
+
+    this.videos[index] = event;
   }
 }

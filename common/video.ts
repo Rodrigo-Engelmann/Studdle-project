@@ -12,6 +12,8 @@ export class video {
     comments: number;
     task_contents: number;
 
+    deletedVideo?: boolean;
+
     constructor() {
         this.id = 0;
         this.link = '';
@@ -25,6 +27,7 @@ export class video {
         this.video_statuses = 0;
         this.comments = 0;
         this.task_contents = 0;
+        this.deletedVideo = false;
     }
 }
 
