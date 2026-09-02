@@ -53,6 +53,9 @@ export interface FormFieldConfig {
    * Ex.: { required: 'Informe o título do vídeo', pattern: 'URL inválida' }
    */
   errorMessages?: Record<string, string>;
+  // paradas para o input de file:
+  accept?: string;
+  multiple?: boolean;
 }
 
 /** Configuração completa do dialog de formulário. */

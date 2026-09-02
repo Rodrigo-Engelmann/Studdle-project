@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
 
 // others
-import materials from '../../../assets/files/recomendacoes/rec-material.json';
+// import materials from '../../../assets/files/recomendacoes/rec-material.json';
 import { material } from '../../../../common/material';
 import { video } from '../../../../common/video';
 
@@ -21,7 +21,7 @@ import { MaterialCard } from '../material-card/material-card';
   styleUrl: './recomendacoes.scss',
 })
 export class Recomendacoes {
-  materials: material[] = materials as material[];
+  materials: material[] = [];
   videos: video[] = [];
 
   constructor(private router: Router) {}

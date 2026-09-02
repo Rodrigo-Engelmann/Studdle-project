@@ -16,10 +16,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 // common
 import { DialogResultStatus, FieldType, FieldWidth } from '../../enums/dialog.enums';
 import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/dialog.models';
+// import { MatIcon } from "@angular/material/icon-module.d";
 
 @Component({
   selector: 'app-form-dialog',
@@ -34,18 +36,16 @@ import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/di
     , MatCheckboxModule
     , MatRadioModule
     , MatButtonModule
-  ],
+    , MatIconModule
+],
   templateUrl: './form-dialog.component.html',
   styleUrls: ['./form-dialog.component.scss']
 })
 export class FormDialogComponent {
+  private readonly dialogRef = inject<MatDialogRef<FormDialogComponent, DialogResult>>(MatDialogRef);
+
   protected readonly config: FormDialogConfig = inject(MAT_DIALOG_DATA);
-
-  private readonly dialogRef =
-    inject<MatDialogRef<FormDialogComponent, DialogResult>>(MatDialogRef);
-
   protected readonly form: FormGroup = this.buildForm();
-
   protected readonly FieldType = FieldType;
   protected readonly FieldWidth = FieldWidth;
 
@@ -163,5 +163,14 @@ export class FormDialogComponent {
       status: DialogResultStatus.CANCELLED,
       confirmed: false,
     });
+  }
+
+  protected onFileSelected(event: Event, fieldKey: string): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    this.form.get(fieldKey)?.setValue(file);
+    this.form.get(fieldKey)?.markAsTouched();
+    this.form.get(fieldKey)?.updateValueAndValidity();
   }
 }

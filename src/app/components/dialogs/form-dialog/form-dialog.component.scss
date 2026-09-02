@@ -85,3 +85,120 @@ mat-form-field {
 .mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end, .mat-mdc-dialog-actions[align=end] {
     box-shadow: 0 0 10px var(--color-light_gray_1) !important;
 }
+
+
+// file
+.file-input-container {
+    width: 100%;
+    padding-top: 10px;
+    margin-bottom: 16px;
+}
+
+.file-label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-drop-area {
+    width: 100%;
+    min-height: 90px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 16px;
+
+    background-color: var(--color-light_gray_1);
+    border: 1.5px dashed rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.file-drop-area:hover {
+    border-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.025);
+}
+
+.file-drop-area:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.file-drop-area.has-file {
+    border-style: solid;
+}
+
+.file-drop-area.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.file-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: white;
+
+    font-size: 1.4rem;
+    font-weight: 600;
+
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.file-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    min-width: 0;
+}
+
+.file-text strong {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-text small {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.file-input-container .hint {
+    display: block;
+    margin-top: 6px;
+}
+
+.file-input-container mat-error {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.75rem;
+}

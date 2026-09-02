@@ -70,4 +70,11 @@ export class MaterialService {
   getStatus(id: number, userId: number): Observable<MaterialStatus> {
     return this.http.get<MaterialStatus>(`${this.api}/${id}/status/${userId}`);
   }
+
+  // MULTER
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('main_image', file);
+    return this.http.post(`${this.api}/upload`, formData);
+  }
 }

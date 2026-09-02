@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, ParseIntPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { Material } from './materials.entity';
 import { MaterialService } from './materials.service';
+
+import{ ImageUploadInterceptor } from '../common/upload/image-upload.interceptor'
 
 @Controller('materials')
 export class MaterialController extends BaseController<Material> {
@@ -37,5 +39,19 @@ export class MaterialController extends BaseController<Material> {
     @Param('userId', ParseIntPipe) userId: number,
   ) {
     return this.materialService.getStatus(id, userId);
+  }
+
+  @Post('upload')
+  @UseInterceptors(
+    ImageUploadInterceptor('main_image', 'materials')
+  )
+  uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return {
+      filename: file.filename,
+      originalName: file.originalname,
+      path: `/uploads/materials/${file.filename}`,
+    };
   }
 }

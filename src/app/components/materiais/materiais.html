@@ -1,9 +1,26 @@
 <main id="material-page">
-    <div id="container-material">
-        @for(material of materials; track material.title) {
-            <app-mat-card
-                [material]="material"
-            ></app-mat-card>
+    @if (materials.length) {
+        <div id="container-material">
+            @for(material of materials; track material.title) {
+                <app-mat-card
+                    [material]="material"
+                ></app-mat-card>
+            }
+        </div>
+    } @else {
+        @if (isLoading) {
+            <mat-spinner class="spinner"
+            mode="indeterminate">
+            </mat-spinner>
+        } @else {
+            <span class="noLinesText">Nenhuma linha para exibir...</span>
         }
+    }
+
+    <div class="addvideo-btn"
+    (click)="newMaterialDialog()">
+        <mat-icon>
+            add
+        </mat-icon>
     </div>
 </main>

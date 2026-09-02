@@ -1,124 +1,214 @@
-<h2 mat-dialog-title>{{ config.title }}</h2>
+<h2 mat-dialog-title>
+    {{ config.title }}
+</h2>
 
 <mat-dialog-content>
     @if (config.subtitle) {
-    <p class="subtitle">{{ config.subtitle }}</p>
+        <p class="subtitle">
+            {{ config.subtitle }}
+        </p>
     }
 
     <form [formGroup]="form" class="form-grid" (ngSubmit)="confirm()">
-    @for (field of config.fields; track field.key) {
-        <div
-        class="field"
-        [class.half]="field.width === FieldWidth.HALF"
-        [class.third]="field.width === FieldWidth.THIRD"
-        >
-        @switch (field.type) {
-            <!-- TEXT AREA -->
-            @case (FieldType.TEXTAREA) {
-            <mat-form-field appearance="outline" class="input-container">
-                <mat-label>{{ field.label }}</mat-label>
-                <textarea
-                matInput
-                [formControlName]="field.key"
-                [placeholder]="field.placeholder ?? ''"
-                [rows]="field.rows ?? 4"
-                ></textarea>
-                @if (field.hint) 
-                    { <mat-hint>{{ field.hint }}</mat-hint> }
+        @for (field of config.fields; track field.key) {
+            <div class="field"
+            [class.half]="field.width === FieldWidth.HALF"
+            [class.third]="field.width === FieldWidth.THIRD">
+            
+                @switch (field.type) {
+                    <!-- TEXT AREA -->
+                    @case (FieldType.TEXTAREA) {
+                        <mat-form-field appearance="outline" class="input-container">
+                            <mat-label>
+                                {{ field.label }}
+                            </mat-label>
 
-                <mat-error>{{ errorFor(field) }}</mat-error>
-            </mat-form-field>
-            }
+                            <textarea
+                            matInput
+                            [formControlName]="field.key"
+                            [placeholder]="field.placeholder ?? ''"
+                            [rows]="field.rows ?? 4"
+                            ></textarea>
+                            
+                            @if (field.hint) 
+                                { <mat-hint>{{ field.hint }}</mat-hint> }
 
-            <!-- SINGLE/MULTIPLE SELECTION -->
-            @case (FieldType.SELECT) {
-            <mat-form-field appearance="outline" class="input-container">
-                <mat-label>{{ field.label }}</mat-label>
-                <mat-select [formControlName]="field.key">
-                @for (option of field.options ?? []; track option.value) {
-                    <mat-option [value]="option.value" [disabled]="option.disabled ?? false">
-                        {{ option.label }}
-                    </mat-option>
+                            <mat-error>{{ errorFor(field) }}</mat-error>
+                        </mat-form-field>
+                    }
+
+                    <!-- SINGLE/MULTIPLE SELECTION -->
+                    @case (FieldType.SELECT) {
+                        <mat-form-field appearance="outline" class="input-container">
+                            <mat-label>{{ field.label }}</mat-label>
+                            <mat-select [formControlName]="field.key">
+                                @for (option of field.options ?? []; track option.value) {
+                                    <mat-option [value]="option.value" [disabled]="option.disabled ?? false">
+                                        {{ option.label }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                            @if (field.hint) {
+                                <mat-hint>
+                                    {{ field.hint }}
+                                </mat-hint>
+                            }
+
+                            <mat-error>
+                                {{ errorFor(field) }}
+                            </mat-error>
+                        </mat-form-field>
+                    }
+                    @case (FieldType.MULTI_SELECT) {
+                        <mat-form-field appearance="outline" class="input-container">
+                            <mat-label>
+                                {{ field.label }}
+                            </mat-label>
+
+                            <mat-select [formControlName]="field.key" multiple>
+                                @for (option of field.options ?? []; track option.value) {
+                                    <mat-option [value]="option.value" [disabled]="option.disabled ?? false">
+                                        {{ option.label }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+
+                            @if (field.hint) {
+                                <mat-hint>
+                                    {{ field.hint }}
+                                </mat-hint>
+                            }
+                            <mat-error>{{ errorFor(field) }}</mat-error>
+                        </mat-form-field>
+                    }
+
+                    <!-- BOOLEAN -->
+                    @case (FieldType.CHECKBOX) {
+                        <div class="inline-control">
+                            <mat-checkbox [formControlName]="field.key">{{ field.label }}</mat-checkbox>
+
+                            @if (field.hint) 
+                                { <span class="hint">{{ field.hint }}</span> }
+
+                        </div>
+                    }
+
+                    <!-- UNIQUE VISIBLE OPTION -->
+                    @case (FieldType.RADIO) {
+                        <div class="inline-control" class="input-container">
+                            <span class="group-label">
+                                {{ field.label }}
+                            </span>
+                            
+                            <mat-radio-group class="radio-group"
+                            [formControlName]="field.key">
+                                @for (option of field.options ?? []; track option.value) {
+                                    <mat-radio-button [value]="option.value" [disabled]="option.disabled ?? false">
+                                    {{ option.label }}
+                                    </mat-radio-button>
+                                }
+                            </mat-radio-group>
+
+                            @if (field.hint) {
+                                <span class="hint">
+                                    {{ field.hint }}
+                                </span>
+                            }
+                        </div>
+                    }
+
+                    <!-- FILE -->
+                    @case (FieldType.FILE) {
+                        <div class="file-input-container">
+                            <label class="file-label">
+                                {{ field.label }}
+                            </label>
+
+                            <label class="file-drop-area"
+                            [class.disabled]="field.disabled ?? false"
+                            [class.has-file]="form.get(field.key)?.value"
+                            [for]="field.key">
+                                <mat-icon class="file-icon">
+                                    arrow_upward
+                                </mat-icon>
+
+                                <span class="file-text">
+                                    @if (form.get(field.key)?.value) {
+                                        <strong>
+                                            {{ form.get(field.key)?.value.name }}
+                                        </strong>
+
+                                        <small>
+                                            Clique para alterar o arquivo
+                                        </small>
+                                    } @else {
+                                        <strong>
+                                            Selecione um arquivo
+                                        </strong>
+
+                                        <small>
+                                            Clique aqui para procurar no dispositivo
+                                        </small>
+                                    }
+                                </span>
+                            </label>
+
+                            <input class="file-input"
+                            type="file"
+                            [id]="field.key"
+                            [disabled]="field.disabled ?? false"
+                            [accept]="field.accept ?? ''"
+                            (change)="onFileSelected($event, field.key)"/>
+
+                            @if (field.hint) {
+                                <span class="hint">
+                                    {{ field.hint }}
+                                </span>
+                            }
+
+                            @if (form.get(field.key)?.touched && form.get(field.key)?.invalid) {
+                                <mat-error>
+                                    {{ errorFor(field) }}
+                                </mat-error>
+                            }
+                        </div>
+                    }
+
+                    <!-- TEXT, NUMBER, EMAIL, PASSWORD, URL, DATE, TIME -->
+                    @default {
+                        <mat-form-field appearance="outline" class="input-container">
+                            <mat-label>
+                                {{ field.label }}
+                            </mat-label>
+
+                            <input
+                            matInput
+                            [type]="field.type"
+                            [formControlName]="field.key"
+                            [placeholder]="field.placeholder ?? ''"/>
+
+                            @if (field.hint) {
+                                <mat-hint>
+                                    {{ field.hint }}
+                                </mat-hint>
+                            }
+                            <mat-error>{{ errorFor(field) }}</mat-error>
+                        </mat-form-field>
+                    }
                 }
-
-                </mat-select>
-                @if (field.hint) 
-                    { <mat-hint>{{ field.hint }}</mat-hint> }
-
-                <mat-error>{{ errorFor(field) }}</mat-error>
-            </mat-form-field>
-            }
-            @case (FieldType.MULTI_SELECT) {
-            <mat-form-field appearance="outline" class="input-container">
-                <mat-label>{{ field.label }}</mat-label>
-                <mat-select [formControlName]="field.key" multiple>
-                @for (option of field.options ?? []; track option.value) {
-                    <mat-option [value]="option.value" [disabled]="option.disabled ?? false">
-                        {{ option.label }}
-                    </mat-option>
-                }
-                </mat-select>
-                @if (field.hint)
-                    { <mat-hint>{{ field.hint }}</mat-hint> }
-                
-                <mat-error>{{ errorFor(field) }}</mat-error>
-            </mat-form-field>
-            }
-
-            <!-- BOOLEAN -->
-            @case (FieldType.CHECKBOX) {
-            <div class="inline-control">
-                <mat-checkbox [formControlName]="field.key">{{ field.label }}</mat-checkbox>
-                @if (field.hint) 
-                    { <span class="hint">{{ field.hint }}</span> }
-
             </div>
-            }
-
-            <!-- UNIQUE VISIBLE OPTION -->
-            @case (FieldType.RADIO) {
-            <div class="inline-control" class="input-container">
-                <span class="group-label">{{ field.label }}</span>
-                <mat-radio-group [formControlName]="field.key" class="radio-group">
-                @for (option of field.options ?? []; track option.value) {
-                    <mat-radio-button [value]="option.value" [disabled]="option.disabled ?? false">
-                    {{ option.label }}
-                    </mat-radio-button>
-                }
-
-                </mat-radio-group>
-                @if (field.hint) 
-                    { <span class="hint">{{ field.hint }}</span> }
-
-            </div>
-            }
-
-            <!-- TEXT, NUMBER, EMAIL, PASSWORD, URL, DATE, TIME -->
-            @default {
-            <mat-form-field appearance="outline" class="input-container">
-                <mat-label>{{ field.label }}</mat-label>
-                <input
-                matInput
-                [type]="field.type"
-                [formControlName]="field.key"
-                [placeholder]="field.placeholder ?? ''"/>
-                @if (field.hint) 
-                    { <mat-hint>{{ field.hint }}</mat-hint> }
-
-                <mat-error>{{ errorFor(field) }}</mat-error>
-            </mat-form-field>
-            }
         }
-        </div>
-    }
     </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="cancel()">
+    <button mat-button type="button"
+    (click)="cancel()">
         {{ config.cancelLabel ?? 'Cancelar' }}
     </button>
-    <button mat-flat-button color="primary" type="button" (click)="confirm()">
+
+    <button mat-flat-button color="primary" 
+    type="button" (click)="confirm()">
         {{ config.confirmLabel ?? 'Salvar' }}
     </button>
 </mat-dialog-actions>

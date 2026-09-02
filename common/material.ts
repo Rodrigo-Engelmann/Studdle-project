@@ -1,14 +1,18 @@
 export class material {
-    image: string;
+    id: number;
+    main_image: string;
     title: string;
-    abstract: string;
+    summary: string;
     tags: string;
+    sequence: number;
 
     constructor() {
-        this.image = '';
+        this.id = -1;
+        this.main_image = '';
         this.title = '';
-        this.abstract = '';
+        this.summary = '';
         this.tags = '';
+        this.sequence = -1;
     }
 }
 

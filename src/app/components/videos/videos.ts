@@ -8,13 +8,13 @@ import { VideoCard } from '../video-card/video-card';
 
 // services
 import { DialogService } from '../services/dialog.service'
+import { VideoService } from '../../../app/services/videos/videos.service'
 
 // common
 import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
 
 // others
 import { video } from '../../../../common/video';
-import { VideoService } from '../../../app/services/videos/videos.service'
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -50,7 +50,7 @@ export class Videos implements OnInit {
 
   async newVideoDialog() {
     this.dialogService.openForm<any>({
-      title: 'Criar vídeo',
+      title: 'Criar Vídeo',
       size: DialogSize.LARGE,
       fields: [
         { key: 'link', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF },

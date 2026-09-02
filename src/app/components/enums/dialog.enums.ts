@@ -11,6 +11,7 @@ export enum FieldType {
   MULTI_SELECT = 'multi-select',
   CHECKBOX = 'checkbox',
   RADIO = 'radio',
+  FILE = 'file'
 }
 
 export enum DialogVariant {

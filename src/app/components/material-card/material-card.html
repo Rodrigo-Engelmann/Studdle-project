@@ -1,12 +1,11 @@
 <article class="material-sing"
-        (click)="openMaterial()">
-    <img [src]="material.image">
+(click)="openMaterial()">
+    <img [src]="'http://localhost:3000' + material.main_image"
+    [alt]="material.title">
+
     <div class="mat-info">
         <h2>{{material.title}}</h2>
-        <p>{{material.abstract}}</p>
-        <p class="mat-tags">
-
-            {{material.tags}}
-        </p>
+        <p>{{material.summary}}</p>
+        <p class="mat-tags">{{material.tags}}</p>
     </div>
 </article>

@@ -21,6 +21,9 @@ export class Material {
   @Column({ length: 255 })
   main_image!: string;
 
+  @Column({ length: 100 })
+  title!: string;
+
   @Column({ length: 250 })
   summary!: string;
 
