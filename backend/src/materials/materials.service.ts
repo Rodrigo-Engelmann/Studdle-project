@@ -76,4 +76,14 @@ export class MaterialService {
     });
     return status ?? { material_id: materialId, user_id: userId, completed: false };
   }
+
+  async findByURL(url: string) {
+    const video = await this.materialRepo.findOne({
+      where: { link: url },
+    });
+    if (!video)
+      throw new NotFoundException(`Vídeo #${url} não encontrado`);
+
+    return video;
+  }
 }

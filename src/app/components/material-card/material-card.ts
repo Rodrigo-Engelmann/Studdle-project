@@ -18,6 +18,7 @@ export class MaterialCard {
   constructor(private router: Router) {}
 
   openMaterial(): void {
-    this.router.navigate(['/view/material']);
+    const url = 'view/material/'+this.material.link;
+    this.router.navigate([url]);
   }
 }

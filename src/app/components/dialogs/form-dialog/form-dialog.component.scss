@@ -1,3 +1,5 @@
+@import 'ckeditor5/ckeditor5.css';
+
 :host {
     display: block;
 }
@@ -198,6 +200,118 @@ mat-form-field {
 }
 
 .file-input-container mat-error {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.75rem;
+}
+
+
+// rich_text
+
+.rich-text-container {
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.rich-text-label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.rich-text-editor {
+    width: 100%;
+    background-color: var(--color-light_gray_1);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    // reseta qualquer coisa estranha que o tema padrão do CKEditor tente aplicar de tamanho
+    ::ng-deep .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+        background-color: var(--color-light_gray_1) !important;
+        padding: 4px 6px;
+        flex-wrap: wrap;
+    }
+
+    // tamanho normal dos botões (o "gigante" some com o CSS do passo 1,
+    // mas isso garante consistência visual)
+    ::ng-deep .ck.ck-button,
+    ::ng-deep a.ck.ck-button {
+        min-width: 28px;
+        min-height: 28px;
+        padding: 4px;
+    }
+
+    ::ng-deep .ck.ck-icon,
+    ::ng-deep .ck.ck-button .ck-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    ::ng-deep .ck.ck-toolbar-dropdown {
+        font-size: 0.875rem;
+    }
+
+    ::ng-deep .ck-editor__editable {
+        min-height: 400px;
+        max-height: 600px;
+        overflow-y: auto;
+        padding: 20px 24px !important;
+        background-color: white !important;
+        color: black !important;
+        font-size: 1rem;
+        line-height: 1.6;
+        box-shadow: none !important;
+    }
+
+    ::ng-deep .ck-editor__editable:focus {
+        box-shadow: none !important;
+    }
+
+    ::ng-deep .ck-placeholder::before {
+        color: rgba(0, 0, 0, 0.4) !important;
+    }
+
+    ::ng-deep .ck-content p {
+        margin: 0 0 12px;
+    }
+
+
+    ::ng-deep .ck-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+
+    ::ng-deep .ck-content a {
+        color: var(--color-primary);
+    }
+
+    ::ng-deep .ck-content ul,
+    ::ng-deep .ck-content ol {
+        padding-left: 28px;
+    }
+}
+
+.rich-text-editor:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary), 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.rich-text-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.rich-text-error {
     display: block;
     margin-top: 6px;
     font-size: 0.75rem;

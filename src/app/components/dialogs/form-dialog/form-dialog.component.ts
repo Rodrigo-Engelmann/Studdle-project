@@ -1,5 +1,5 @@
 // angular
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 import {
   AbstractControl
   , FormControl
@@ -18,6 +18,33 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+// ckeditor5 (biblioteca pra textos dos materiais didáticos)
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import {
+  ClassicEditor
+  , Essentials
+  , Paragraph
+  , Heading
+  , Bold
+  , Italic
+  , Underline
+  , Strikethrough
+  , Font
+  , Alignment
+  , List
+  , Link
+  , Table
+  , TableToolbar
+  , BlockQuote
+  , Image
+  , ImageToolbar
+  , ImageCaption
+  , ImageStyle
+  , ImageResize
+  , ImageUpload
+  , Base64UploadAdapter
+} from 'ckeditor5';
+
 // common
 import { DialogResultStatus, FieldType, FieldWidth } from '../../enums/dialog.enums';
 import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/dialog.models';
@@ -27,6 +54,7 @@ import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/di
   selector: 'app-form-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     ReactiveFormsModule
     , MatDialogModule
@@ -37,7 +65,8 @@ import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/di
     , MatRadioModule
     , MatButtonModule
     , MatIconModule
-],
+    , CKEditorModule
+  ],
   templateUrl: './form-dialog.component.html',
   styleUrls: ['./form-dialog.component.scss']
 })
@@ -49,9 +78,74 @@ export class FormDialogComponent {
   protected readonly FieldType = FieldType;
   protected readonly FieldWidth = FieldWidth;
 
+  // coisas do 'rich text'
+  public Editor = ClassicEditor;
+  public editorConfig = {
+    licenseKey: 'GPL',
+    plugins: [
+      Essentials,
+      Paragraph,
+      Heading,
+      Bold,
+      Italic,
+      Underline,
+      Strikethrough,
+      Font,
+      Alignment,
+      List,
+      Link,
+      Table,
+      TableToolbar,
+      BlockQuote,
+      Image,
+      ImageToolbar,
+      ImageCaption,
+      ImageStyle,
+      ImageResize,
+      ImageUpload,
+      Base64UploadAdapter
+    ],
+    image: {
+      toolbar: [
+        'imageStyle:inline',
+        'imageStyle:block',
+        'imageStyle:side',
+        '|',
+        'toggleImageCaption',
+        'imageTextAlternative',
+        '|',
+        'resizeImage'
+      ]
+    },
+    toolbar: [
+      'undo',
+      'redo',
+      '|',
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'underline',
+      'strikethrough',
+      '|',
+      'fontSize',
+      'fontColor',
+      'fontBackgroundColor',
+      '|',
+      'alignment',
+      '|',
+      'bulletedList',
+      'numberedList',
+      '|',
+      'link',
+      'insertTable',
+      'uploadImage',
+      'blockQuote'
+    ]
+  };
+
   private buildForm(): FormGroup {
     const controls: Record<string, FormControl> = {};
-
     for (const field of this.config.fields) {
       controls[field.key] = new FormControl(
         { value: this.initialValue(field), disabled: field.disabled ?? false },
@@ -116,7 +210,8 @@ export class FormDialogComponent {
   protected errorFor(field: FormFieldConfig): string {
     const control: AbstractControl | null = this.form.get(field.key);
     const errors: ValidationErrors | null = control?.errors ?? null;
-    if (!errors) return '';
+    if (!errors)
+      return '';
 
     const errorKey = Object.keys(errors)[0];
     return field.errorMessages?.[errorKey] ?? this.defaultMessage(errorKey, errors[errorKey], field);

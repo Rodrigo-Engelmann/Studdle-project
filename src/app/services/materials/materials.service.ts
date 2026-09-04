@@ -77,4 +77,9 @@ export class MaterialService {
     formData.append('main_image', file);
     return this.http.post(`${this.api}/upload`, formData);
   }
+
+  // GET BY URL
+  findByURL(url: string): Observable<Material> {
+    return this.http.get<Material>(`${this.api}/findByURL/${url}`)
+  }
 }

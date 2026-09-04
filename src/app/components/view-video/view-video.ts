@@ -1,12 +1,17 @@
+// Angular
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { UserService } from '../../services/users/users.service';
-import { VideoService } from '../../services/videos/videos.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+// Services
+import { UserService } from '../../services/users/users.service';
+import { VideoService } from '../../services/videos/videos.service';
+
+// Common
 import { video } from '../../../../common/video';
 
 @Component({
@@ -20,19 +25,20 @@ import { video } from '../../../../common/video';
   styleUrl: './view-video.scss',
 })
 export class ViewVideo implements OnInit {
+  @ViewChild('descriptionContainer')
+  descriptionContainer!: ElementRef<HTMLDivElement>;
+
+  embedUrl!: SafeResourceUrl;
+  videoData!: video;
+  descriptionExpanded = false;
+  profile_picture: any;
+
   constructor(private router: Router
             , private userService: UserService
             , private videoService: VideoService
             , private route: ActivatedRoute
             , private sanitizer: DomSanitizer
   ) {}
-
-  embedUrl!: SafeResourceUrl;
-  videoData!: video;
-  descriptionExpanded = false;
-
-  @ViewChild('descriptionContainer')
-  descriptionContainer!: ElementRef<HTMLDivElement>;
 
   // sistema de popup da profile-picture:
   Configuracoes() {
@@ -44,16 +50,12 @@ export class ViewVideo implements OnInit {
     console.log("Usuário clicou em Logout");
   }
 
-  
-  profile_picture: any;
-
   ngOnInit():void {
     this.route.paramMap.subscribe(params => {
       const videoUrl: string | null = params.get('videoUrl');
 
       if (videoUrl !== null)
         this.videoService.findByURL(videoUrl).subscribe((res: any)=>{
-          // this.embedUrl = res.link;
           this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
             `https://www.youtube.com/embed/${res.video_url}?controls=1`
           );
@@ -68,10 +70,8 @@ export class ViewVideo implements OnInit {
       },
       error: (err) => {
         console.error("Erro ao buscar perfil:", err);
-
-        if (err.status === 401) {
+        if (err.status === 401)
           this.router.navigate(['/login']);
-        }
       }
     });
   }

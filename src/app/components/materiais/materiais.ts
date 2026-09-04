@@ -58,7 +58,7 @@ export class Materiais implements OnInit {
         { key: 'main_image', label: 'Imagem principal', type: FieldType.FILE, required: true, width: FieldWidth.HALF },
         { key: 'title', label: 'Título', type: FieldType.TEXT, required: false, min: 1, max: 100 },
         { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: false, min: 50, max: 250 },
-        { key: 'main_content', label: 'Conteúdo', type: FieldType.TEXTAREA, required: false },
+        { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: false },
         { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: false }
       ],
     }).subscribe((res: any) => {
@@ -67,6 +67,7 @@ export class Materiais implements OnInit {
       .subscribe((uploadRes) => {
           // Agora temos o caminho da imagem
           data.main_image = uploadRes.path;
+          data.link = data.title.replaceAll(' ', '') + data.sequence;
 
           // Aqui você usa sua rota CREATE genérica normalmente
           this.materialService.create(data).subscribe((postRes: any) => {

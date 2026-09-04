@@ -2,9 +2,8 @@
     @if (materials.length) {
         <div id="container-material">
             @for(material of materials; track material.title) {
-                <app-mat-card
-                    [material]="material"
-                ></app-mat-card>
+                <app-mat-card [material]="material">
+                </app-mat-card>
             }
         </div>
     } @else {

@@ -54,4 +54,9 @@ export class MaterialController extends BaseController<Material> {
       path: `/uploads/materials/${file.filename}`,
     };
   }
+
+  @Get('findByURL/:url')
+  findByURL(@Param('url') url: string) {
+    return this.materialService.findByURL(url);
+  }
 }

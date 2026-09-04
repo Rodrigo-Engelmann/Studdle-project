@@ -23,31 +23,20 @@
 
 <main>
     <div class="container-info">
-        <img class="main-image" src="assets/images/wide-placeholder.png" alt="">
-        <p class="image-origen">
-            origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem 
-            origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem origem da imagem
-        </p>
+        <img class="main-image" [src]="materialData.main_image ? 'http://localhost:3000'+materialData.main_image : 'assets/images/wide-placeholder.png'" alt="">
 
         <h1>
-            Título do material didático. Título do material didático. Título do material didático
+            {{ materialData.title }}
         </h1>
 
         <div class="abstract">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                quis nostrud exercitation ullamco laboris nisi ut aliquip exLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip exLorem ipsum dolor sit amet, 
-                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+                {{ materialData.summary }}
             </p>
         </div>
 
         <div class="main-content-container">
-            <p class="main-content">
-                Conteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo 
-                da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaConteúdo da páginaC
-                onteúdo da página
-            </p>
+            <div class="main-content" [innerHTML]="materialData.main_content"></div>
         </div>
     </div>
 

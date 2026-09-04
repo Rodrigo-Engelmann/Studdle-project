@@ -1,21 +1,38 @@
+// Angular
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
+
+// Services
 import { UserService } from '../../services/users/users.service';
+import { MaterialService } from '../../services/materials/materials.service';
+
+// Common
+import { material } from '../../../../common/material';
 
 @Component({
   selector: 'app-view-material',
-  imports: [MatIconModule,MatMenuModule,MatButtonModule],
+  imports: [
+    MatIconModule
+    , MatMenuModule
+    , MatButtonModule
+  ],
   templateUrl: './view-material.html',
   styleUrl: './view-material.scss',
 })
 export class ViewMaterial {
-  constructor(private router: Router,private userService: UserService) {}
+  constructor( private router: Router
+             , private userService: UserService
+             , private route: ActivatedRoute
+             , private materialService: MaterialService
+  ) {}
 
   search_header: HTMLElement | null = null;
   profile_picture: any;
+  materialData!: material;
 
   ngAfterViewInit() {
     this.search_header = document.getElementsByClassName("search-header")[0] as HTMLElement;
@@ -24,7 +41,6 @@ export class ViewMaterial {
 
     const header = document.querySelector('app-tab-header') as HTMLElement;
     if (header) {
-      // header.style.height = '100%';
       header.style.width = '100%';
       header.style.display = 'block';
     }
@@ -36,6 +52,17 @@ export class ViewMaterial {
   }
 
   ngOnInit():void {
+    this.route.paramMap.subscribe(params => {
+      const materialUrl: string | null = params.get('materialUrl');
+      
+      if (materialUrl !== null)
+        this.materialService.findByURL(materialUrl).subscribe((res: any)=>{
+          console.log("materialUrl: ", materialUrl)
+          this.materialData = res;
+          console.log("this.materialData: ", this.materialData)
+        })
+    });
+
     this.userService.getProfile().subscribe({
       next: (res) => {
         if (res.user.profile_picture !== null)
