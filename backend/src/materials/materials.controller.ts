@@ -25,10 +25,7 @@ export class MaterialController extends BaseController<Material> {
 
   // Marca o material como concluído para um usuário
   @Post(':id/complete')
-  markComplete(
-    @Param('id', ParseIntPipe) id: number,
-    @Body('user_id', ParseIntPipe) userId: number,
-  ) {
+  markComplete(@Param('id', ParseIntPipe) id: number, @Body('user_id', ParseIntPipe) userId: number) {
     return this.materialService.markComplete(id, userId);
   }
 
@@ -42,12 +39,8 @@ export class MaterialController extends BaseController<Material> {
   }
 
   @Post('upload')
-  @UseInterceptors(
-    ImageUploadInterceptor('main_image', 'materials')
-  )
-  uploadImage(
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  @UseInterceptors(ImageUploadInterceptor('main_image', 'materials'))
+  uploadImage( @UploadedFile() file: Express.Multer.File ) {
     return {
       filename: file.filename,
       originalName: file.originalname,

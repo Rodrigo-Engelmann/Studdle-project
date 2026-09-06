@@ -8,4 +8,24 @@
         <p>{{material.summary}}</p>
         <p class="mat-tags">{{material.tags}}</p>
     </div>
+        <!-- menu btn -->
+        <button class="video-menu-btn" matButton
+        [matMenuTriggerFor]="menu"
+        (click)="$event.stopPropagation()">
+            <mat-icon>
+                more_vert
+            </mat-icon>
+        </button>
 </article>
+
+<!-- video adm menu -->
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="settingsSelect()">
+        <mat-icon>settings</mat-icon>
+        <span>Configurações</span>
+    </button>
+    <button mat-menu-item (click)="deleteSelect()">
+        <mat-icon>delete</mat-icon>
+        <span>Deletar</span>
+    </button>
+</mat-menu>

@@ -56,8 +56,8 @@ export class Materiais implements OnInit {
       size: DialogSize.LARGE,
       fields: [
         { key: 'main_image', label: 'Imagem principal', type: FieldType.FILE, required: true, width: FieldWidth.HALF },
-        { key: 'title', label: 'Título', type: FieldType.TEXT, required: false, min: 1, max: 100 },
-        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: false, min: 50, max: 250 },
+        { key: 'title', label: 'Título', type: FieldType.TEXT, required: false },
+        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: false },
         { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: false },
         { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: false }
       ],
@@ -65,16 +65,26 @@ export class Materiais implements OnInit {
       const data = res.data;
       this.materialService.uploadImage(data.main_image)
       .subscribe((uploadRes) => {
-          // Agora temos o caminho da imagem
-          data.main_image = uploadRes.path;
-          data.link = data.title.replaceAll(' ', '') + data.sequence;
+        // Agora temos o caminho da imagem
+        data.main_image = uploadRes.path;
+        data.link = data.title.replaceAll(' ', '') + data.sequence;
 
-          // Aqui você usa sua rota CREATE genérica normalmente
-          this.materialService.create(data).subscribe((postRes: any) => {
-              this.materials.push(postRes);
-            });
-        });
+        // Aqui você usa sua rota CREATE genérica normalmente
+        this.materialService.create(data).subscribe((postRes: any) => {
+            this.materials.push(postRes);
+          });
+      });
     });
+  }
+
+  updateSingular(event: any): void {
+    const index: number = this.materials.findIndex((v)=>v.id===event.id)
+    if (event.deletedVideo) {
+      this.materials.splice(index,1);
+      return;
+    }
+
+    this.materials[index] = event;
   }
 }
 

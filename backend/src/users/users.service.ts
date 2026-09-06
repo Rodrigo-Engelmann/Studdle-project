@@ -138,16 +138,12 @@ export class UserService {
     return this.findById(id);
   }
 
-  async updateUser(
-    id: number,
-    data: Partial<UpdateUserDto>,
-    file?: Express.Multer.File
-  ) {
+  async updateUser(id: number, data: Partial<UpdateUserDto>, file?: Express.Multer.File) {
     // Usando o repositório correto
     const user = await this.userRepo.findOne({ where: { id } });
 
     if (!user)
-        throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('Usuário não encontrado');
 
     // Atualizar campos se existirem
     if (data.name) 
@@ -158,7 +154,7 @@ export class UserService {
 
     // Atualiza foto
     if (file)
-        user.profile_picture = `/uploads/profile/${file.filename}`;
+      user.profile_picture = `/uploads/profile/${file.filename}`;
 
     // atualiza a opção de colorblindness
     if (data.colorblindness !== undefined)
@@ -173,11 +169,7 @@ export class UserService {
     return { message: 'Conta deletada com sucesso' };
   }
 
-  async changePassword(
-    userId: number,
-    currentPassword: string,
-    newPassword: string,
-  ) {
+  async changePassword(userId: number, currentPassword: string, newPassword: string) {
     const user = await this.userRepo.findOne({
       where: { id: userId },
     });

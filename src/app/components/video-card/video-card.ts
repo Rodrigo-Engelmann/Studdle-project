@@ -58,7 +58,7 @@ export class VideoCard implements OnChanges {
   //#region: update
   settingsSelect() {
     this.dialogService.openForm<any>({
-      title: 'Criar vídeo',
+      title: 'Atualizar vídeo',
       model: {link: this.video.link, sequence: this.video.sequence},
       size: DialogSize.LARGE,
       fields: [

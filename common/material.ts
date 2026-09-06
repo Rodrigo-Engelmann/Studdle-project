@@ -10,6 +10,8 @@ export class material {
     createdDate: string;
     last_update: string;
 
+    deletedMaterial?: boolean;
+
     constructor() {
         this.id = -1;
         this.main_image = '';
@@ -21,6 +23,8 @@ export class material {
         this.link = '';
         this.createdDate = '';
         this.last_update = '';
+
+        this.deletedMaterial = false;
     }
 }
 
