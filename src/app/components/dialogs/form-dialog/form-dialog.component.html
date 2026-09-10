@@ -33,6 +33,12 @@
                             @if (field.hint) 
                                 { <mat-hint>{{ field.hint }}</mat-hint> }
 
+                            @if (field.maxLength != null) {
+                                <mat-hint align="end">
+                                    {{ characterCount(field.key) }}/{{ field.maxLength }}
+                                </mat-hint>
+                            }
+
                             <mat-error>{{ errorFor(field) }}</mat-error>
                         </mat-form-field>
                     }
@@ -212,11 +218,18 @@
                             matInput
                             [type]="field.type"
                             [formControlName]="field.key"
-                            [placeholder]="field.placeholder ?? ''"/>
+                            [placeholder]="field.placeholder ?? ''"
+                            [attr.maxlength]="field.maxLength ?? null"/>
 
                             @if (field.hint) {
                                 <mat-hint>
                                     {{ field.hint }}
+                                </mat-hint>
+                            }
+
+                            @if (field.maxLength != null) {
+                                <mat-hint align="end">
+                                    {{ characterCount(field.key) }}/{{ field.maxLength }}
                                 </mat-hint>
                             }
                             <mat-error>{{ errorFor(field) }}</mat-error>
@@ -234,8 +247,12 @@
         {{ config.cancelLabel ?? 'Cancelar' }}
     </button>
 
-    <button mat-flat-button color="primary" 
-    type="button" (click)="confirm()">
+    <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    [disabled]="form.invalid"
+    (click)="confirm()">
         {{ config.confirmLabel ?? 'Salvar' }}
     </button>
 </mat-dialog-actions>

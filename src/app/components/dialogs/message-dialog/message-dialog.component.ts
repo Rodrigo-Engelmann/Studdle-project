@@ -16,8 +16,7 @@ import { DialogResult, MessageDialogConfig } from '../../models/dialog.models';
 export class MessageDialogComponent {
   protected readonly config: MessageDialogConfig = inject(MAT_DIALOG_DATA);
 
-  private readonly dialogRef =
-    inject<MatDialogRef<MessageDialogComponent, DialogResult<void>>>(MatDialogRef);
+  private readonly dialogRef = inject<MatDialogRef<MessageDialogComponent, DialogResult<void>>>(MatDialogRef);
 
   protected get variant(): DialogVariant {
     return this.config.variant ?? DialogVariant.INFO;

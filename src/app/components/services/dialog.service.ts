@@ -6,14 +6,13 @@ import { FormDialogComponent } from '../dialogs/form-dialog/form-dialog.componen
 import { MessageDialogComponent } from '../dialogs/message-dialog/message-dialog.component';
 import { DialogResultStatus, DialogSize, DialogVariant } from '../enums/dialog.enums';
 import {
-  DialogResult,
-  FormDialogConfig,
-  FormFieldConfig,
-  MessageDialogConfig,
+  DialogResult
+  , FormDialogConfig
+  , FormFieldConfig
+  , MessageDialogConfig
 } from '../models/dialog.models';
 import { inferFields } from '../utils/field-inference.util';
 
-/** Resultado usado quando o dialog é fechado por fora (ESC, clique no backdrop). */
 const CANCELLED: DialogResult<never> = {
   status: DialogResultStatus.CANCELLED,
   confirmed: false,
@@ -24,15 +23,7 @@ export class DialogService {
   private readonly dialog = inject(MatDialog);
 
   //#region Formulário
-
-  /**
-   * Abre o formulário genérico.
-   *
-   * @typeParam T formato do objeto devolvido em `result.data`
-   */
-  openForm<T extends Record<string, unknown>>(
-    config: FormDialogConfig<T>,
-  ): Observable<DialogResult<T>> {
+  openForm<T extends Record<string, unknown>>(config: FormDialogConfig<T>): Observable<DialogResult<T>> {
     return this.dialog
       .open<FormDialogComponent, FormDialogConfig<T>, DialogResult<T>>(FormDialogComponent, {
         data: config,
@@ -48,15 +39,11 @@ export class DialogService {
       .pipe(map((result) => result ?? (CANCELLED as DialogResult<T>)));
   }
 
-  /**
-   * Atalho: monta os campos a partir de um objeto e já abre o formulário.
-   * Ideal para CRUDs simples e protótipos.
-   */
   openFormFromModel<T extends Record<string, unknown>>(
     title: string,
     model: T,
     overrides: Record<string, Partial<FormFieldConfig>> = {},
-    extra: Partial<Omit<FormDialogConfig<T>, 'title' | 'fields' | 'model'>> = {},
+    extra: Partial<Omit<FormDialogConfig<T>, 'title' | 'fields' | 'model'>> = {}
   ): Observable<DialogResult<T>> {
     return this.openForm<T>({
       title,
@@ -86,12 +73,7 @@ export class DialogService {
       .pipe(map((result) => result ?? CANCELLED));
   }
 
-  /** Confirmação - emite `true` só quando o usuário clica no botão principal. */
-  confirm(
-    title: string,
-    message: string,
-    options: Partial<Omit<MessageDialogConfig, 'title' | 'message'>> = {},
-  ): Observable<boolean> {
+  confirm(title: string, message: string, options: Partial<Omit<MessageDialogConfig, 'title' | 'message'>> = {}): Observable<boolean> {
     return this.openMessage({
       title,
       message,

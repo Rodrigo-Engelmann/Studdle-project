@@ -54,7 +54,7 @@ export class Videos implements OnInit {
       size: DialogSize.LARGE,
       fields: [
         { key: 'link', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF },
-        { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: false }
+        { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe(async (res: any) => {
       const formData = res.data;

@@ -1,0 +1,51 @@
+<section class="rank-desktop" aria-label="Progresso do aluno">
+  <div class="metrics">
+    <article class="circle-progress" [style.--progress]="studyProgress + '%'">
+      <div class="circle-progress__content">
+        <strong>{{ studyCompleted }}/{{ totalContents }}</strong>
+        <span>conteúdos a estudar</span>
+      </div>
+    </article>
+
+    <article class="circle-progress" [style.--progress]="practiceProgress + '%'">
+      <div class="circle-progress__content">
+        <strong>{{ practiceCompleted }}/{{ totalContents }}</strong>
+        <span>conteúdos a praticar</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="rank">
+    <p>{{ rankName }}</p>
+    <img [src]="rankImageUrl" [alt]="'Imagem do rank ' + rankName" />
+  </div>
+
+  <div class="linear-progress" aria-label="Progresso geral">
+    
+    <div class="linear-progress__track"
+    role="progressbar"
+    aria-label="Progresso geral"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.aria-valuenow]="linearProgress">
+      @if (linearProgress < 4) {
+        <span class="label_percentage-outside">{{ linearProgress }}%</span>
+      }
+      <div class="linear-progress__value"
+      [style.width.%]="linearProgress >= 99.75 ? 99.75 : linearProgress" [style.borderRadius]="linearProgress > 7 ? '999px' : '90px 0 0 90px'">
+        <div class="linear-progress__label"
+        [style.left.%]="linearProgress">
+          @if (linearProgress >= 4) {
+            <span class="label_percentage">{{ linearProgress }}%</span>
+            
+            @if (linearProgress >= 8) {
+              <mat-icon aria-hidden="true">
+                account_circle
+              </mat-icon>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

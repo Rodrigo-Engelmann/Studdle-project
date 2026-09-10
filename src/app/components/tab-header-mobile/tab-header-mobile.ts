@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 // ionic framework
 import { addIcons } from 'ionicons';
 import { IonHeader, IonToolbar, IonContent, IonFooter, IonTabButton, IonIcon, IonInput, IonSelectOption, IonSelect, IonButton } from '@ionic/angular/standalone';
-import { homeOutline, playCircleOutline, documentTextOutline, hardwareChipOutline, downloadOutline, filterOutline, searchOutline, cogOutline, logOutOutline } from 'ionicons/icons';
+import { homeOutline, playCircleOutline, documentTextOutline, hardwareChipOutline, downloadOutline, filterOutline, searchOutline, cogOutline, logOutOutline, personOutline } from 'ionicons/icons';
 
 // outro
 import { filter } from 'rxjs';
@@ -20,24 +20,24 @@ import { UserService } from '../../services/users/users.service';
     selector: 'app-tab-header-mobile',
     standalone: true,
     imports: [
-        CommonModule,
-        RouterOutlet,
-        MatIconModule,
+        CommonModule
+        , RouterOutlet
+        , MatIconModule
 
-        IonHeader,
-        IonToolbar,
-        IonContent,
-        IonFooter,
-        IonTabButton,
-        IonIcon,
-        IonInput,
-        FormsModule,
-        IonSelectOption,
-        IonSelect,
-        IonButton,
+        , IonHeader
+        , IonToolbar
+        , IonContent
+        , IonFooter
+        , IonTabButton
+        , IonIcon
+        , IonInput
+        , FormsModule
+        , IonSelectOption
+        , IonSelect
+        , IonButton
 
-        MatMenuModule,
-        MatButtonModule
+        , MatMenuModule
+        , MatButtonModule
     ],
     templateUrl: './tab-header-mobile.html',
     styleUrl: './tab-header-mobile.scss',
@@ -56,6 +56,7 @@ export class TabHeaderMobile implements OnInit {
         , 'videos'
         , 'materiais'
         , 'engine'
+        , 'progression'
     ];
 
     // filtros
@@ -80,6 +81,7 @@ export class TabHeaderMobile implements OnInit {
         , {page: 'videos', hasFilterOptions: true, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
         , {page: 'materiais', hasFilterOptions: true, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
         , {page: 'engine', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
+        , {page: 'progression', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
     ];
 
     constructor(
@@ -96,6 +98,7 @@ export class TabHeaderMobile implements OnInit {
             , searchOutline
             , cogOutline
             , logOutOutline
+            , personOutline
         });
 
         this.router.events
@@ -128,6 +131,7 @@ export class TabHeaderMobile implements OnInit {
     go(index:number) {
         this.resetFilterComponent(index);
 
+        console.log("this.routes[index]: ", this.routes[index])
         this.selectedIndex = index;
         this.router.navigate([
             '/',

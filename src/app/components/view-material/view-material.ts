@@ -24,15 +24,15 @@ import { material } from '../../../../common/material';
   styleUrl: './view-material.scss',
 })
 export class ViewMaterial {
+  search_header: HTMLElement | null = null;
+  profile_picture: any;
+  materialData!: material;
+
   constructor( private router: Router
              , private userService: UserService
              , private route: ActivatedRoute
              , private materialService: MaterialService
   ) {}
-
-  search_header: HTMLElement | null = null;
-  profile_picture: any;
-  materialData!: material;
 
   ngAfterViewInit() {
     this.search_header = document.getElementsByClassName("search-header")[0] as HTMLElement;
@@ -71,9 +71,8 @@ export class ViewMaterial {
       error: (err) => {
         console.error("Erro ao buscar perfil:", err);
 
-        if (err.status === 401) {
+        if (err.status === 401)
           this.router.navigate(['/login']);
-        }
       }
     });
   }
@@ -87,5 +86,4 @@ export class ViewMaterial {
   Logout() {
     console.log("Usuário clicou em Logout");
   }
-  
 }

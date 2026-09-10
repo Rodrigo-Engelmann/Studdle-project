@@ -92,30 +92,32 @@
     <nav class="bottom-nav">
         <ion-tab-button
         (click)="go(0)"
-        [class.active]="selectedIndex == 0">
+        [class.active]="selectedIndex === 0">
             <ion-icon name="home-outline"></ion-icon>
-
         </ion-tab-button>
 
         <ion-tab-button
         (click)="go(1)"
-        [class.active]="selectedIndex==1">
+        [class.active]="selectedIndex === 1">
             <ion-icon name="play-circle-outline"></ion-icon>
-
         </ion-tab-button>
 
         <ion-tab-button
         (click)="go(2)"
-        [class.active]="selectedIndex==2">
+        [class.active]="selectedIndex === 2">
             <ion-icon name="document-text-outline"></ion-icon>
-
         </ion-tab-button>
 
         <ion-tab-button
         (click)="go(3)"
-        [class.active]="selectedIndex==3">
+        [class.active]="selectedIndex === 3">
             <ion-icon name="download-outline"></ion-icon>
-            
+        </ion-tab-button>
+
+        <ion-tab-button
+        (click)="go(4)"
+        [class.active]="selectedIndex === 4">
+            <ion-icon name="person-outline"></ion-icon>
         </ion-tab-button>
     </nav>
 </ion-footer>

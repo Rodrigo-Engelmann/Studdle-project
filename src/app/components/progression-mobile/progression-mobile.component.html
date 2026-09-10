@@ -1,0 +1,20 @@
+<section class="rank-mobile" aria-label="Progresso do aluno">
+  <div class="rank">
+    <p>{{ rankName }}</p>
+    <img [src]="rankImageUrl" [alt]="'Imagem ilustrativa do rank ' + rankName" />
+  </div>
+
+  <div class="linear-progress" aria-label="Progresso geral">
+    <ion-progress-bar [value]="linearProgress / 100" />
+    <span>{{ linearProgress }}% <ion-icon [icon]="personCircle" aria-hidden="true" /></span>
+  </div>
+
+  <div class="metrics">
+    <article class="circle-progress" [style.--progress]="studyProgress + '%'">
+      <div class="circle-progress__content"><strong>{{ studyCompleted }}/{{ totalContents }}</strong><span>conteúdos a estudar</span></div>
+    </article>
+    <article class="circle-progress" [style.--progress]="practiceProgress + '%'">
+      <div class="circle-progress__content"><strong>{{ practiceCompleted }}/{{ totalContents }}</strong><span>conteúdos a praticar</span></div>
+    </article>
+  </div>
+</section>

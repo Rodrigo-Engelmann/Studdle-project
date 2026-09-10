@@ -46,7 +46,8 @@ export class TabHeader implements OnInit {
     'recomendacoes',
     'videos',
     'materiais',
-    'engine'
+    'engine',
+    'progression'
   ];
 
   // filtros
@@ -74,7 +75,8 @@ export class TabHeader implements OnInit {
     { page: 'recomendacoes', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null },
     { page: 'videos', hasFilterOptions: true, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null },
     { page: 'materiais', hasFilterOptions: true, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null },
-    { page: 'engine', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null }
+    { page: 'engine', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null },
+    { page: 'progression', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null }
   ];
 
   search_header: HTMLElement | null = null;
@@ -99,6 +101,9 @@ export class TabHeader implements OnInit {
           break;
       case '/engine':
           this.selectedIndex = 3;
+          break;
+      case '/progression':
+          this.selectedIndex = 4;
           break;
       default:
           this.selectedIndex = 0;

@@ -1,7 +1,14 @@
+:host{
+    display: block;
+    height: 100%;
+}
+
 .header-page{
     display: flex;
     flex-direction: column;
-    justify-content:space-evenly;
+    justify-content:start;
+
+    height: 100%;
 }
 
 .mobile-headerpage{

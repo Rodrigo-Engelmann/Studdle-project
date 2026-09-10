@@ -4,18 +4,29 @@
     [alt]="material.title">
 
     <div class="mat-info">
-        <h2>{{material.title}}</h2>
-        <p>{{material.summary}}</p>
-        <p class="mat-tags">{{material.tags}}</p>
+        <h2>
+            {{material.title}}
+        </h2>
+
+        <div class="summary-container">
+            <p [style.width]="privilege === 1 ? '85% !important' : '100%'">
+                {{ material.summary }}
+            </p>
+
+            <!-- menu btn -->
+            <button class="material-menu-btn" matButton
+            [matMenuTriggerFor]="menu"
+            (click)="$event.stopPropagation()">
+                <mat-icon>
+                    more_vert
+                </mat-icon>
+            </button>
+        </div>
+
+        <p class="mat-tags">
+            {{ material.tags }}
+        </p>
     </div>
-        <!-- menu btn -->
-        <button class="video-menu-btn" matButton
-        [matMenuTriggerFor]="menu"
-        (click)="$event.stopPropagation()">
-            <mat-icon>
-                more_vert
-            </mat-icon>
-        </button>
 </article>
 
 <!-- video adm menu -->

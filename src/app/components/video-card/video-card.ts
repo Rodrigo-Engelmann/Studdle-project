@@ -27,7 +27,6 @@ import { firstValueFrom } from 'rxjs';
 
 export class VideoCard implements OnChanges {
   @Input() video: video = new video;
-
   @Output() updateData = new EventEmitter<video>();
 
   videoPrefix: string = 'https://www.youtube.com/watch?v=';
@@ -47,7 +46,6 @@ export class VideoCard implements OnChanges {
     this.router.navigate([`/video/watch/${this.video.video_url}`]);
   }
 
-
   async getYTdata(videoUrl: string): Promise<object> {
     const ytData = await firstValueFrom(
       this.videoService.getYTvideoData(videoUrl)
@@ -62,12 +60,11 @@ export class VideoCard implements OnChanges {
       model: {link: this.video.link, sequence: this.video.sequence},
       size: DialogSize.LARGE,
       fields: [
-        { key: 'link', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF },
-        { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: false }
+        { key: 'link', label: 'URL do vídeo do Youtube', type: FieldType.URL, required: true, width: FieldWidth.HALF, maxLength: 500 },
+        { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe(async (res: any) => {
       const formdata = res.data;
-
       const URL = formdata.link.replace(this.videoPrefix,'');
       formdata.video_url = URL;
 
@@ -85,11 +82,12 @@ export class VideoCard implements OnChanges {
   }
   //#endregion
   
-  
-  
-  
   //#region: delete
   deleteSelect() {
+    const confirmDelete = confirm('Tem certeza que deseja excluir este conteúdo?');
+    if (!confirmDelete)
+      return;
+
     this.videoService.delete(this.video.id).subscribe((res: any) => {
       if (res.deleted) {
         this.video.deletedVideo = true;

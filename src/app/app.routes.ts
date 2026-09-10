@@ -5,6 +5,7 @@ import { Recomendacoes } from './components/recomendacoes/recomendacoes';
 import { Videos } from './components/videos/videos';
 import { Materiais } from './components/materiais/materiais';
 import { Engine } from './components/engine/engine';
+import { Progression } from './components/progression/progression.component';
 
 import { TabHeaderLayoutComponent } from './components/header_layout/header_layout.component'
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
             { path: 'videos', component: Videos },
             { path: 'materiais', component: Materiais },
             { path: 'engine', component: Engine },
+            { path: 'progression', component: Progression },
             { path: '', redirectTo: 'recomendacoes', pathMatch: 'full' }
         ]
     },

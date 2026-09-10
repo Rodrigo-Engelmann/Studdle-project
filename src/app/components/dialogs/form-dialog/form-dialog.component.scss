@@ -72,6 +72,32 @@ mat-form-field {
     border-radius: 4px;
 }
 
+::ng-deep .input-container.mat-mdc-form-field {
+    --mdc-outlined-text-field-outline-color: var(--color-gray-0);
+    --mdc-outlined-text-field-hover-outline-color: var(--color-gray-1);
+    --mdc-outlined-text-field-focus-outline-color: var(--color-purple2);
+    --mdc-outlined-text-field-focus-label-text-color: var(--color-purple2);
+    --mdc-outlined-text-field-error-outline-color: var(--color-warning);
+}
+
+.input-container .mdc-notched-outline__leading,
+.input-container .mdc-notched-outline__notch,
+.input-container .mdc-notched-outline__trailing {
+    border-color: var(--color-gray-0) !important;
+}
+
+.input-container.mat-focused .mdc-notched-outline__leading,
+.input-container.mat-focused .mdc-notched-outline__notch,
+.input-container.mat-focused .mdc-notched-outline__trailing {
+    border-color: var(--color-purple2) !important;
+}
+
+.input-container.mat-form-field-invalid .mdc-notched-outline__leading,
+.input-container.mat-form-field-invalid .mdc-notched-outline__notch,
+.input-container.mat-form-field-invalid .mdc-notched-outline__trailing {
+    border-color: var(--color-warning) !important;
+}
+
 .mat-mdc-form-field.mat-form-field-animations-enabled .mdc-text-field__input {
     color: black !important;
 }
@@ -207,7 +233,6 @@ mat-form-field {
 
 
 // rich_text
-
 .rich-text-container {
     width: 100%;
     margin-top: 16px;

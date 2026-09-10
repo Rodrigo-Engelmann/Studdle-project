@@ -77,6 +77,10 @@ export class FormDialogComponent {
   protected readonly form: FormGroup = this.buildForm();
   protected readonly FieldType = FieldType;
   protected readonly FieldWidth = FieldWidth;
+  protected characterCount(fieldKey: string): number {
+    const value = this.form.get(fieldKey)?.value;
+    return typeof value === 'string' ? value.length : 0;
+  }
 
   // coisas do 'rich text'
   public Editor = ClassicEditor;
@@ -177,8 +181,15 @@ export class FormDialogComponent {
   private buildValidators(field: FormFieldConfig): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
 
-    if (field.required)
-      validators.push(field.type === FieldType.CHECKBOX ? Validators.requiredTrue : Validators.required);
+    if (field.required) {
+      validators.push(
+        field.type === FieldType.CHECKBOX
+          ? Validators.requiredTrue
+          : field.type === FieldType.RICH_TEXT
+            ? this.richTextRequired()
+            : Validators.required,
+      );
+    }
 
     if (field.minLength != null) 
       validators.push(Validators.minLength(field.minLength));
@@ -205,6 +216,23 @@ export class FormDialogComponent {
       validators.push(...field.validators);
 
     return validators;
+  }
+
+  // sistema pra verificar a ausência de informação dentro do rich_text
+  private richTextRequired(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const html = String(control.value ?? '');
+
+      const text = html
+        .replace(/<[^>]*>/g, '')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\u00A0/g, ' ')
+        .trim();
+
+      const hasMedia = /<(img|video|audio|iframe|embed|table)\b/i.test(html);
+
+      return text || hasMedia ? null : { required: true };
+    };
   }
 
   protected errorFor(field: FormFieldConfig): string {

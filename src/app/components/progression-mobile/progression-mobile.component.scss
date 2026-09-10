@@ -1,0 +1,116 @@
+:host {
+    display: block;
+}
+
+.rank-mobile {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 8px 16px;
+    color: var(--color-white);
+    background: linear-gradient( 180deg, var(--color-dark_gray-1) 62%, #a8783f 100% );
+}
+
+.rank {
+    text-align: center;
+    p {
+        margin: 0 0 18px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    img {
+        width: min(70vw, 340px);
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 50%;
+        // box-shadow: 0 0 28px #e3a348;
+    }
+}
+
+.linear-progress {
+    position: relative;
+    width: 90%;
+    margin: 70px 0 30px;
+    ion-progress-bar {
+        height: 32px;
+        --background: transparent;
+        --progress-background: var(--color-purple2);
+        border: 1px solid var(--color-purple2);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    span {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: var(--color-white);
+        text-shadow:
+            1px 0 black,
+            -1px 0 black,
+            0 1px black,
+            0 -1px black;
+
+        font-size: 20px;
+        font-weight: 800;
+        margin-right: 26px;
+    }
+
+    ion-icon {
+        margin-left: 3px;
+        color: var(--color-white);
+        background: var(--color-black);
+        border-radius: 50%;
+        font-size: 20px;
+    }
+}
+
+.metrics {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    gap: 18px;
+}
+
+.circle-progress {
+    --progress: 0%;
+    position: relative;
+    width: min(37vw, 150px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--color-purple2) var(--progress),
+        var(--color-purple1) 0);
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 5px;
+        border-radius: inherit;
+        background: var(--color-dark-gray-5);
+    }
+
+    &__content {
+        z-index: 1;
+        text-align: center;
+        line-height: 1.08;
+        strong {
+            display: block;
+            font-size: 18px;
+        }
+
+        span {
+            display: block;
+            max-width: 112px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+    }
+}

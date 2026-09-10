@@ -1,0 +1,12 @@
+@if(isMobile) {
+  <app-progression-mobile class="progression-components">
+  </app-progression-mobile>
+} @else {
+  <app-progression-desktop class="progression-components">
+  </app-progression-desktop>
+}
+
+<div class="add-btn"
+(click)="openTaskManager()">
+  <mat-icon> list_alt </mat-icon>
+</div>

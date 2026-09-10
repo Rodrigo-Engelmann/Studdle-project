@@ -1,0 +1,98 @@
+<h2 mat-dialog-title class="dialog-title">
+  <span>Ranks</span>
+  <button mat-stroked-button color="primary" (click)="onAddRootRank()">
+    <mat-icon>add</mat-icon>
+    Adicionar rank
+  </button>
+</h2>
+
+<mat-dialog-content class="tree-content">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <!-- Rank ou task: podem ganhar filhos, então o menu inclui "adicionar" -->
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: isContainer"
+      matTreeNodePadding
+      class="tree-node"
+      [class.menu-open]="menuOpenNode === node"
+    >
+      <button
+        *ngIf="node.expandable; else spacer"
+        mat-icon-button
+        matTreeNodeToggle
+        [attr.aria-label]="'Expandir ' + node.name"
+      >
+        <mat-icon>{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+      </button>
+      <ng-template #spacer><span class="node-toggle-spacer"></span></ng-template>
+
+      <mat-icon class="node-icon">{{ nodeIcon[node.type] }}</mat-icon>
+      <span class="node-name">{{ node.name }}</span>
+
+      <span class="node-actions">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          (menuOpened)="menuOpenNode = node"
+          (menuClosed)="menuOpenNode = null"
+          [attr.aria-label]="'Ações para ' + node.name"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </span>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onAdd(node.original)">
+          <mat-icon>add</mat-icon>
+          <span>Nova {{ node.type === 'rank' ? 'tarefa' : 'quiz' }}</span>
+        </button>
+        <button mat-menu-item (click)="onEdit(node.original)">
+          <mat-icon>edit</mat-icon>
+          <span>Editar</span>
+        </button>
+        <button mat-menu-item (click)="onDelete(node.original)">
+          <mat-icon>delete</mat-icon>
+          <span>Excluir</span>
+        </button>
+      </mat-menu>
+    </mat-tree-node>
+
+    <!-- Quiz: nó folha, sem opção de adicionar filhos -->
+    <mat-tree-node
+      *matTreeNodeDef="let node"
+      matTreeNodePadding
+      class="tree-node"
+      [class.menu-open]="menuOpenNode === node"
+    >
+      <span class="node-toggle-spacer"></span>
+      <mat-icon class="node-icon">{{ nodeIcon[node.type] }}</mat-icon>
+      <span class="node-name">{{ node.name }}</span>
+
+      <span class="node-actions">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          (menuOpened)="menuOpenNode = node"
+          (menuClosed)="menuOpenNode = null"
+          [attr.aria-label]="'Ações para ' + node.name"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </span>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onEdit(node.original)">
+          <mat-icon>edit</mat-icon>
+          <span>Editar</span>
+        </button>
+        <button mat-menu-item (click)="onDelete(node.original)">
+          <mat-icon>delete</mat-icon>
+          <span>Excluir</span>
+        </button>
+      </mat-menu>
+    </mat-tree-node>
+  </mat-tree>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

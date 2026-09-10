@@ -27,6 +27,8 @@ import { material } from '../../../../common/material';
 export class MaterialCard {
   @Output() updateData = new EventEmitter<any>();
   @Input() material!: material;
+  
+  privilege: number = 1;
 
   constructor(private dialogService: DialogService
             , private materialService: MaterialService
@@ -52,10 +54,10 @@ export class MaterialCard {
       },
       fields: [
         { key: 'main_image', label: 'Imagem principal', type: FieldType.FILE, required: true, width: FieldWidth.HALF },
-        { key: 'title', label: 'Título', type: FieldType.TEXT, required: false },
-        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: false },
-        { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: false },
-        { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: false }
+        { key: 'title', label: 'Título', type: FieldType.TEXT, required: true, maxLength: 100  },
+        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: true, maxLength: 250  },
+        { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: true },
+        { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe((res: any) => {
       const data = res.data;
@@ -86,13 +88,16 @@ export class MaterialCard {
   
   //#region: delete
   deleteSelect() {
-    this.materialService.delete(this.material.id).subscribe((res: any) => {
-      if (res.deleted) {
-        this.material.deletedMaterial = true;
-        console.log("DELETAR ESS MERDA PQP")
-        // this.updateData.emit(this.material);
-      }
-    });
+      const confirmDelete = confirm('Tem certeza que deseja excluir este conteúdo?');
+      if (!confirmDelete)
+        return;
+
+      this.materialService.delete(this.material.id).subscribe((res: any) => {
+        if (res.deleted) {
+          this.material.deletedMaterial = true;
+          this.updateData.emit(this.material);
+        }
+      });
   }
   //#endregion
 }

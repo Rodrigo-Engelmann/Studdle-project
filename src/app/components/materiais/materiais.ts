@@ -56,10 +56,10 @@ export class Materiais implements OnInit {
       size: DialogSize.LARGE,
       fields: [
         { key: 'main_image', label: 'Imagem principal', type: FieldType.FILE, required: true, width: FieldWidth.HALF },
-        { key: 'title', label: 'Título', type: FieldType.TEXT, required: false },
-        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: false },
-        { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: false },
-        { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: false }
+        { key: 'title', label: 'Título', type: FieldType.TEXT, required: true, maxLength: 100 },
+        { key: 'summary', label: 'Resumo', type: FieldType.TEXT, required: true, maxLength: 250 },
+        { key: 'main_content', label: 'Conteúdo', type: FieldType.RICH_TEXT, required: true },
+        { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe((res: any) => {
       const data = res.data;
@@ -79,7 +79,7 @@ export class Materiais implements OnInit {
 
   updateSingular(event: any): void {
     const index: number = this.materials.findIndex((v)=>v.id===event.id)
-    if (event.deletedVideo) {
+    if (event.deletedMaterial) {
       this.materials.splice(index,1);
       return;
     }

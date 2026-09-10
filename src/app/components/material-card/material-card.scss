@@ -12,6 +12,9 @@
 
     img {
         width: 100%;
+        height: 250px !important;
+        object-fit: cover;
+
         margin: 0;
 
         border-top-left-radius: 4px;
@@ -33,11 +36,6 @@
             font-weight: 600;
         }
 
-        p {
-            margin: 0;
-            font-size: 14px;
-        }
-
         .mat-tags {
             margin: 10px 0;
             font-size: 14px;
@@ -46,8 +44,8 @@
     }
 }
 
-.video-menu-btn{
-    z-index: 123123;
+.material-menu-btn{
+    z-index: 1;
     background-color: transparent;
     color: var(--color-white);
     border: 0;
@@ -56,9 +54,8 @@
     cursor: pointer;
 
     transition-duration: 0.2s;
-
     border-radius: 50%;
-
+    
     &:hover{
         transform: scale(1.1);
         background-color: var(--selected-video);
@@ -66,5 +63,20 @@
     }
     &:active{
         transform: scale(0.9);
+    }
+}
+
+.summary-container{
+    display: flex;
+    justify-content: space-between;
+
+    p {
+        margin: 0;
+        font-size: 14px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 }

@@ -1,6 +1,13 @@
+:host {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
 header {
     width: 100%;
-    height: auto;
+    flex: 0 0 auto;
     position: sticky;
     top: 0;
     z-index: 1;
@@ -107,8 +114,12 @@ html,body{
  
 
 
-.page-container{
-    height: 100%;
+.page-container {
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 // header de search - aparecer somente em "/materiais" e "/videos"
