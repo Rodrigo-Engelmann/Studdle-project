@@ -11,14 +11,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressionDesktopComponent {
-  /** Valores editáveis pelo componente-pai. */
   @Input() studyCompleted = 6;
   @Input() practiceCompleted = 3;
   @Input() totalContents = 24;
   @Input() linearProgress = 100;
   @Input() rankName = 'BRONZE';
 
-  /** Troque depois pela imagem definitiva do rank. */
   @Input() rankImageUrl = 'https://media.istockphoto.com/id/1842732901/pt/vetorial/loading-icon.jpg?s=612x612&w=0&k=20&c=Kfry4YuT4ePFeztRZnPEdzONS4Msk1XV3k6nbHHRpas=';
 
   get studyProgress(): number {

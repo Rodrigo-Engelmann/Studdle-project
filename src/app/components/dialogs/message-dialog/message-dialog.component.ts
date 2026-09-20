@@ -22,7 +22,6 @@ export class MessageDialogComponent {
     return this.config.variant ?? DialogVariant.INFO;
   }
 
-  /** Símbolo do selo — texto puro, sem depender da fonte de ícones do Material. */
   protected get glyph(): string {
     const glyphs: Record<DialogVariant, string> = {
       [DialogVariant.INFO]: 'i',

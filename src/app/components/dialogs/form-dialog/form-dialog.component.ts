@@ -1,5 +1,6 @@
 // angular
-import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, ViewEncapsulation } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl
   , FormControl
@@ -8,6 +9,7 @@ import {
   , ValidationErrors
   , ValidatorFn
   , Validators
+  , FormArray
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -72,6 +74,7 @@ import { DialogResult, FormDialogConfig, FormFieldConfig } from '../../models/di
 })
 export class FormDialogComponent {
   private readonly dialogRef = inject<MatDialogRef<FormDialogComponent, DialogResult>>(MatDialogRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly config: FormDialogConfig = inject(MAT_DIALOG_DATA);
   protected readonly form: FormGroup = this.buildForm();
@@ -80,6 +83,69 @@ export class FormDialogComponent {
   protected characterCount(fieldKey: string): number {
     const value = this.form.get(fieldKey)?.value;
     return typeof value === 'string' ? value.length : 0;
+  }
+  protected groupList(field: FormFieldConfig): FormArray<FormGroup> {
+    return this.form.get(field.key) as FormArray<FormGroup>;
+  }
+
+  protected canAdd(field: FormFieldConfig): boolean {
+    return field.maxItems == null || this.groupList(field).length < field.maxItems;
+  }
+
+  protected canRemove(field: FormFieldConfig): boolean {
+    return this.groupList(field).length > (field.minItems ?? 0);
+  }
+
+  protected addItem(field: FormFieldConfig): void {
+    const array = this.groupList(field);
+    const group = this.buildItemGroup(field, {});
+
+    array.push(group);
+    if (field.singleSelectionKey)
+      this.wireSingleSelection(field, array, group);
+  }
+
+  protected removeItem(field: FormFieldConfig, index: number): void {
+    this.groupList(field).removeAt(index);
+  }
+
+  protected subError(field: FormFieldConfig, index: number, sub: FormFieldConfig): string {
+    return this.errorForControl(this.groupList(field).at(index).get(sub.key), sub);
+  }
+
+  protected arrayError(field: FormFieldConfig): string {
+    const array = this.form.get(field.key);
+    if (!array?.errors)
+      return '';
+
+    const errorKey = Object.keys(array.errors)[0];
+    const detail = array.errors[errorKey];
+
+    if (field.errorMessages?.[errorKey])
+      return field.errorMessages[errorKey];
+
+    switch (errorKey) {
+      case 'minItems':
+        return `Informe pelo menos ${detail.required} ${(field.itemLabel ?? 'item').toLowerCase()}(ns).`;
+      case 'maxItems':
+        return `O máximo é ${detail.allowed}.`;
+      case 'singleSelection':
+        return 'Marque uma opção como correta.';
+      default:
+        return 'Revise os itens desta lista.';
+    }
+  }
+  protected errorFor(field: FormFieldConfig): string {
+    return this.errorForControl(this.form.get(field.key), field);
+  }
+
+  private errorForControl(control: AbstractControl | null, field: FormFieldConfig): string {
+    const errors: ValidationErrors | null = control?.errors ?? null;
+    if (!errors)
+      return '';
+
+    const errorKey = Object.keys(errors)[0];
+    return field.errorMessages?.[errorKey] ?? this.defaultMessage(errorKey, errors[errorKey], field);
   }
 
   // coisas do 'rich text'
@@ -149,12 +215,49 @@ export class FormDialogComponent {
   };
 
   private buildForm(): FormGroup {
-    const controls: Record<string, FormControl> = {};
+    const controls: Record<string, AbstractControl> = {};
     for (const field of this.config.fields) {
-      controls[field.key] = new FormControl(
-        { value: this.initialValue(field), disabled: field.disabled ?? false },
-        this.buildValidators(field),
-      );
+      controls[field.key] = field.type === FieldType.GROUP_LIST
+                          ? this.buildGroupList(field)
+                          : this.buildControl(field, this.initialValue(field));
+    }
+
+    return new FormGroup(controls);
+  }
+
+  private buildControl(field: FormFieldConfig, value: unknown): FormControl {
+    return new FormControl(
+      { value, disabled: field.disabled ?? false },
+      this.buildValidators(field),
+    );
+  }
+
+  private buildGroupList(field: FormFieldConfig): FormArray<FormGroup> {
+    const items = (this.initialValue(field) as Record<string, unknown>[] | null) ?? [];
+
+    const array = new FormArray<FormGroup>(
+      items.map((item) => this.buildItemGroup(field, item)),
+      this.buildArrayValidators(field),
+    );
+
+    // garante o mínimo de itens já na abertura (ex.: 2 alternativas em branco)
+    while (array.length < (field.minItems ?? 0))
+      array.push(this.buildItemGroup(field, {}));
+
+    if (field.singleSelectionKey)
+      array.controls.forEach((g) => this.wireSingleSelection(field, array, g));
+
+    return array;
+  }
+
+  private buildItemGroup(field: FormFieldConfig, item: Record<string, unknown>): FormGroup {
+    const controls: Record<string, FormControl> = {};
+
+    for (const sub of field.subFields ?? []) {
+      const raw = item[sub.key];
+      const value = raw !== undefined && raw !== null ? raw
+                                                      : (sub.value ?? this.defaultValue(sub));
+      controls[sub.key] = this.buildControl(sub, value);
     }
 
     return new FormGroup(controls);
@@ -168,14 +271,65 @@ export class FormDialogComponent {
     if (field.value !== undefined)
       return field.value;
 
+    return this.defaultValue(field);
+  }
+
+  private defaultValue(field: FormFieldConfig): unknown {
     switch (field.type) {
       case FieldType.CHECKBOX:
         return false;
       case FieldType.MULTI_SELECT:
+      case FieldType.GROUP_LIST:
         return [];
       default:
         return null;
     }
+  }
+
+  private buildArrayValidators(field: FormFieldConfig): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+
+    if (field.minItems != null) {
+      validators.push((control) =>
+        (control as FormArray).length >= field.minItems!
+          ? null
+          : { minItems: { required: field.minItems } });
+    }
+
+    if (field.maxItems != null) {
+      validators.push((control) =>
+        (control as FormArray).length <= field.maxItems!
+          ? null
+          : { maxItems: { allowed: field.maxItems } });
+    }
+
+    if (field.singleSelectionKey) {
+      validators.push((control) => {
+        const selected = (control as FormArray<FormGroup>).controls
+          .filter((g) => !!g.get(field.singleSelectionKey!)?.value).length;
+        return selected === 1 ? null : { singleSelection: true };
+      });
+    }
+
+    return validators;
+  }
+
+  private wireSingleSelection(field: FormFieldConfig, array: FormArray<FormGroup>, group: FormGroup): void {
+    const key = field.singleSelectionKey!;
+
+    group.get(key)?.valueChanges
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((checked) => {
+      if (!checked)
+        return;
+
+      for (const other of array.controls) {
+        if (other !== group)
+          other.get(key)?.setValue(false, { emitEvent: false });
+      }
+
+      array.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   private buildValidators(field: FormFieldConfig): ValidatorFn[] {
@@ -235,15 +389,6 @@ export class FormDialogComponent {
     };
   }
 
-  protected errorFor(field: FormFieldConfig): string {
-    const control: AbstractControl | null = this.form.get(field.key);
-    const errors: ValidationErrors | null = control?.errors ?? null;
-    if (!errors)
-      return '';
-
-    const errorKey = Object.keys(errors)[0];
-    return field.errorMessages?.[errorKey] ?? this.defaultMessage(errorKey, errors[errorKey], field);
-  }
 
   private defaultMessage(key: string, detail: any, field: FormFieldConfig): string {
     switch (key) {

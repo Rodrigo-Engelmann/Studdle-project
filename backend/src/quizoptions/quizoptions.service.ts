@@ -21,7 +21,8 @@ export class QuizOptionService {
 
   async findById(id: number) {
     const options = await this.quizOptionRepo.find({ where: { quiz_id: id } });
-    if (!options.length) throw new NotFoundException(`Opções do quiz #${id} não encontradas`);
+    if (!options.length)
+      throw new NotFoundException(`Opções do quiz #${id} não encontradas`);
     return options;
   }
 

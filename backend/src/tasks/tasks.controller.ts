@@ -1,7 +1,15 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Body,
+} from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { Task } from './tasks.entity';
 import { TaskService } from './tasks.service';
+import { UpdateTaskContentDto } from './dto/update-task.dto';
 
 @Controller('tasks')
 export class TaskController extends BaseController<Task> {
@@ -25,5 +33,14 @@ export class TaskController extends BaseController<Task> {
   @Get(':id/completions')
   findCompletions(@Param('id', ParseIntPipe) id: number) {
     return this.taskService.findCompletions(id);
+  }
+
+  // Atualiza o task content
+  @Patch(':id/content')
+  updateContent(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTaskContentDto,
+  ) {
+    return this.taskService.updateContent(id, dto);
   }
 }

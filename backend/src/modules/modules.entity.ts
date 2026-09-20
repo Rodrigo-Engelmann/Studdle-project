@@ -16,6 +16,9 @@ export class Module {
   @Column({ unique: true })
   module!: number;
 
+  @Column({ length: 100 })
+  name!: string;
+
   @Column({
     type: 'enum',
     enum: ['beta', 'released'],

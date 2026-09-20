@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface Module {
   id?: number;
+  name: string;
   module: number;
   release_status?: 'beta' | 'released';
 }
@@ -18,6 +19,7 @@ export class ModuleService {
 
   // CREATE
   create(data: Partial<Module>): Observable<Module> {
+    console.log("data: ", data)
     return this.http.post<Module>(this.api, data);
   }
 

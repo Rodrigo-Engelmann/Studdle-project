@@ -13,6 +13,10 @@ import {
 } from '../models/dialog.models';
 import { inferFields } from '../utils/field-inference.util';
 
+// selection dialog sys
+import { SelectionDialogComponent } from '../dialogs/selection-dialog/selection-dialog.component';
+import { SelectionDialogConfig, SelectionResult } from '../models/selection-dialog.models';
+
 const CANCELLED: DialogResult<never> = {
   status: DialogResultStatus.CANCELLED,
   confirmed: false,
@@ -32,11 +36,28 @@ export class DialogService {
         maxHeight: '90vh',
         autoFocus: 'first-tabbable',
         restoreFocus: true,
-        // formulário não fecha por acidente: evita perder o que foi digitado
         disableClose: config.disableClose ?? true,
       })
       .afterClosed()
       .pipe(map((result) => result ?? (CANCELLED as DialogResult<T>)));
+  }
+
+  openSelection(config: SelectionDialogConfig): Observable<DialogResult<SelectionResult>> {
+    return this.dialog
+      .open<SelectionDialogComponent, SelectionDialogConfig, DialogResult<SelectionResult>>(
+        SelectionDialogComponent,
+        {
+          data: config,
+          width: config.size ?? DialogSize.MEDIUM,
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: 'first-tabbable',
+          restoreFocus: true,
+          disableClose: config.disableClose ?? true,
+        }
+      )
+      .afterClosed()
+      .pipe(map((result) => result ?? (CANCELLED as DialogResult<SelectionResult>)));
   }
 
   openFormFromModel<T extends Record<string, unknown>>(

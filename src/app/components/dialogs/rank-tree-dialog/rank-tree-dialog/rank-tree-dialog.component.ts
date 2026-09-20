@@ -96,6 +96,10 @@ export class RankTreeDialogComponent implements OnDestroy {
     this.actionSubject.next({ action: 'edit', node });
   }
 
+  onManageContent(node: TreeNode): void {
+    this.actionSubject.next({ action: 'content', node });
+  }
+
   onAdd(parent: TreeNode): void {
     this.actionSubject.next({ action: 'add', node: null, parent });
   }

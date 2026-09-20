@@ -16,10 +16,10 @@ export class QuizController extends BaseController<Quiz> {
   }
 
   // Retorna as imagens de um quiz
-  @Get(':id/images')
-  findImages(@Param('id', ParseIntPipe) id: number) {
-    return this.quizService.findImages(id);
-  }
+  // @Get(':id/images')
+  // findImages(@Param('id', ParseIntPipe) id: number) {
+  //   return this.quizService.findImages(id);
+  // }
 
   // Retorna as opções de um quiz
   @Get(':id/options')

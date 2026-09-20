@@ -207,6 +207,105 @@
                         </div>
                     }
 
+                    <!-- GROUP LIST -->
+                    @case (FieldType.GROUP_LIST) {
+                        <div class="repeater" [formArrayName]="field.key">
+                            <div class="repeater-head">
+                                <span class="group-label">
+                                    {{ field.label }}
+                                </span>
+
+                                <button mat-stroked-button type="button"
+                                [disabled]="!canAdd(field)"
+                                (click)="addItem(field)">
+                                    {{ field.addItemLabel ?? 'Adicionar' }}
+                                </button>
+                            </div>
+
+                            @for (item of groupList(field).controls; track item; let i = $index) {
+                                <div class="repeater-item" [formGroupName]="i">
+                                    <div class="repeater-item-head">
+                                        <span class="item-title">
+                                            {{ (field.itemLabel ?? 'Item') + ' ' + (i + 1) }}
+                                        </span>
+
+                                        <button mat-icon-button type="button"
+                                        [disabled]="!canRemove(field)"
+                                        (click)="removeItem(field, i)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+
+                                    <div class="form-grid">
+                                        @for (sub of field.subFields ?? []; track sub.key) {
+                                            <div class="field"
+                                            [class.half]="sub.width === FieldWidth.HALF"
+                                            [class.third]="sub.width === FieldWidth.THIRD">
+
+                                                @switch (sub.type) {
+                                                    @case (FieldType.CHECKBOX) {
+                                                        <div class="inline-control">
+                                                            <mat-checkbox [formControlName]="sub.key">
+                                                                {{ sub.label }}
+                                                            </mat-checkbox>
+                                                        </div>
+                                                    }
+
+                                                    @case (FieldType.TEXTAREA) {
+                                                        <mat-form-field appearance="outline" class="input-container">
+                                                            <mat-label>{{ sub.label }}</mat-label>
+                                                            <textarea matInput
+                                                            [formControlName]="sub.key"
+                                                            [placeholder]="sub.placeholder ?? ''"
+                                                            [rows]="sub.rows ?? 3"
+                                                            ></textarea>
+                                                            
+                                                            <mat-error>{{ subError(field, i, sub) }}</mat-error>
+                                                        </mat-form-field>
+                                                    }
+
+                                                    @case (FieldType.SELECT) {
+                                                        <mat-form-field appearance="outline" class="input-container">
+                                                            <mat-label>{{ sub.label }}</mat-label>
+                                                            <mat-select [formControlName]="sub.key">
+                                                                @for (option of sub.options ?? []; track option.value) {
+                                                                    <mat-option [value]="option.value">
+                                                                        {{ option.label }}
+                                                                    </mat-option>
+                                                                }
+                                                            </mat-select>
+                                                            <mat-error>{{ subError(field, i, sub) }}</mat-error>
+                                                        </mat-form-field>
+                                                    }
+
+                                                    @default {
+                                                        <mat-form-field appearance="outline" class="input-container">
+                                                            <mat-label>{{ sub.label }}</mat-label>
+                                                            <input matInput
+                                                            [type]="sub.type"
+                                                            [formControlName]="sub.key"
+                                                            [placeholder]="sub.placeholder ?? ''"
+                                                            [attr.maxlength]="sub.maxLength ?? null"/>
+                                                            <mat-error>{{ subError(field, i, sub) }}</mat-error>
+                                                        </mat-form-field>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (arrayError(field); as message) {
+                                <p class="array-error">{{ message }}</p>
+                            }
+
+                            @if (field.hint) {
+                                <span class="hint">{{ field.hint }}</span>
+                            }
+                        </div>
+                    }
+
                     <!-- TEXT, NUMBER, EMAIL, PASSWORD, URL, DATE, TIME -->
                     @default {
                         <mat-form-field appearance="outline" class="input-container">

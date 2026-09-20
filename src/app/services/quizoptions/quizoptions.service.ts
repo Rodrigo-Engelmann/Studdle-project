@@ -17,8 +17,8 @@ export class QuizOptionService {
   constructor(private http: HttpClient) {}
 
   // CREATE
-  create(data: Partial<QuizOption>): Observable<QuizOption> {
-    return this.http.post<QuizOption>(this.api, data);
+  create(data: Partial<QuizOption> | Partial<QuizOption>[]): Observable<QuizOption[]> {
+    return this.http.post<QuizOption[]>(this.api, data);
   }
 
   // GET ALL

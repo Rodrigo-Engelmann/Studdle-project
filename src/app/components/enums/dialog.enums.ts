@@ -12,7 +12,8 @@ export enum FieldType {
   CHECKBOX = 'checkbox',
   RADIO = 'radio',
   FILE = 'file',
-  RICH_TEXT = 'rich_text'
+  RICH_TEXT = 'rich_text',
+  GROUP_LIST = 'group-list'
 }
 
 export enum DialogVariant {

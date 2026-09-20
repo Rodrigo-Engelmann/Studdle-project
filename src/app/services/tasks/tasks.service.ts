@@ -42,6 +42,11 @@ export class TaskService {
     return this.http.patch<Task>(`${this.api}/${id}`, data);
   }
 
+  // UPDATE TASK CONTENT
+  updateContent(taskId: number, data: { video_ids: number[]; material_ids: number[] }): Observable<any> {
+    return this.http.patch(`${this.api}/${taskId}/content`, data);
+  }
+
   // DELETE
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.api}/${id}`);

@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quiz } from './quizzes.entity';
-import { QuizImage } from '../quizimages/quizimages.entity';
+// import { QuizImage } from '../quizimages/quizimages.entity';
 import { QuizOption } from '../quizoptions/quizoptions.entity';
 
 @Injectable()
@@ -10,8 +14,8 @@ export class QuizService {
   constructor(
     @InjectRepository(Quiz)
     private readonly quizRepo: Repository<Quiz>,
-    @InjectRepository(QuizImage)
-    private readonly quizImageRepo: Repository<QuizImage>,
+    // @InjectRepository(QuizImage)
+    // private readonly quizImageRepo: Repository<QuizImage>,
     @InjectRepository(QuizOption)
     private readonly quizOptionRepo: Repository<QuizOption>,
   ) {}
@@ -28,16 +32,30 @@ export class QuizService {
   async findById(id: number) {
     const quiz = await this.quizRepo.findOne({
       where: { id },
-      relations: ['module', 'task'],
+      relations: ['module', 'task', 'options'],
     });
     if (!quiz) throw new NotFoundException(`Quiz #${id} não encontrado`);
     return quiz;
   }
 
   async update(id: number, data: Partial<Quiz>) {
-    await this.findById(id);
-    await this.quizRepo.update(id, data);
-    return this.findById(id);
+    const quiz = await this.quizRepo.findOne({
+      where: { id },
+      relations: ['options'],
+    });
+    if (!quiz) throw new NotFoundException(`Quiz #${id} não encontrado`);
+
+    // apaga as alternativas antigas e grava as novas
+    await this.quizOptionRepo.delete({ quiz_id: id });
+
+    return this.quizRepo.save({
+      ...quiz,
+      ...data,
+      options: (data.options ?? []).map((o) => ({
+        text: o.text,
+        right_answer: o.right_answer,
+      })),
+    });
   }
 
   async remove(id: number) {
@@ -53,14 +71,14 @@ export class QuizService {
     });
   }
 
-  async findImages(id: number) {
-    await this.findById(id);
-    return this.quizImageRepo.find({ where: { quiz_id: id } });
-  }
+  // async findImages(id: number) {
+  //   await this.findById(id);
+  //   return this.quizImageRepo.find({ where: { quiz_id: id } });
+  // }
 
   async findOptions(id: number) {
     await this.findById(id);
-    // Retorna opções sem expor qual é a correta (para o front durante o quiz)
+
     return this.quizOptionRepo.find({
       where: { quiz_id: id },
       select: ['quiz_id', 'text'],
@@ -73,7 +91,7 @@ export class QuizService {
       relations: ['images', 'options', 'module', 'task'],
     });
     if (!quiz) throw new NotFoundException(`Quiz #${id} não encontrado`);
-    // Remove right_answer das opções antes de retornar
+
     const options = quiz.options.map(({ right_answer: _, ...rest }) => rest);
     return { ...quiz, options };
   }
