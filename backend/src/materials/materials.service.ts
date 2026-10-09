@@ -2,15 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Material } from './materials.entity';
-import { MaterialStatus } from '../materialstatus/materialstatus.entity';
 
 @Injectable()
 export class MaterialService {
   constructor(
     @InjectRepository(Material)
     private readonly materialRepo: Repository<Material>,
-    @InjectRepository(MaterialStatus)
-    private readonly materialStatusRepo: Repository<MaterialStatus>,
   ) {}
 
   create(data: Partial<Material>) {
@@ -24,7 +21,8 @@ export class MaterialService {
 
   async findById(id: number) {
     const material = await this.materialRepo.findOne({ where: { id } });
-    if (!material) throw new NotFoundException(`Material #${id} não encontrado`);
+    if (!material)
+      throw new NotFoundException(`Material #${id} não encontrado`);
     return material;
   }
 
@@ -49,40 +47,16 @@ export class MaterialService {
       where: { id },
       relations: ['comments', 'comments.user'],
     });
-    if (!material) throw new NotFoundException(`Material #${id} não encontrado`);
+    if (!material)
+      throw new NotFoundException(`Material #${id} não encontrado`);
     return material.comments;
-  }
-
-  async markComplete(materialId: number, userId: number) {
-    await this.findById(materialId);
-    const existing = await this.materialStatusRepo.findOne({
-      where: { material_id: materialId, user_id: userId },
-    });
-    if (existing) {
-      existing.completed = true;
-      return this.materialStatusRepo.save(existing);
-    }
-    const status = this.materialStatusRepo.create({
-      material_id: materialId,
-      user_id: userId,
-      completed: true,
-    });
-    return this.materialStatusRepo.save(status);
-  }
-
-  async getStatus(materialId: number, userId: number) {
-    const status = await this.materialStatusRepo.findOne({
-      where: { material_id: materialId, user_id: userId },
-    });
-    return status ?? { material_id: materialId, user_id: userId, completed: false };
   }
 
   async findByURL(url: string) {
     const video = await this.materialRepo.findOne({
       where: { link: url },
     });
-    if (!video)
-      throw new NotFoundException(`Vídeo #${url} não encontrado`);
+    if (!video) throw new NotFoundException(`Vídeo #${url} não encontrado`);
 
     return video;
   }

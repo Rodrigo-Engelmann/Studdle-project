@@ -19,7 +19,6 @@ export class ModuleService {
 
   // CREATE
   create(data: Partial<Module>): Observable<Module> {
-    console.log("data: ", data)
     return this.http.post<Module>(this.api, data);
   }
 
@@ -56,5 +55,12 @@ export class ModuleService {
   // GET USUÁRIOS DO MÓDULO
   findUsers(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/${id}/users`);
+  }
+
+  // MULTER
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.post(`${this.api}/upload`, formData);
   }
 }

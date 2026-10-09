@@ -2,8 +2,10 @@
 /dist
 /node_modules
 /build
-/uploads/materials
-/uploads/profile
+/uploads/materials/
+/uploads/profile/
+/uploads/quizzes/
+/uploads/modules/
 
 # Logs
 logs

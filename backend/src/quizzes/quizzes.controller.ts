@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Param, Body, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  ParseIntPipe,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { Quiz } from './quizzes.entity';
 import { QuizService } from './quizzes.service';
+import { ImageUploadInterceptor } from '../common/upload/image-upload.interceptor';
 
 @Controller('quizzes')
 export class QuizController extends BaseController<Quiz> {
@@ -40,6 +50,16 @@ export class QuizController extends BaseController<Quiz> {
     @Body() data: { option_index: number },
   ) {
     return this.quizService.submitAnswer(id, data.option_index);
+  }
+
+  @Post('upload')
+  @UseInterceptors(ImageUploadInterceptor('image', 'quizzes'))
+  uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return {
+      filename: file.filename,
+      originalName: file.originalname,
+      path: `/uploads/quizzes/${file.filename}`,
+    };
   }
 
   // Retorna estatísticas de acerto/erro do quiz

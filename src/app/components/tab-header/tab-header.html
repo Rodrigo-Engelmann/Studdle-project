@@ -12,7 +12,14 @@
             <mat-tab label="Vídeos"></mat-tab>
             <mat-tab label="Materiais"></mat-tab>
             <mat-tab label="Engine"></mat-tab>
-            <mat-tab label="Progressão"></mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span>Progresso</span>
+                    <span class="progress-percentage-text">
+                        {{ progressPercentage ? progressPercentage : 0 }}%
+                    </span>
+                </ng-template>
+            </mat-tab>
         </mat-tab-group>
 
         <div class="rightheader-content">
@@ -29,58 +36,58 @@
         </div>
         
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="Configuracoes()">
-                <mat-icon>settings</mat-icon>
+            <button mat-menu-item class="white-menucontent" (click)="Configuracoes()">
+                <mat-icon class="white-menucontent">settings</mat-icon>
                 Configurações
             </button>
 
-            <button mat-menu-item (click)="Logout()">
-                <mat-icon>logout</mat-icon>
+            <button mat-menu-item class="white-menucontent" (click)="Logout()">
+                <mat-icon class="white-menucontent">logout</mat-icon>
                 Logout
             </button>
 
         </mat-menu>
     </div>
 
-    @if (showFilters) {
-        <div class="search-header">
+    <!-- @if (showFilters) { -->
+        <div class="search-header" [ngClass]="showFilters ? '' : 'hideFilters' ">
             <form class="search-form side-padding">
                 <!-- Campo de busca -->
                 <mat-form-field appearance="outline" class="search-input search-header-input">
                     <mat-label class="text-origin">Pesquisar</mat-label>
-                    <input class="writing-color" matInput placeholder="Digite algo..." [(ngModel)]="searchQuery" name="search">
-                    <button class="search-icon-container" mat-icon-button matSuffix (click)="searchUpdate()" aria-label="Buscar">
+                    <input class="writing-color" matInput placeholder="Busque algo..." [(ngModel)]="searchQuery" name="search" aria-label="Pesquisar">
+                    <button class="search-icon-container" matSuffix (click)="searchUpdate()" aria-label="Buscar">
                         <mat-icon>search</mat-icon>
                     </button>
                 </mat-form-field>
 
-                <!-- Filtro 1 -->
-                <mat-form-field appearance="outline" class="filter search-header-input">
-                    <mat-label class="text-origin">Módulo</mat-label>
-                    <mat-select [(ngModel)]="selectedCategory" name="category">
-                        <mat-option *ngFor="let category of modules" [value]="category">
-                            {{ category }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <!-- Filtro 2 -->
-                <mat-form-field appearance="outline" class="filter search-header-input">
-                    <mat-label class="text-origin">
-                        Categoria
-                    </mat-label>
-
-                    <mat-select [(ngModel)]="selectedModule" name="order">
-                        @for (order of categories; track order) {
-                            <mat-option [value]="order">
-                                {{ order }}
+                <div class="selectfilter-inputs">
+                    <!-- Filtro 1 -->
+                    <mat-form-field appearance="outline" class="filter search-header-input">
+                        <mat-label class="text-origin">Módulo</mat-label>
+                        <mat-select [(ngModel)]="selectedCategory" name="category">
+                            <mat-option *ngFor="let category of modules" [value]="category">
+                                {{ category }}
                             </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Filtro 2 -->
+                    <mat-form-field appearance="outline" class="filter search-header-input">
+                        <mat-label class="text-origin"> Categoria </mat-label>
+
+                        <mat-select [(ngModel)]="selectedModule" name="order">
+                            @for (order of categories; track order) {
+                                <mat-option [value]="order">
+                                    {{ order }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </form>
         </div>
-    }
+    <!-- } -->
 </header>
 
 <div class="page-container">

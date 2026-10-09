@@ -1,4 +1,14 @@
-import { Controller, Get, Patch, Param, Body, ParseIntPipe, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Param,
+  Body,
+  ParseIntPipe,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { User } from './users.entity';
 import { UserService } from './users.service';
@@ -16,12 +26,6 @@ export class UserController extends BaseController<User> {
     return this.userService.getPublicProfile(id);
   }
 
-  // Retorna o progresso geral do usuário (módulo atual, xp, tasks concluídas)
-  @Get(':id/progress')
-  getProgress(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getProgress(id);
-  }
-
   // Atualiza o módulo atual do usuário
   @Patch(':id/module')
   updateModule(
@@ -29,18 +33,6 @@ export class UserController extends BaseController<User> {
     @Body('module_id', ParseIntPipe) moduleId: number,
   ) {
     return this.userService.updateModule(id, moduleId);
-  }
-
-  // Retorna os materiais assistidos/lidos pelo usuário
-  @Get(':id/materials')
-  getMaterials(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getMaterials(id);
-  }
-
-  // Retorna os vídeos assistidos pelo usuário
-  @Get(':id/videos')
-  getVideos(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getVideos(id);
   }
 
   // Retorna as tasks do usuário com status de conclusão
@@ -59,7 +51,11 @@ export class UserController extends BaseController<User> {
   @Patch(':id/notifications/settings')
   updateNotificationSettings(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: { comments_notification_ceiling: boolean; comments_notification_ceiling_number: number },
+    @Body()
+    data: {
+      comments_notification_ceiling: boolean;
+      comments_notification_ceiling_number: number;
+    },
   ) {
     return this.userService.updateNotificationSettings(id, data);
   }
@@ -70,11 +66,20 @@ export class UserController extends BaseController<User> {
     return this.userService.deleteAccount(req.user.id);
   }
 
+  @Patch(':userId/module-progress')
+  updateModuleProgress(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body('module_progress') moduleProgress: number,
+  ) {
+    return this.userService.updateModuleProgress(userId, moduleProgress);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch('change-password')
   async changePassword(
     @Req() req: any,
-    @Body() body: {
+    @Body()
+    body: {
       currentPassword: string;
       newPassword: string;
     },

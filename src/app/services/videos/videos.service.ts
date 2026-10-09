@@ -13,12 +13,6 @@ export interface Video {
   sequence: number;
 }
 
-export interface VideoStatus {
-  user_id: number;
-  video_id: number;
-  completed: boolean;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -65,16 +59,6 @@ export class VideoService {
   // GET COMENTÁRIOS DO VÍDEO
   findComments(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/${id}/comments`);
-  }
-
-  // MARCAR COMO CONCLUÍDO
-  markComplete(id: number, user_id: number): Observable<VideoStatus> {
-    return this.http.post<VideoStatus>(`${this.api}/${id}/complete`, { user_id });
-  }
-
-  // GET STATUS DE CONCLUSÃO
-  getStatus(id: number, userId: number): Observable<VideoStatus> {
-    return this.http.get<VideoStatus>(`${this.api}/${id}/status/${userId}`);
   }
 
   // GET VIDEO DATA

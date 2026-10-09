@@ -9,8 +9,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Module } from '../modules/modules.entity';
-import { MaterialStatus } from '../materialstatus/materialstatus.entity';
-import { VideoStatus } from '../videostatus/videostatus.entity';
 import { Comment } from '../comments/comments.entity';
 import { UserTask } from '../user_tasks/user_tasks.entity';
 import { UserNotification } from '../user_notifications/user_notifications.entity';
@@ -47,6 +45,9 @@ export class User {
   @Column({ default: 0 })
   xp!: number;
 
+  @Column({ default: 0 })
+  module_progress!: number;
+
   @Column({ nullable: true })
   current_module_id!: number;
 
@@ -65,12 +66,6 @@ export class User {
   })
   @JoinColumn({ name: 'current_module_id' })
   current_module!: Module;
-
-  @OneToMany(() => MaterialStatus, (ms) => ms.user)
-  material_statuses!: MaterialStatus[];
-
-  @OneToMany(() => VideoStatus, (vs) => vs.user)
-  video_statuses!: VideoStatus[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments!: Comment[];

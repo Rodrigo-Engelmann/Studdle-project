@@ -2,9 +2,10 @@
     <div class="recommendations-container">
 
         <section class="content-section">
-            <h1>Recomendações</h1>
-            <span class="divisor-line"></span>
-            <h2>Materiais Didáticos</h2>
+            <div class="subtitle-container">
+                <h2>Materiais Didáticos</h2>
+                <span class="divisor-line"></span>
+            </div>
 
             <div id="container-material">
                 @for(material of materials; track material.title) {
@@ -16,8 +17,10 @@
         </section>
 
         <section class="content-section">
-            <span class="divisor-line"></span>
-            <h2>Videoaulas</h2>
+            <div class="subtitle-container">
+                <h2>Videoaulas</h2>
+                <span class="divisor-line"></span>
+            </div>
 
             <div id="container-vids">
                 <div id="container-vids">

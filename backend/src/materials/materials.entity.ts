@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { MaterialStatus } from '../materialstatus/materialstatus.entity';
 import { Comment } from '../comments/comments.entity';
 import { TaskContent } from '../task_contents/task_contents.entity';
 
@@ -38,9 +37,6 @@ export class Material {
 
   @Column({ unique: true })
   sequence!: number;
-
-  @OneToMany(() => MaterialStatus, (ms) => ms.material)
-  material_statuses!: MaterialStatus[];
 
   @OneToMany(() => Comment, (comment) => comment.material)
   comments!: Comment[];

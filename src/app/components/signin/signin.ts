@@ -81,7 +81,7 @@ export class Signin {
         this.userService.updateColorBlindFilter(-1)
       },
       error: (err) => {
-        console.error('Erro ao registrar:', err);
+        console.error('Register error:', err);
       }
     });
   }
@@ -96,7 +96,7 @@ export class Signin {
         this.userService.updateColorBlindFilter(-1)
       },
       error: (err) => {
-        console.error('Erro ao logar:', err);
+        console.error('Login error:', err);
       }
     });
   }

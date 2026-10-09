@@ -1,13 +1,40 @@
+@property --module-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
 .rank-desktop {
-    min-height: 100%;
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    grid-template-rows: 1fr auto;
-    gap: 12px 48px;
-    padding: 82px clamp(24px, 5vw, 80px) 112px;
-    color: var(--color-white);
-    background: linear-gradient( 180deg, var(--color-dark_gray-1) 66%, #a8783f 100%);
+  min-height: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 490px;
+  grid-template-rows: 1fr auto;
+  gap: 12px 48px;
+  padding: 82px clamp(24px, 5vw, 80px) 112px;
+  color: var(--color-white);
+
+  background: linear-gradient(
+    180deg,
+    var(--color-dark_gray-1) 62%,
+    var(--module-color) 100%
+  );
+  transition: --module-color 2s;
+}
+
+img {
+  opacity: 0.01;
+  transition: none;
+  font-size: 0;
+
+  &.image-loaded {
+    opacity: 1;
+    transition: opacity 1.5s ease;
+  }
+
+  &.loadingimage-rank {
+    opacity: 1;
+  }
 }
 
 .metrics {
@@ -25,9 +52,11 @@
     aspect-ratio: 1;
     border-radius: 50%;
     margin-top: 50px;
-    background: conic-gradient(
-        var(--color-purple2) var(--progress),
-        var(--color-purple1) 0
+    background: linear-gradient(
+        to bottom,
+        var(--color-purple2) 0%,
+        var(--color-purple1) var(--progress),
+        var(--color-dark_gray-2) var(--progress)
     );
 
     &::before {
@@ -77,8 +106,8 @@
     }
 
     img {
-        width: 400px;
-        height: 400px;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         border-radius: 50%;
         // box-shadow: 0 0 28px #e3a348;
@@ -102,6 +131,8 @@
     border-radius: 999px;
     background: transparent;
     overflow: hidden;
+
+    background-color: var(--selected-video);
 }
 
 .linear-progress__value {
@@ -109,7 +140,7 @@
     top: 4px;
     left: 4px;
     bottom: 4px;
-    background: var(--color-purple2);
+    background: linear-gradient(to bottom, var(--color-purple2) 70%, var(--color-purple2_5));
     transition: width 0.25s ease;
 }
 
@@ -157,7 +188,7 @@
         margin-right: 10px;
     }
 
-    mat-icon {
+    img {
         display: flex;
         align-items: center;
         margin-bottom: 0.04px;
@@ -179,10 +210,27 @@
     }
 }
 
+// .loadingimage-rank {
+//     background: url(../../../assets/program/images/loading-gif.gif);
+//     background-repeat: no-repeat, no-repeat;
+//     background-size: 150px;
+//     background-position: center, center;
+
+//     min-height: 340px !important;
+//     min-width: 340px;
+
+//     font-size: 0;
+// }
+
 // RESPONSIVIDADE
 @media (max-width: 700px) {
     .rank-desktop {
         grid-template-columns: 1fr;
         height: auto;
     }
+}
+
+.transparentProgress{
+    opacity: 35%;
+    user-select: none;
 }

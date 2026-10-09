@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 // components
@@ -18,7 +18,10 @@ import { TaskService } from '../../services/tasks/tasks.service';
 import { QuizService } from '../../services/quizzes/quizzes.service';
 import { VideoService } from '../../services/videos/videos.service';
 import { MaterialService } from '../../services/materials/materials.service';
-
+import { UserService } from '../../services/users/users.service';
+// import { UserTaskService } from '../../services/user_tasks/user_tasks.service';
+import { ImageColorService } from '../services/image-color/imageColor.service'
+import { TaskContentStatusService } from '../../services/taskcontent-status/taskcontent-status.service'
 
 // rxjs
 import { firstValueFrom } from 'rxjs';
@@ -46,6 +49,12 @@ interface QuizForm {
   styleUrls: ['./progression.component.scss']
 })
 export class Progression implements OnInit {
+  @Input() moduleData: any = { image: undefined, name: '' };
+  @Input() studyTasksData = { studyCompleted: 0, totalStudyContents: 0 };
+  @Input() practiceTaskData = { practiceCompleted: 0, totalPracticeContents: 0 };
+  @Input() mainProgress: number = 0;
+  @Input() profile_picture: any = undefined;
+
   isMobile: boolean = window.innerWidth <= 1082;
   modules: TreeNode[] = [];
   tasks: TreeNode[] = [];
@@ -58,9 +67,80 @@ export class Progression implements OnInit {
             , private quizService: QuizService
             , private videoService: VideoService
             , private materialService: MaterialService
+            , private userService: UserService
+            , private imageColorService: ImageColorService
+            // , private userTaskService: UserTaskService
+            , private taskContentStatusService: TaskContentStatusService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
+    const userData: any = await this.getUserData();
+
+    this.moduleUpdate(userData.current_module_id);
+    this.userTasksUpdate(userData.id, userData.current_module_id);
+  }
+
+  //#region user progression
+  async userTasksUpdate(userId: number, moduleId: number): Promise<void> {
+    try {
+      const tasks = await firstValueFrom(
+        this.taskService.findByModule(moduleId)
+      );
+      this.studyTasksData.totalStudyContents = tasks.length;
+
+      const userTasks = await firstValueFrom(
+        this.taskContentStatusService.findByUser(userId)
+      );
+
+      this.studyTasksData.studyCompleted = userTasks.length;
+      this.userMainProgressCalc(userId);
+    } catch (err) {
+      console.error('--error:', err);
+    }
+  }
+
+  userMainProgressCalc(userId: number) {
+    const totalStudyContents: number = this.studyTasksData.totalStudyContents;
+    const studyCompleted: number = this.studyTasksData.studyCompleted;
+    
+    const totalPracticeContents: number = this.practiceTaskData.totalPracticeContents;
+    const practiceCompleted: number = this.practiceTaskData.practiceCompleted;
+    
+    const totalTasksCnt: number = totalStudyContents + totalPracticeContents;
+    if (!totalTasksCnt)
+      return;
+
+    const userTasksCnt: number = studyCompleted + practiceCompleted;
+    const progressPercentage: number = (userTasksCnt / totalTasksCnt) * 100;
+    this.mainProgress = progressPercentage;
+
+    // atualiza a informação de progressão la no usuario, serve pra visualizar a porcentagem depois nos componentes de tab
+    this.userService.updateModuleProgress(userId, progressPercentage);
+  }
+  //#endregion
+
+  async getUserData(): Promise<any> {
+    const userData: any = await firstValueFrom(this.userService.getProfile());
+    if (userData.profile_picture !== null)
+      console.log("userData: ", userData)
+      this.profile_picture = `http://localhost:3000${userData.profile_picture}`;
+    return userData.user;
+  }
+  
+  moduleUpdate(module_id: number): void {    
+    this.moduleService.findById(module_id).subscribe({
+      next: async (res: any) => {
+        this.moduleData = {
+          image: `http://localhost:3000${res.image}`,
+          name: res.name,
+          color: await this.imageColorService.getAverageColor(`http://localhost:3000${res.image}`),
+          id: res.id
+        }
+      },
+      error: (err) => {
+        console.error("--error: ", err)
+      }
+    });
   }
 
   @HostListener('window:resize')
@@ -98,7 +178,7 @@ export class Progression implements OnInit {
 
       return modules;
     } catch (err) {
-      console.log("--error: ", err);
+      console.error("--error: ", err);
       return null;
     }
   }
@@ -124,7 +204,7 @@ export class Progression implements OnInit {
             return;
 
           if (action.node.type === 'quiz')
-            this.editQuiz(action.node!.id, action.node.task.id, action.node.module.id);
+            this.editQuiz(action.node!.id);
 
           if (action.node.type === 'task')
             this.editTask(action.node.module.id, action.node!.id);
@@ -233,7 +313,7 @@ export class Progression implements OnInit {
         title: model.options?.length ? 'Editar quiz' : 'Criar quiz',
         subtitle: 'Marque a alternativa correta.',
         size: DialogSize.LARGE,
-        ...(Object.keys(model).length && { model }),
+        ...( Object.keys(model).length && { model } ),
         fields: [
           { key: 'image', label: 'Imagem', type: FieldType.FILE, required: true, width: FieldWidth.HALF },
           { key: 'name', label: 'Nome', type: FieldType.TEXT, required: true, maxLength: 100, width: FieldWidth.FULL },
@@ -263,19 +343,33 @@ export class Progression implements OnInit {
     return form.confirmed ? form.data : undefined;
   }
   
+  async uploadQuizImage(data: any): Promise<string> {
+    if (!(data.image instanceof File))
+      return '';
+
+    const imageData: any = await firstValueFrom(
+      this.quizService.uploadImage(data.image)
+    );
+
+    console.log('imageData:', imageData);
+
+    return imageData.path;
+  }
+
   async createQuiz(moduleId: number, taskId: number): Promise<void> {
     const formData = await this.openQuizFormDialog();
     if (!formData) return;
 
+    formData.image = await this.uploadQuizImage(formData);
+    console.log("formData.image: ", formData.image)
     this.quizService.create({ ...formData, module_id: moduleId, task_id: taskId }).subscribe({
       next: () => this.updateManager(),
       error: (error) => console.error('--Error: ', error),
     });
   }
   
-  async editQuiz(quizId: number, taskId: number, moduleId: number): Promise<void> {
+  async editQuiz(quizId: number): Promise<void> {
     const quiz: any = await firstValueFrom(this.quizService.findById(quizId));
-  
     const formData: any = await this.openQuizFormDialog({
       image: quiz.image,
       name: quiz.name,
@@ -285,13 +379,9 @@ export class Progression implements OnInit {
         right_answer: o.right_answer,
       })),
     });
-    console.log("formData: ", formData);
     if (!formData)
       return;
 
-  // module_id: number;
-  // task_id: number;
-  
     this.quizService.update(quizId, formData).subscribe({
       next: () => this.updateManager(),
       error: (error) => console.error('--Error: ', error),
@@ -375,6 +465,7 @@ export class Progression implements OnInit {
         size: DialogSize.SMALL,
         fields: [
           { key: 'name', label: 'Nome', type: FieldType.TEXT, required: true, maxLength: 100 },
+          { key: 'image', label: 'Imagem do rank', type: FieldType.FILE, required: true, maxLength: 255 },
           { key: 'module', label: 'Sequência', type: FieldType.NUMBER, required: true },
           { key: 'release_status', label: 'Status', type: FieldType.SELECT, required: true,
             options: [
@@ -402,14 +493,20 @@ export class Progression implements OnInit {
     if (!formData)
       return;
 
-    this.moduleService.create(formData).subscribe({
-      next: () => this.updateManager(),
-      error: (error) => console.error('--Error:', error)
+    this.moduleService.uploadImage(formData.image)
+    .subscribe((uploadRes) => {
+      formData.image = uploadRes.path;
+
+      this.moduleService.create(formData).subscribe({
+        next: () => this.updateManager(),
+        error: (error) => console.error('--Error:', error)
+      });
     });
   }
 
   async editModule(selectedId: number): Promise<void> {
     const selectedData: TreeNode | undefined = this.modules.find((m: any) => m.id === selectedId);
+    console.log("this.modules: ", this.modules)
     if (!selectedData || !selectedData.valid)
       return;
 
@@ -417,21 +514,31 @@ export class Progression implements OnInit {
       name: selectedData.name
       , module: selectedData.module
       , release_status: selectedData.release_status
+      , image: selectedData.image
     };
     const formData = await this.openModuleFormDialog(model);
     if (!formData)
       return;
 
-    this.moduleService.update(selectedId, formData).subscribe({
-      next: () => this.updateManager(),
-      error: (error) => console.error('--Error:', error)
-    });
-    this.updateManager();
+    if (formData.image !== selectedData.image) {
+      const uploadRes = await firstValueFrom(
+        this.moduleService.uploadImage(formData.image)
+      );
+
+      formData.image = uploadRes.path;
+    }
+
+    try {
+      await firstValueFrom(this.moduleService.update(selectedId, formData));
+      this.updateManager();
+    } catch (error) {
+      console.error('--Error:', error);
+    }
   }
 
   deleteModule(moduleId: number): void {
     this.moduleService.delete(moduleId).subscribe({
-      next: (res) => this.updateManager(),
+      next: () => this.updateManager(),
       error: (err) => console.error("--Rrror: ", err)
     });
   }

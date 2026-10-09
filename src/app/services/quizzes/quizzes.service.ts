@@ -99,4 +99,11 @@ export class QuizService {
   getStats(id: number): Observable<QuizStats> {
     return this.http.get<QuizStats>(`${this.api}/${id}/stats`);
   }
+
+  // MULTER
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.post(`${this.api}/upload`, formData);
+  }
 }

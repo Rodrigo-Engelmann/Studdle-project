@@ -21,6 +21,17 @@ export class TaskService {
     return this.taskRepo.find({ relations: ['module'] });
   }
 
+  async findByModule(moduleId: number) {
+    return this.taskRepo.find({
+      where: {
+        module: {
+          id: moduleId,
+        },
+      },
+      relations: ['module'],
+    });
+  }
+
   async findById(id: number) {
     const task = await this.taskRepo.findOne({
       where: { id },

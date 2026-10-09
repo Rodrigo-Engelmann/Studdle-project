@@ -37,6 +37,12 @@ export class TaskService {
     return this.http.get<Task>(`${this.api}/${id}`);
   }
 
+  // GET BY ID
+  findByModule(moduleId: number): Observable<Task[]> {
+    console.log("MODULE ID: ", moduleId)
+    return this.http.get<Task[]>(`${this.api}/module/${moduleId}`);
+  }
+
   // UPDATE
   update(id: number, data: Partial<Task>): Observable<Task> {
     return this.http.patch<Task>(`${this.api}/${id}`, data);

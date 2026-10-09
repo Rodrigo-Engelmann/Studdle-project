@@ -23,6 +23,11 @@ export class TaskController extends BaseController<Task> {
     return this.taskService.findContents(id);
   }
 
+  @Get('module/:moduleId')
+  findByModule(@Param('moduleId', ParseIntPipe) moduleId: number) {
+    return this.taskService.findByModule(moduleId);
+  }
+
   // Retorna o quiz vinculado a uma task
   @Get(':id/quiz')
   findQuiz(@Param('id', ParseIntPipe) id: number) {

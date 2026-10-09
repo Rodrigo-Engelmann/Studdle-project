@@ -13,10 +13,9 @@ async function bootstrap() {
   // Permite interpretar JSON do body
   app.use(json({ limit: '10mb' }));
   app.use(urlencoded({ extended: true }));
-    // habilitar cookie parser (necessário para req.cookies)
+  // habilitar cookie parser (necessário para req.cookies)
   app.use(cookieParser());
 
-  
   // sistema pros tokens
 
   // CORS: habilitar credenciais para permitir cookies cross-site
@@ -27,7 +26,6 @@ async function bootstrap() {
   });
 
   app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
-
 
   await app.listen(3000);
 }

@@ -1,3 +1,9 @@
+@property --module-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
 :host {
     display: block;
 }
@@ -10,13 +16,34 @@
     align-items: center;
     padding: 14px 8px 16px;
     color: var(--color-white);
-    background: linear-gradient( 180deg, var(--color-dark_gray-1) 62%, #a8783f 100% );
+
+    background: linear-gradient(
+        180deg,
+        var(--color-dark_gray-1) 62%,
+        var(--module-color) 100%
+    );
+    transition: --module-color 2s;
+}
+
+img {
+  opacity: 0.01;
+  transition: none;
+  font-size: 0;
+
+  &.image-loaded {
+    opacity: 1;
+    transition: opacity 1.5s ease;
+  }
+
+  &.loadingimage-rank {
+    opacity: 1;
+  }
 }
 
 .rank {
     text-align: center;
     p {
-        margin: 0 0 18px;
+        margin: 9px 0 18px 0;
         font-size: 20px;
         font-weight: 700;
     }
@@ -26,11 +53,14 @@
         aspect-ratio: 1;
         object-fit: cover;
         border-radius: 50%;
-        // box-shadow: 0 0 28px #e3a348;
+        font-size: 0;
     }
 }
 
 .linear-progress {
+    background-color: var(--selected-video);
+    border-radius: 400vw;
+
     position: relative;
     width: 90%;
     margin: 70px 0 30px;
@@ -59,7 +89,7 @@
 
         font-size: 20px;
         font-weight: 800;
-        margin-right: 26px;
+        // margin-right: 26px;
     }
 
     ion-icon {
@@ -81,7 +111,7 @@
 .circle-progress {
     --progress: 0%;
     position: relative;
-    width: min(37vw, 150px);
+    width: min(37vw, 200px);
     aspect-ratio: 1;
     display: grid;
     place-items: center;
@@ -103,14 +133,64 @@
         line-height: 1.08;
         strong {
             display: block;
-            font-size: 18px;
+            font-size: 6vw;
         }
 
         span {
             display: block;
             max-width: 112px;
-            font-size: 13px;
+            font-size: 3cqw;
             font-weight: 700;
+        }
+    }
+}
+
+.loadingimage-rank {
+//     background: url(../../../assets/program/images/loading-gif.gif);
+//     background-repeat: no-repeat, no-repeat;
+//     background-size: 150px;
+//     background-position: center, center;
+
+    // min-height: min(70vw, 340px);
+    min-width: 340px;
+    opacity: 1;
+    
+
+//     font-size: 0;
+}
+
+
+.transparentProgress{
+    opacity: 35%;
+    user-select: none;
+}
+
+
+
+
+@media (min-width: 490px) {
+    .rank img {
+        height: 340px;
+    }
+}
+
+@media (max-width: 490px) {
+    .rank img {
+        height: 69vw;
+    }
+}
+
+
+@media (min-width: 670px) {
+    .circle-progress {
+        &__content {
+            strong {
+                font-size: 40px;
+            }
+
+            span {
+                font-size: 20px;
+            }
         }
     }
 }

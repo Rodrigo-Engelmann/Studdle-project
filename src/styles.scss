@@ -29,12 +29,19 @@
 
   --color-purple1: #371A51;
   --color-purple2: #A340FF;
+  --color-purple2_5: #8a36da;
   --color-purple3: #6D00F9;
   --color-dark_purple: #3D3048;
 
   --color-warning: #BE3A3C;
 
   --selected-video: #a340ff2c;
+
+  --dialog-background: #ffffff11;
+  --dialog-input: #0000002c;
+  --dialog-input-2: #161616;
+
+  --transparent-gray: #1614167e;
 
   --spinner: var(--color-purple2);
 
@@ -164,4 +171,128 @@ body.acromatopsia {
 app-root{
   display: block;
   height: 100%;
+}
+
+
+/* ==============================
+Angular Material - Popups
+============================== */
+
+.cdk-overlay-pane {
+  /* opcional: regras gerais dos overlays */
+}
+
+/* Menus, selects, autocomplete, etc. */
+.mat-mdc-menu-panel,
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel {
+  background-color: var(--transparent-gray) !important;
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  border: solid var(--color-gray-3) 1.5px !important;
+
+  color: var(--color-light_gray_1) !important;
+}
+
+
+/* ==============================
+Menu
+============================== */
+
+.mat-mdc-menu-content {
+  padding: 4px 0 !important;
+}
+
+.mat-mdc-menu-item {
+  color: var(--color-light_gray_1) !important;
+}
+
+.mat-mdc-menu-item .mat-icon {
+  color: var(--color-light_gray_1) !important;
+}
+
+
+/* ==============================
+Select
+============================== */
+
+.mat-mdc-option {
+  color: var(--color-light_gray_1) !important;
+}
+
+.mat-mdc-option:hover,
+.mat-mdc-option.mdc-list-item--selected {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+
+
+
+
+
+
+/* ==============================
+Dialog
+============================== */
+
+.mat-mdc-dialog-surface {
+  background-color: var(--dialog-background) !important;
+
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+
+  border: solid var(--color-gray-3) 1.5px !important;
+
+  color: var(--color-light_gray_1) !important;
+}
+
+
+/* ==============================
+Tooltip
+============================== */
+
+.mat-mdc-tooltip .mdc-tooltip__surface {
+  background-color: var(--transparent-gray) !important;
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  color: var(--color-light_gray_1) !important;
+}
+
+:root {
+  --popup-radius: 6px;
+}
+
+.mat-mdc-dialog-content>:last-child{
+  background-color: transparent;
+}
+
+.mat-mdc-menu-panel,
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel,
+.mat-mdc-dialog-surface,
+.mat-mdc-tooltip .mdc-tooltip__surface {
+  border-radius: var(--popup-radius) !important;
+}
+
+.mat-mdc-dialog-surface,
+.mat-mdc-dialog-surface * {
+  color: var(--color-light_gray_1) !important;
+}
+.mat-mdc-dialog-surface .mat-icon {
+  color: var(--color-light_gray_1) !important;
+}
+.mat-mdc-dialog-surface .mdc-button {
+  color: var(--color-light_gray_1) !important;
+}
+.mat-mdc-dialog-surface .mdc-text-field {
+  color: var(--color-light_gray_1) !important;
+}
+
+.mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-text-field__input{
+  color: var(--color-light_gray_1) !important;
+
 }

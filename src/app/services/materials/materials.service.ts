@@ -12,12 +12,6 @@ export interface Material {
   sequence: number;
 }
 
-export interface MaterialStatus {
-  user_id: number;
-  material_id: number;
-  completed: boolean;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -59,16 +53,6 @@ export class MaterialService {
   // GET COMENTÁRIOS DO MATERIAL
   findComments(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/${id}/comments`);
-  }
-
-  // MARCAR COMO CONCLUÍDO
-  markComplete(id: number, user_id: number): Observable<MaterialStatus> {
-    return this.http.post<MaterialStatus>(`${this.api}/${id}/complete`, { user_id });
-  }
-
-  // GET STATUS DE CONCLUSÃO
-  getStatus(id: number, userId: number): Observable<MaterialStatus> {
-    return this.http.get<MaterialStatus>(`${this.api}/${id}/status/${userId}`);
   }
 
   // MULTER

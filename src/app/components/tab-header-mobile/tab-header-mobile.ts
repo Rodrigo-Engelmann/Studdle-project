@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,7 @@ import { homeOutline, playCircleOutline, documentTextOutline, hardwareChipOutlin
 // outro
 import { filter } from 'rxjs';
 import { UserService } from '../../services/users/users.service';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-tab-header-mobile',
@@ -23,6 +24,7 @@ import { UserService } from '../../services/users/users.service';
         CommonModule
         , RouterOutlet
         , MatIconModule
+        , NgClass
 
         , IonHeader
         , IonToolbar
@@ -43,13 +45,16 @@ import { UserService } from '../../services/users/users.service';
     styleUrl: './tab-header-mobile.scss',
 })
 export class TabHeaderMobile implements OnInit {
+    @Input() progressPercentage: number = 0;
+
     profile_picture: any = undefined;
     selectedIndex: number = 0;
     pageName: any[] = [
-        'Home'
-        , 'Videos'
-        , 'Materials'
+        'Página inicial'
+        , 'Vídeos'
+        , 'Materiais'
         , 'Download'
+        , 'Progressão'
     ];
     routes: any[] = [
         'recomendacoes'
@@ -119,7 +124,7 @@ export class TabHeaderMobile implements OnInit {
                 this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
         },
         error: (err) => {
-            console.error("Erro ao buscar perfil:", err);
+            console.error("Failet to find profile:", err);
 
             if (err.status === 401) {
             this.router.navigate(['/login']);
@@ -174,7 +179,7 @@ export class TabHeaderMobile implements OnInit {
                 this.router.navigate(['/login']);
             },
             error: (err) => {
-                console.error("Erro ao fazer logout:", err);
+                console.error("Logout error:", err);
             }
         });
     }

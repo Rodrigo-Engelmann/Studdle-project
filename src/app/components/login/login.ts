@@ -61,7 +61,7 @@ export class Login implements OnInit {
         this.userService.updateColorBlindFilter(-1)
       },
       error: (err) => {
-        console.error('Erro no login:', err);
+        console.error('Login error:', err);
       },
     });
   }

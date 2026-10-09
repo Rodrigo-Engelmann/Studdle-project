@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Patch, Param, Body, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Body,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UserTaskService } from './user_tasks.service';
 
 // Não estende BaseController pois usa PK composta (user_id + task_id)
@@ -9,7 +17,14 @@ export class UserTaskController {
   // Cria ou atualiza o vínculo entre usuário e task
   @Post()
   upsert(
-    @Body() data: { user_id: number; task_id: number; completed: boolean; engine_task?: boolean; engine_task_count?: number },
+    @Body()
+    data: {
+      user_id: number;
+      task_id: number;
+      completed: boolean;
+      engine_task?: boolean;
+      engine_task_count?: number;
+    },
   ) {
     return this.userTaskService.upsert(data);
   }

@@ -164,7 +164,7 @@ export class AuthController {
       try {
         await this.authService.logout(refreshToken);
       } catch (err) {
-        console.error('Erro ao revogar refresh token:', err);
+        console.error('Error revoking refresh token:', err);
       }
     }
 

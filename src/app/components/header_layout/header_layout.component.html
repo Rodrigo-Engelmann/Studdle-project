@@ -1,8 +1,12 @@
 <div class="header-page" [ngClass]="mobile ? 'mobile-headerpage' : null">
     @if(mobile){
-        <app-tab-header-mobile />
+        <app-tab-header-mobile
+        [progressPercentage]="progressPercentage"
+        />
     }
     @else{
-        <app-tab-header />
+        <app-tab-header
+        [progressPercentage]="progressPercentage"
+        />
     }
 </div>

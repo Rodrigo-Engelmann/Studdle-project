@@ -1,23 +1,29 @@
-<section class="rank-desktop" aria-label="Progresso do aluno">
+<section class="rank-desktop" aria-label="Progresso do aluno"
+[style.--module-color]="moduleData.color">
   <div class="metrics">
-    <article class="circle-progress" [style.--progress]="studyProgress + '%'">
+    <article class="circle-progress" [style.--progress]="studyProgress + '%'" [ngClass]="studyTasksData.totalStudyContents ? '' : 'transparentProgress' ">
       <div class="circle-progress__content">
-        <strong>{{ studyCompleted }}/{{ totalContents }}</strong>
+        <strong>{{ studyTasksData.studyCompleted }}/{{ studyTasksData.totalStudyContents }}</strong>
         <span>conteúdos a estudar</span>
       </div>
     </article>
 
-    <article class="circle-progress" [style.--progress]="practiceProgress + '%'">
+    <article class="circle-progress" [style.--progress]="practiceProgress + '%'" [ngClass]="practiceTaskData.totalPracticeContents ? '' : 'transparentProgress' ">
       <div class="circle-progress__content">
-        <strong>{{ practiceCompleted }}/{{ totalContents }}</strong>
+        <strong>{{ practiceTaskData.practiceCompleted }}/{{ practiceTaskData.totalPracticeContents }}</strong>
         <span>conteúdos a praticar</span>
       </div>
     </article>
   </div>
 
   <div class="rank">
-    <p>{{ rankName }}</p>
-    <img [src]="rankImageUrl" [alt]="'Imagem do rank ' + rankName" />
+    <p>{{ moduleData.name }}</p>
+    
+    <img [src]="moduleData.image"
+    [alt]="'Imagem ilustrativa do rank ' + moduleData.name"
+    [class.loadingimage-rank]="!moduleData?.image"
+    [class.image-loaded]="imageLoaded"
+    (load)="imageLoaded = true"/>
   </div>
 
   <div class="linear-progress" aria-label="Progresso geral">
@@ -39,9 +45,13 @@
             <span class="label_percentage">{{ linearProgress }}%</span>
             
             @if (linearProgress >= 8) {
-              <mat-icon aria-hidden="true">
+              <!-- <mat-icon aria-hidden="true">
                 account_circle
-              </mat-icon>
+              </mat-icon> -->
+
+              <img class="profile-picture translateYhover"
+              [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+              alt="" matButton>
             }
           }
         </div>

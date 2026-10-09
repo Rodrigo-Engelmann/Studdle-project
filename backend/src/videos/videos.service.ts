@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Video } from './videos.entity';
-import { VideoStatus } from '../videostatus/videostatus.entity';
 
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -12,8 +11,6 @@ export class VideoService {
   constructor(
     @InjectRepository(Video)
     private readonly videoRepo: Repository<Video>,
-    @InjectRepository(VideoStatus)
-    private readonly videoStatusRepo: Repository<VideoStatus>,
     private readonly httpService: HttpService,
   ) {}
 
@@ -51,61 +48,23 @@ export class VideoService {
   async findComments(id: number) {
     const video = await this.videoRepo.findOne({
       where: { id },
-      relations: [
-        'comments'
-        , 'comments.user'
-      ],
+      relations: ['comments', 'comments.user'],
     });
-    if (!video)
-      throw new NotFoundException(`Vídeo #${id} não encontrado`);
+    if (!video) throw new NotFoundException(`Vídeo #${id} não encontrado`);
 
     return video.comments;
-  }
-
-  async markComplete(videoId: number, userId: number) {
-    await this.findById(videoId);
-    const existing = await this.videoStatusRepo.findOne({
-      where: {
-        video_id: videoId
-        , user_id: userId 
-      },
-    });
-    if (existing) {
-      existing.completed = true;
-      return this.videoStatusRepo.save(existing);
-    }
-    const status = this.videoStatusRepo.create({
-      video_id: videoId
-      , user_id: userId
-      , completed: true
-    });
-    return this.videoStatusRepo.save(status);
-  }
-
-  async getStatus(videoId: number, userId: number) {
-    const status = await this.videoStatusRepo.findOne({
-      where: { video_id: videoId, user_id: userId },
-    });
-    return status ?? {
-      video_id: videoId
-      , user_id: userId
-      , completed: false
-    };
   }
 
   async getYoutubeData(url: string) {
     const videoId = new URL(url).searchParams.get('v');
     const response = await firstValueFrom(
-      this.httpService.get(
-        'https://www.googleapis.com/youtube/v3/videos',
-        {
-          params: {
-            part: 'snippet',
-            id: videoId,
-            key: process.env.YOUTUBE_API_KEY,
-          },
+      this.httpService.get('https://www.googleapis.com/youtube/v3/videos', {
+        params: {
+          part: 'snippet',
+          id: videoId,
+          key: process.env.YOUTUBE_API_KEY,
         },
-      ),
+      }),
     );
 
     const snippet = response.data.items[0]?.snippet;
@@ -113,8 +72,8 @@ export class VideoService {
     return {
       title: snippet?.title,
       description: snippet?.description,
-      thumbnail: snippet?.thumbnails?.maxres?.url
-        ?? snippet?.thumbnails?.high?.url,
+      thumbnail:
+        snippet?.thumbnails?.maxres?.url ?? snippet?.thumbnails?.high?.url,
     };
   }
 
@@ -122,11 +81,8 @@ export class VideoService {
     const video = await this.videoRepo.findOne({
       where: { video_url: url },
     });
-    if (!video)
-      throw new NotFoundException(`Vídeo #${url} não encontrado`);
+    if (!video) throw new NotFoundException(`Vídeo #${url} não encontrado`);
 
     return video;
   }
 }
-
-

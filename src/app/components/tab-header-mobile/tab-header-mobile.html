@@ -34,9 +34,9 @@
         }
     </ion-toolbar>
 
-    @if (showFilters) {
+    <!-- @if (showFilters) { -->
         <!-- filters subheader -->
-        <ion-toolbar class="search-toolbar">
+        <ion-toolbar class="search-toolbar" [ngClass]="showFilters ? '' : 'hideFilters' ">
             <div class="search-container">
                 <div class="search-bar">
                     <ion-input
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </ion-toolbar>
-    }
+    <!-- } -->
 </ion-header>
 
 <ion-content>

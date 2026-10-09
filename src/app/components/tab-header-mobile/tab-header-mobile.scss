@@ -137,11 +137,21 @@ span {
 
 // FILTRO (subheader):
 .search-toolbar {
+    position: absolute;
+    z-index: 0;
+
     --min-height: auto;
     padding: 14px 18px;
-    
+
     --background: var(--color-dark-gray-4);
     border-bottom: 1.5px var(--color-gray-3) solid;
+
+    transform: translateY(0);
+    transition: transform 0.06s ease;
+}
+
+.hideFilters {
+    transform: translateY(-100%);
 }
 
 .search-container {

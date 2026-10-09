@@ -1,6 +1,6 @@
 // angular
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 // other
 import { filter } from 'rxjs';
+import { NgClass } from '@angular/common';
 
 // services
 import { UserService } from '../../services/users/users.service';
@@ -30,7 +31,8 @@ import { UserService } from '../../services/users/users.service';
     CommonModule,
     MatSelectModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    NgClass
   ],
   templateUrl: 'tab-header.html',
   styleUrls: [
@@ -39,6 +41,8 @@ import { UserService } from '../../services/users/users.service';
   ]
 })
 export class TabHeader implements OnInit {
+  @Input() progressPercentage: number = 0;
+
   profile_picture: any = undefined;
   selectedIndex: number = 0;
 
@@ -120,7 +124,7 @@ export class TabHeader implements OnInit {
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
       },
       error: (err) => {
-        console.error("Erro ao buscar perfil:", err);
+        console.error("failed to find profile:", err);
 
         if (err.status === 401) {
           this.router.navigate(['/login']);
@@ -131,7 +135,7 @@ export class TabHeader implements OnInit {
 
   ngAfterViewInit() {
     this.search_header = document.getElementsByClassName("search-header")[0] as HTMLElement;
-    if (this.search_header) this.search_header.style.zIndex = '1012312';
+    // if (this.search_header) this.search_header.style.zIndex = '1012312';
 
     const header = document.querySelector('app-tab-header') as HTMLElement;
     if (header) {
@@ -185,7 +189,7 @@ export class TabHeader implements OnInit {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error("Erro ao fazer logout:", err);
+        console.error("Logout error:", err);
       }
     });
   }

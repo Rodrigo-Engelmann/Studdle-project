@@ -18,14 +18,8 @@ import { QuizService } from './quizzes.service';
     ]),
     HttpModule,
   ],
-  controllers: [
-    QuizController,
-  ],
-  providers: [
-    QuizService,
-  ],
-  exports: [
-    QuizService,
-  ],
+  controllers: [QuizController],
+  providers: [QuizService],
+  exports: [QuizService],
 })
 export class QuizModule {}

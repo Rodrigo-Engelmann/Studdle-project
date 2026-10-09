@@ -1,9 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn, 
-  Column,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { User } from '../users/users.entity';
 import { Task } from '../tasks/tasks.entity';
 import { Quiz } from '../quizzes/quizzes.entity';
@@ -15,6 +10,9 @@ export class Module {
 
   @Column({ unique: true })
   module!: number;
+
+  @Column({ length: 255 })
+  image!: string;
 
   @Column({ length: 100 })
   name!: string;

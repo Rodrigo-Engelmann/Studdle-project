@@ -53,6 +53,7 @@ html,body{
     width: 100%;
     background-color: var(--color-dark_gray-1);
     border-bottom: solid var(--color-purple2) 2px;
+    z-index: 2;
 }
 
 .studdle-logo-header {
@@ -82,6 +83,7 @@ html,body{
     padding: 10px 20px;
     border-radius: 40px;
     transition-duration: 0.15s;
+    cursor: pointer;
 }
 .filter-icon:hover{
     // background-color: rgba(255, 255, 255, 0.082);
@@ -123,32 +125,66 @@ html,body{
 }
 
 // header de search - aparecer somente em "/materiais" e "/videos"
-.search-header{
-    height: 4.6rem;
-    width: 100%;
-    background-color: var(--color-dark_gray-0);
+.search-header {
+    position: absolute;
+    z-index: -2;
 
-    border-bottom: solid #5D5D5D 1.5px;
+    height: 4rem;
+    width: 100%;
+    background-color: var(--color-dark-gray-4);
+
+    border-bottom: solid var(--color-gray-3) 1.7px;
+    padding-bottom: 5px;
+
+    transform: translateY(0);
+    transition: transform 0.06s ease;
+}
+
+.hideFilters {
+    transform: translateY(-100%);
 }
 
 .search-form{
-    height: 110%;
+    height: 100%;
 
     display: flex;
     align-items: center;
+}
 
+.selectfilter-inputs{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 
-.search-header-input{
-    background-color: var(--color-dark_gray-2);
-    height: 50px;
-    border: none;
+.search-header-input {
+    height: 40px;
+    background-color: transparent;
 
-    border-bottom: solid var(--color-purple2) 3px;
-    border-radius: 10px;
+    border: solid var(--color-gray-3) 1.7px;
+    border-radius: 100000vw;
 }
 
+::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix,
+::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    height: 40px !important;
+    min-height: 40px !important;
+
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    display: flex !important;
+}
+
+
+
+::ng-deep .mat-mdc-select-trigger {
+    height: 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+}
 .search-input{
     width: 40%;
 }
@@ -167,16 +203,57 @@ html,body{
 }
 
 .search-icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
     border: none;
-    background-color: transparent;
-    color: var(--color-gray-0);
+    background-color: var(--color-gray-3);
+    color: var(--color-dark-gray-4);
 
     transform: scale(1.6);
-    margin-right: 10px;
+    width: 40px;
+    height: 26px !important;
+
+    border-radius: 0 20px 20px 0;
+    padding: 0;
+
+    cursor: pointer;
+
+    mat-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+        transition-duration: 0.1s;
+    }
+
+    &:hover{
+        mat-icon{
+            transform: scale(1.1);
+        }
+    }
+    &:active{
+        mat-icon{
+            transform: scale(0.8);
+        }
+    }
 }
 
 .text-origin{
     color: var(--color-gray-0);
+}
+
+::ng-deep .search-header-input .mat-mdc-select:focus .mat-mdc-select-arrow {
+    color: var(--color-purple2) !important;
+}
+
+::ng-deep .mat-mdc-notch-piece.mdc-notched-outline__notch {
+    // display: flex !important;
+    // align-items: center !important;
+    // justify-content: center !important;
+    margin-top: -6.2px;
 }
 
 ::ng-deep .mat-mdc-input-element {
@@ -191,4 +268,36 @@ html,body{
 
 .page_container{
     height: 100%;
+}
+
+.progress-percentage-text{
+    margin-left: 8px;
+    color: var(--color-purple2);
+    font-size: 18px;
+    font-weight: 650;
+    text-align: left;
+
+    width: 20px;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    background-color: var( --transparent-gray) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: solid var(--color-gray-3) 1.5px;
+}
+
+::ng-deep .mat-mdc-menu-content{
+    padding: 4px 0 !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    color: var(--color-light_gray_1) !important;
+}
+::ng-deep .mat-mdc-menu-item {
+    color: var(--color-light_gray_1) !important;
+}
+::ng-deep .mat-mdc-menu-item .mat-icon {
+    color: var(--color-light_gray_1) !important;
 }

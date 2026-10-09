@@ -7,20 +7,9 @@ import { ModuleController } from './modules.controller';
 import { ModuleService } from './modules.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      ModuleEntity
-    ]),
-    HttpModule
-  ],
-  controllers: [
-    ModuleController
-  ],
-  providers: [
-    ModuleService
-  ],
-  exports: [
-    ModuleService
-  ],
+  imports: [TypeOrmModule.forFeature([ModuleEntity]), HttpModule],
+  controllers: [ModuleController],
+  providers: [ModuleService],
+  exports: [ModuleService],
 })
 export class ModuleModule {}

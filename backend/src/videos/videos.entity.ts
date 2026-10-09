@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { VideoStatus } from '../videostatus/videostatus.entity';
 import { Comment } from '../comments/comments.entity';
 import { TaskContent } from '../task_contents/task_contents.entity';
 
@@ -38,9 +37,6 @@ export class Video {
 
   @Column({ unique: true })
   sequence!: number;
-
-  @OneToMany(() => VideoStatus, (vs) => vs.video)
-  video_statuses!: VideoStatus[];
 
   @OneToMany(() => Comment, (comment) => comment.video)
   comments!: Comment[];

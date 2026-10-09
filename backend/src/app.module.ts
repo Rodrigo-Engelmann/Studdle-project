@@ -10,8 +10,6 @@ import { UserModule } from './users/users.module';
 import { MaterialModule } from './materials/materials.module';
 import { VideoModule } from './videos/videos.module';
 import { TaskModule } from './tasks/tasks.module';
-import { MaterialStatusModule } from './materialstatus/materialstatus.module';
-import { VideoStatusModule } from './videostatus/videostatus.module';
 import { CommentModule } from './comments/comments.module';
 import { TaskContentModule } from './task_contents/task_contents.module';
 import { UserTaskModule } from './user_tasks/user_tasks.module';
@@ -36,14 +34,11 @@ import { UserNotificationModule } from './user_notifications/user_notifications.
       }),
       inject: [ConfigService],
     }),
-
     ModuleModule,
     UserModule,
     MaterialModule,
     VideoModule,
     TaskModule,
-    MaterialStatusModule,
-    VideoStatusModule,
     CommentModule,
     TaskContentModule,
     UserTaskModule,

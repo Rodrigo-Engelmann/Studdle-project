@@ -124,6 +124,13 @@ export class UserService {
     );
   }
 
+  updateModuleProgress(
+    userId: number,
+    moduleProgress: number
+  ): Observable<User> {
+    return this.http.patch<User>( `${this.api}/${userId}/module-progress`, { module_progress: moduleProgress } );
+  }
+
   //#endregion
 
   //#region: auth

@@ -1,9 +1,15 @@
 @if(isMobile) {
-  <app-progression-mobile class="progression-components">
-  </app-progression-mobile>
+  <app-progression-mobile class="progression-components"
+  [moduleData]="moduleData"
+  [studyTasksData]="studyTasksData"
+  [linearProgress]="mainProgress"
+  ></app-progression-mobile>
 } @else {
-  <app-progression-desktop class="progression-components">
-  </app-progression-desktop>
+  <app-progression-desktop class="progression-components"
+  [moduleData]="moduleData"
+  [studyTasksData]="studyTasksData"
+  [linearProgress]="mainProgress"
+  ></app-progression-desktop>
 }
 
 <div class="add-btn"

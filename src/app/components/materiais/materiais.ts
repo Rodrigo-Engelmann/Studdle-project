@@ -65,14 +65,12 @@ export class Materiais implements OnInit {
       const data = res.data;
       this.materialService.uploadImage(data.main_image)
       .subscribe((uploadRes) => {
-        // Agora temos o caminho da imagem
         data.main_image = uploadRes.path;
         data.link = data.title.replaceAll(' ', '') + data.sequence;
 
-        // Aqui você usa sua rota CREATE genérica normalmente
         this.materialService.create(data).subscribe((postRes: any) => {
-            this.materials.push(postRes);
-          });
+          this.materials.push(postRes);
+        });
       });
     });
   }

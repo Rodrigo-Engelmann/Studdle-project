@@ -75,7 +75,7 @@ export class UserConfigs implements OnInit {
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
       },
       error: (err) => {
-        console.error("Erro ao buscar perfil: ", err);
+        console.error("Failed to find profile: ", err);
 
         if (err.status === 401)
           this.router.navigate(['/login']);
@@ -145,7 +145,7 @@ export class UserConfigs implements OnInit {
         this.getBackToHome();
       },
       error: (err) => {
-        console.error('Erro ao atualizar usuário:', err);
+        console.error('Error updating user:', err);
         alert('Erro ao salvar mudanças.');
       },
     });
@@ -169,7 +169,7 @@ export class UserConfigs implements OnInit {
         localStorage.removeItem('token');
       },
       error: (err) => {
-        console.error("Erro ao deletar conta:", err);
+        console.error("Account delete error:", err);
         alert("Erro ao excluir conta.");
       }
     });
@@ -180,7 +180,7 @@ export class UserConfigs implements OnInit {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error("Erro ao fazer logout:", err);
+        console.error("Logout error:", err);
       }
     });
   }

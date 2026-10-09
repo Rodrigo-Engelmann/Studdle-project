@@ -10,6 +10,7 @@ export interface TreeNode {
   type: TreeNodeType;
   children?: TreeNode[];
   valid?: boolean;
+  image?: string;
   [key: string]: unknown;
 }
 
