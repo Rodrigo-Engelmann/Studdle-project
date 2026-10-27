@@ -1,0 +1,232 @@
+:host {
+  position: fixed;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+
+  --mascot-size: clamp(90px, 400px, 280px);
+  --mascot-gap: 16px;
+}
+
+// mascote
+.mascot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: var(--mascot-size);
+  height: auto;
+  pointer-events: none;
+  animation: mascot-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+// balão
+.bubble-wrapper {
+  position: absolute;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+
+  min-width: min(14rem, 60vw);
+  pointer-events: none;
+  animation: bubble-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  &.to-left {
+    align-items: flex-end;
+    animation-name: bubble-in-left;
+  }
+}
+
+.mascot-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0 4px;
+  color: var(--color-light_gray_1);
+}
+
+.bubble {
+  position: relative;
+  width: 100%;
+  padding: 12px 16px;
+
+  background-color: var(--dialog-background);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  border: solid var(--color-gray-3) 1.5px;
+  border-radius: var(--popup-radius, 6px);
+  color: var(--color-light_gray_1);
+
+  //rabinhooo
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -6px;
+    transform: rotate(45deg);
+    background-color: var(--dialog-background);
+  }
+}
+
+// balão à direita do mascote então ponta aponta para a esquerda
+.bubble-wrapper:not(.to-left) .bubble::after {
+  left: -7px;
+  border-left: solid var(--color-gray-3) 1.5px;
+  border-bottom: solid var(--color-gray-3) 1.5px;
+}
+
+// balão à esquerda do mascote então ponta aponta para a direita
+.bubble-wrapper.to-left .bubble::after {
+  right: -7px;
+  border-right: solid var(--color-gray-3) 1.5px;
+  border-top: solid var(--color-gray-3) 1.5px;
+}
+
+.bubble-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.bubble-hint {
+  font-size: 0.75rem;
+  padding: 0 4px;
+  color: var(--color-light_gray_1);
+  opacity: 0.55;
+
+  .step-counter {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes mascot-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 12px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translate(-12px, -50%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+@keyframes bubble-in-left {
+  from {
+    opacity: 0;
+    transform: translate(12px, -50%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+@media (max-width: 700px) {
+  :host {
+    --mascot-size: clamp(120px, 36vw, 170px);
+  }
+
+  .mascot-name {
+    margin-bottom: 10px;
+    font-size: 20px;
+
+    background-color: var(--color-dark_gray-1);
+    padding: 5px;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .mascot {
+    margin-bottom: 400px;
+    left: 50vw !important;
+
+    width: 300px;
+
+    transform: translate(-50%, -100%);
+    animation-name: mascot-in-mobile;
+  }
+
+  .bubble-wrapper,
+  .bubble-wrapper.to-left {
+    left: 50vw !important;
+    right: auto !important;
+    max-width: none !important;
+
+    width: min(84vw, 420px);
+    margin-top: 10px;
+
+    transform: translateX(-50%);
+    align-items: center;
+    text-align: center;
+
+    animation-name: bubble-in-mobile;
+  }
+
+  .bubble-wrapper:not(.to-left) .bubble::after,
+  .bubble-wrapper.to-left .bubble::after {
+    top: -7px;
+    left: 50%;
+    right: auto;
+    margin: 0 0 0 -6px;
+
+    border: none;
+    border-top: solid var(--color-gray-3) 1.5px;
+    border-left: solid var(--color-gray-3) 1.5px;
+  }
+
+  .bubble-text {
+    font-size: 0.9375rem;
+  }
+}
+
+@keyframes mascot-in-mobile {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% + 12px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+@keyframes bubble-in-mobile {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .mascot,
+  .bubble-wrapper,
+  .bubble-wrapper.to-left {
+    animation: none;
+  }
+}

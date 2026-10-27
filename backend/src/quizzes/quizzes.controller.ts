@@ -67,4 +67,10 @@ export class QuizController extends BaseController<Quiz> {
   getStats(@Param('id', ParseIntPipe) id: number) {
     return this.quizService.getStats(id);
   }
+
+  // Retorna 1 quiz aleatório de cada task do módulo, gerando um quiz completo pro usuário
+  @Get('module/:moduleId/random')
+  findRandomByModule(@Param('moduleId', ParseIntPipe) moduleId: number) {
+    return this.quizService.findRandomByModule(moduleId);
+  }
 }

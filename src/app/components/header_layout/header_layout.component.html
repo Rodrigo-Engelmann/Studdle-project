@@ -2,11 +2,19 @@
     @if(mobile){
         <app-tab-header-mobile
         [progressPercentage]="progressPercentage"
+        [modules]="modules"
+        [categories]="categories"
+        (filterChanges)="onFilterChanges($event)"
+        (updateUserData)="updateUserData()"
         />
     }
     @else{
         <app-tab-header
         [progressPercentage]="progressPercentage"
+        [modules]="modules"
+        [categories]="categories"
+        (filterChanges)="onFilterChanges($event)"
+        (updateUserData)="updateUserData()"
         />
     }
 </div>

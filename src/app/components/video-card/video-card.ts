@@ -1,11 +1,12 @@
 // angular
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 
 // services
 import { DialogService } from '../services/dialog.service'
+import { UserDataBridgeService } from '../services/userData-bridge.service';
 
 // common
 import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
@@ -13,7 +14,7 @@ import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
 // others
 import { video } from '../../../../common/video';
 import { VideoService } from '../../../app/services/videos/videos.service'
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeUntil, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-vid-card',
@@ -25,12 +26,15 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './video-card.scss',
 })
 
-export class VideoCard implements OnChanges {
+export class VideoCard implements OnChanges, OnInit {
   @Input() video: video = new video;
   @Output() updateData = new EventEmitter<video>();
 
   videoPrefix: string = 'https://www.youtube.com/watch?v=';
   createdDateFormat: string = '';
+  userData: any = undefined;
+
+  private destroy$ = new Subject<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
     const videoCreatedDate = changes['video'].currentValue.createdDate
@@ -38,9 +42,19 @@ export class VideoCard implements OnChanges {
       this.createdDateFormat = new Date(videoCreatedDate).toLocaleDateString('pt-BR');
   }
 
+  ngOnInit(): void {
+    this.userDataBridgeService.userData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bridgeUserData: any) => {
+        this.userData = bridgeUserData;
+    });
+  }
+
   constructor(private dialogService: DialogService
             , private videoService: VideoService
-            , private router: Router) {}
+            , private router: Router
+            , private userDataBridgeService: UserDataBridgeService
+  ) {}
 
   openVideo(): void {
     this.router.navigate([`/video/watch/${this.video.video_url}`]);
@@ -64,6 +78,9 @@ export class VideoCard implements OnChanges {
         { key: 'sequence', label: 'Sequência dos vídeos', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe(async (res: any) => {
+      if (!res.confirmed)
+        return;
+    
       const formdata = res.data;
       const URL = formdata.link.replace(this.videoPrefix,'');
       formdata.video_url = URL;

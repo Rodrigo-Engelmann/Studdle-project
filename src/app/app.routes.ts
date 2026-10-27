@@ -14,9 +14,6 @@ import { ViewVideo } from './components/view-video/view-video';
 import { ViewMaterial } from './components/view-material/view-material';
 
 export const routes: Routes = [
-    // tentei implementar um sistema de segurança (que o usuário não consegue entrar nas rotas até que tenha tokens), só que não consegui, então fica normal sem alterações
-    //  IMPORTANTE: ler essa linha de cima e implementar quando possível, pois senão poderá ser uma brecha de segurança para o usuário (mesmo não registrado) entrar
-    
     {path: '',
         component: TabHeaderLayoutComponent,
         children: [

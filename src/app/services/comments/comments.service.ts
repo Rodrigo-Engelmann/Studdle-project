@@ -10,6 +10,7 @@ export interface Comment {
   material_id?: number;
   publish_date?: string;
   mentions_comment?: number;
+  user?: { id: number; user_name: string; profile_picture?: string };
 }
 
 @Injectable({
@@ -55,8 +56,24 @@ export class CommentService {
     return this.http.get<Comment[]>(`${this.api}/user/${userId}`);
   }
 
-  // DELETAR TODOS OS COMENTÁRIOS DE UM USUÁRIO (moderação)
+  // DELETE ALL COMMENTS FROM USER
   removeByUser(userId: number): Observable<any> {
     return this.http.delete(`${this.api}/user/${userId}`);
+  }
+
+  // GET COMMENTS BY VIDEO
+  findByVideo(videoId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.api}/video/${videoId}`);
+  }
+
+  // GET COMMENTS BY MATERIAL
+  findByMaterial(materialId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.api}/material/${materialId}`);
+  }
+
+  findContext(id: number): Observable<{ root: Comment; replies: Comment[]; target: Comment }> {
+    return this.http.get<{ root: Comment; replies: Comment[]; target: Comment }>(
+      `${this.api}/${id}/context`,
+    );
   }
 }

@@ -54,7 +54,7 @@ export class Comment {
 
   // Auto-referência para reply de comentários
   @ManyToOne(() => Comment, (comment) => comment.replies, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   @JoinColumn({ name: 'mentions_comment' })

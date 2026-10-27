@@ -1,25 +1,28 @@
-import { 
-  Controller, 
-  Post, 
-  Body, 
-  Res, 
-  Req, 
-  Get, 
-  UseGuards, 
-  HttpCode, 
-  HttpStatus, 
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  Req,
+  Get,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
   BadRequestException,
-  Put, 
-  UploadedFile, 
+  UnauthorizedException,
+  Put,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import type { Response, Request } from 'express';
 import * as dotenv from 'dotenv';
-import { ACCESS_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME } from './constants';
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from './constants';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { JwtRefreshGuard } from '../common/guards/jwt-refresh.guard';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -31,8 +34,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-
-
 
 dotenv.config();
 
@@ -48,10 +49,7 @@ export class AuthController {
 
   // REGISTER
   @Post('register')
-  async register(
-    @Body() body: any,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async register(@Body() body: any, @Res({ passthrough: true }) res: Response) {
     const { user_name, email, password } = body;
 
     if (!user_name || !email || !password) {
@@ -77,7 +75,8 @@ export class AuthController {
     const savedUser = await this.usersRepo.save(newUser);
 
     // Gerar tokens
-    const { accessToken, refreshToken } = await this.authService.login(savedUser);
+    const { accessToken, refreshToken } =
+      await this.authService.login(savedUser);
 
     // Salvar cookies (EXATAMENTE como no login)
     res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
@@ -108,11 +107,12 @@ export class AuthController {
   // LOGIN
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const user = await this.authService.validateUser(dto.email, dto.password);
-    if (!user) {
-      return { ok: false, message: 'Credenciais inválidas' };
-    }
+    if (!user) return { ok: false, message: 'Credenciais inválidas' };
 
     const { accessToken, refreshToken } = await this.authService.login(
       user,
@@ -178,10 +178,6 @@ export class AuthController {
     return { user: req.user };
   }
 
-
-
-  
-
   // DEBUG - VER COOKIES
   @Get('debug-cookie')
   debugCookie(@Req() req: Request) {
@@ -189,10 +185,19 @@ export class AuthController {
   }
 
   // REFRESH TOKEN
-  @UseGuards(JwtRefreshGuard)
+  //
+  // Sem guard: o refresh token não é um JWT, é um valor aleatório.
+  // Quem valida é o banco, dentro de authService.refreshTokens().
   @Post('refresh')
-  async refreshTokens(@Req() req: any, @Res({ passthrough: true }) res: Response) {
-    const result = await this.authService.refreshTokensByUserId(req.user.userId);
+  async refreshTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const token = req.cookies?.[REFRESH_TOKEN_COOKIE_NAME];
+
+    if (!token) throw new UnauthorizedException('Refresh token ausente');
+
+    const result = await this.authService.refreshTokens(token);
 
     res.cookie(ACCESS_TOKEN_COOKIE_NAME, result.accessToken, {
       httpOnly: true,
@@ -210,42 +215,52 @@ export class AuthController {
       path: '/',
     });
 
-    return { ok: true, user: result.user };
+    const { password, ...safeUser } = result.user;
+
+    return { ok: true, user: safeUser };
   }
-
-
 
   @UseGuards(JwtAuthGuard)
   @Put('update-profile')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: 'uploads/profile',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = extname(file.originalname);
-        callback(null, `${uniqueSuffix}${ext}`);
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: 'uploads/profile',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          callback(null, `${uniqueSuffix}${ext}`);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        const allowed = /\/(jpg|jpeg|png|gif|webp)$/;
+        if (!file.mimetype.match(allowed))
+          return callback(
+            new Error('Apenas imagens são permitidas para a foto de perfil'),
+            false,
+          );
+
+        callback(null, true);
       },
     }),
-    fileFilter: (req, file, callback) => {
-      const allowed = /\/(jpg|jpeg|png|gif|webp)$/;
-      if (!file.mimetype.match(allowed))
-        return callback(new Error('Apenas imagens são permitidas para a foto de perfil'), false);
-
-      callback(null, true);
-    },
-  }))
-
+  )
   async updateProfile(
     @Req() req: any,
     @UploadedFile() file: Express.Multer.File,
     @Body() body: UpdateUserDto,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     // Atualiza o usuário
-    const updatedUser = await this.userService.updateUser(req.user.id, body, file);
+    const updatedUser = await this.userService.updateUser(
+      req.user.id,
+      body,
+      file,
+    );
 
     // Gerar novos tokens com os dados atualizados
-    const { accessToken, refreshToken } = await this.authService.login(updatedUser);
+    const { accessToken, refreshToken } =
+      await this.authService.login(updatedUser);
 
     // Atualizar cookies
     res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
@@ -279,5 +294,4 @@ export class AuthController {
       email: user.email,
     };
   }
-
 }

@@ -7,7 +7,7 @@
 @use '@angular/material' as mat;
 
 
-/* Esse CSS serve somente para as cores, será importado para cada HTML e usado neles */
+// Esse CSS serve somente para as cores, será importado para cada HTML e usado neles
 :root{
   --color-white: #FFFFFF;
   --color-light_gray_1: #dadada;
@@ -27,6 +27,7 @@
   --color-transparent-dark-gray: #191819d8;
   --color-black: #000000;
 
+  --color-lightpurple1: rgb(176, 128, 240);
   --color-purple1: #371A51;
   --color-purple2: #A340FF;
   --color-purple2_5: #8a36da;
@@ -37,7 +38,7 @@
 
   --selected-video: #a340ff2c;
 
-  --dialog-background: #ffffff11;
+  --dialog-background: #201f1fbd;
   --dialog-input: #0000002c;
   --dialog-input-2: #161616;
 
@@ -45,14 +46,12 @@
 
   --spinner: var(--color-purple2);
 
-  --link-text: rgb(176, 128, 240);
+  --link-text: var(--color-lightpurple1);
 }
 
 *{
   font-size: 15px;
 }
-
-
 
 html {
   @include mat.theme((
@@ -109,61 +108,79 @@ body {
 // colorblind settings:
 
 body.protanopia {
+  --color-lightpurple1: #8FB0FF;
   --color-purple1: #2E3A8C;
   --color-purple2: #4F7BFF;
+  --color-purple2_5: #4369D9;
   --color-purple3: #3366FF;
   --color-dark_purple: #2A355F;
 
   --color-warning: #C67E00;
+
+  --selected-video: #4f7bff2c;
 }
+
 body.deuteranopia {
+  --color-lightpurple1: #95B2FF;
   --color-purple1: #31448F;
   --color-purple2: #5A7DFF;
+  --color-purple2_5: #4D6BD9;
   --color-purple3: #4169E1;
   --color-dark_purple: #30406A;
 
   --color-warning: #CC7A00;
+
+  --selected-video: #5a7dff2c;
 }
+
 body.tritanopia {
+  --color-lightpurple1: #F59CC6;
   --color-purple1: #6D2358;
   --color-purple2: #E35CA3;
+  --color-purple2_5: #C14E8B;
   --color-purple3: #D63384;
   --color-dark_purple: #563B47;
 
   --color-warning: #C44E00;
+
+  --selected-video: #e35ca32c;
 }
+
 body.acromatopsia {
+  --color-lightpurple1: #C4C4C4;
   --color-purple1: #444444;
   --color-purple2: #9A9A9A;
+  --color-purple2_5: #838383;
   --color-purple3: #666666;
   --color-dark_purple: #2F2F2F;
 
   --color-warning: #777777;
+
+  --selected-video: #9a9a9a2c;
 }
 
 
 
 
-
-/* Scrollbar */
+// Scrollbar
 ::-webkit-scrollbar {
     width: 12px;
     height: 8px;
 }
 
-/* Fundo da scrollbar */
+// Fundo da scrollbar
 ::-webkit-scrollbar-track {
     background: #111111;
 }
 
-/* Barra que você arrasta */
+// Barra que você arrasta
 ::-webkit-scrollbar-thumb {
     background: #3a3a3a;
     border-radius: 10px;
     border: 2px solid #111111;
 }
 
-/* Hover na barra */
+// Hover na barra
 ::-webkit-scrollbar-thumb:hover {
   background: var(--selected-video);
 }
@@ -174,15 +191,8 @@ app-root{
 }
 
 
-/* ==============================
-Angular Material - Popups
-============================== */
+// Angular Material: Popups
 
-.cdk-overlay-pane {
-  /* opcional: regras gerais dos overlays */
-}
-
-/* Menus, selects, autocomplete, etc. */
 .mat-mdc-menu-panel,
 .mat-mdc-select-panel,
 .mat-mdc-autocomplete-panel {
@@ -197,10 +207,7 @@ Angular Material - Popups
 }
 
 
-/* ==============================
-Menu
-============================== */
-
+// Menu
 .mat-mdc-menu-content {
   padding: 4px 0 !important;
 }
@@ -214,10 +221,7 @@ Menu
 }
 
 
-/* ==============================
-Select
-============================== */
-
+// Select
 .mat-mdc-option {
   color: var(--color-light_gray_1) !important;
 }
@@ -233,10 +237,7 @@ Select
 
 
 
-/* ==============================
-Dialog
-============================== */
-
+// Dialog
 .mat-mdc-dialog-surface {
   background-color: var(--dialog-background) !important;
 
@@ -246,13 +247,14 @@ Dialog
   border: solid var(--color-gray-3) 1.5px !important;
 
   color: var(--color-light_gray_1) !important;
+
+  .mat-mdc-form-field.mat-form-field-animations-enabled .mdc-text-field__input {
+    color: var(--color-light_gray_1) !important;
+  }
 }
 
 
-/* ==============================
-Tooltip
-============================== */
-
+// Tooltip
 .mat-mdc-tooltip .mdc-tooltip__surface {
   background-color: var(--transparent-gray) !important;
 
@@ -295,4 +297,61 @@ Tooltip
 .mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-text-field__input{
   color: var(--color-light_gray_1) !important;
 
+}
+
+.mat-mdc-form-field.mat-form-field-animations-enabled .mdc-text-field__input {
+  color: var(--color-light_gray_1)
+}
+
+
+
+
+// mascote: painel transparente em tela cheia mesmo, daí precisa ser global se n n pega
+.mascot-dialog-panel .mat-mdc-dialog-surface {
+  background-color: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.mascot-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+
+
+
+
+// SISTEMA REFERENTES AOS FILTROS DE DALTONISMO (sistema presente lá no index.html caso eu queira rever no futuro)
+.cb-filters {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+ 
+    pointer-events: none;
+}
+ 
+$cb-targets: 'img, video, canvas, .cb-media';
+ 
+body.protanopia :is(#{$cb-targets}):not(.no-cb) {
+    filter: url('#cb-protanopia');
+}
+ 
+body.deuteranopia :is(#{$cb-targets}):not(.no-cb) {
+    filter: url('#cb-deuteranopia');
+}
+ 
+body.tritanopia :is(#{$cb-targets}):not(.no-cb) {
+    filter: url('#cb-tritanopia');
+}
+ 
+body.acromatopsia :is(#{$cb-targets}):not(.no-cb) {
+    filter: url('#cb-acromatopsia');
 }

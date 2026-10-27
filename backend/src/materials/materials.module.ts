@@ -5,9 +5,10 @@ import { HttpModule } from '@nestjs/axios';
 import { Material } from './materials.entity';
 import { MaterialController } from './materials.controller';
 import { MaterialService } from './materials.service';
+import { UserModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Material]), HttpModule],
+  imports: [TypeOrmModule.forFeature([Material]), HttpModule, UserModule],
   controllers: [MaterialController],
   providers: [MaterialService],
   exports: [MaterialService],

@@ -1,11 +1,24 @@
-import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  ParseIntPipe,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { Video } from './videos.entity';
 import { VideoService } from './videos.service';
+import { UserService } from '../users/users.service';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('videos')
 export class VideoController extends BaseController<Video> {
-  constructor(private readonly videoService: VideoService) {
+  constructor(
+    private readonly videoService: VideoService,
+    private readonly userService: UserService,
+  ) {
     super(videoService);
   }
 
@@ -30,5 +43,29 @@ export class VideoController extends BaseController<Video> {
   @Get('getYoutubeData')
   getYoutubeData(@Query('url') url: string) {
     return this.videoService.getYoutubeData(url);
+  }
+
+  // GET /videos/next
+  @UseGuards(JwtAuthGuard)
+  @Get('next')
+  async getNextVideos(@Req() req: any) {
+    const userId = req.user.id;
+    const user = await this.userService.findById(userId);
+
+    if (!user.current_module_id) {
+      return [];
+    }
+
+    return this.videoService.getNextVideos(userId, user.current_module_id);
+  }
+
+  // GET /videos/module/:moduleId
+  @UseGuards(JwtAuthGuard)
+  @Get('module/:moduleId')
+  findByModule(
+    @Req() req: any,
+    @Param('moduleId', ParseIntPipe) moduleId: number,
+  ) {
+    return this.videoService.findByModule(req.user.id, moduleId);
   }
 }

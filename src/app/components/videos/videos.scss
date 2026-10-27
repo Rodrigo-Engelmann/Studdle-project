@@ -27,14 +27,12 @@
     box-sizing: border-box;
 }
 
-/* Quando a área disponível ficar menor */
 @media (max-width: 900px) {
     #container-vids {
         grid-template-columns: repeat(2, minmax(250px, 1fr));
     }
 }
 
-/* Tela pequena */
 @media (max-width: 590px) {
     #container-vids {
         grid-template-columns: 1fr;
@@ -48,6 +46,9 @@
 
     width: 70px;
     height: 70px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
     cursor: pointer;
     border-radius: 50%;
@@ -78,14 +79,15 @@
 @media (max-width: 768px) {
     .addvideo-btn {
         bottom: 90px;
+        left: 14px;
     }
 }
 
-@media (max-width: 1219px) and (orientation: portrait) {
-    #video-card {
-        max-width: 123102310px;
-    }
-}
+// @media (max-width: 1219px) and (orientation: portrait) {
+//     #video-card {
+//         max-width: 123102310px;
+//     }
+// }
 
 .noLinesText{
     display: flex;

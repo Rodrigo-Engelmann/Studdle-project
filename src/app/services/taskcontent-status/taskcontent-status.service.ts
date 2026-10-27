@@ -48,11 +48,14 @@ export class TaskContentStatusService {
     return this.http.delete(`${this.api}/${id}`);
   }
 
-  // GET TODOS OS STATUS DE UM USUÁRIO
-  findByUser(userId: number): Observable<TaskContentStatus[]> {
-    return this.http.get<TaskContentStatus[]>(`${this.api}/user/${userId}`);
-  }
+  // GET TODOS OS STATUS DE UM USUÁRIO E MÓDULO
+  findByUser(userId: number, moduleId?: number): Observable<TaskContentStatus[]> {
+    const params: Record<string, number> = {};
+    if (moduleId !== undefined) params['module_id'] = moduleId;
 
+    return this.http.get<TaskContentStatus[]>(`${this.api}/user/${userId}`, { params });
+  }
+  
   // GET SOMENTE OS CONCLUÍDOS DE UM USUÁRIO
   findCompletedByUser(userId: number): Observable<TaskContentStatus[]> {
     return this.http.get<TaskContentStatus[]>(`${this.api}/user/${userId}/completed`);

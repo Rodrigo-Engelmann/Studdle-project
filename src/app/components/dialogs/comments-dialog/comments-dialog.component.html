@@ -1,0 +1,19 @@
+<div class="comments-dialog-head">
+    <h2 mat-dialog-title>
+        {{ config.title ?? 'Comentários' }}
+    </h2>
+
+    <button mat-icon-button type="button"
+    aria-label="Fechar comentários"
+    (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="comments-dialog-content">
+    @if (config.materialId != null) {
+        <app-comments [materialId]="config.materialId"></app-comments>
+    } @else if (config.videoId != null) {
+        <app-comments [videoId]="config.videoId"></app-comments>
+    }
+</mat-dialog-content>

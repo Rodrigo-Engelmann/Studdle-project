@@ -1,12 +1,89 @@
-/* Esse CSS serve somente para as cores, será importado para cada HTML e usado neles */
-
 main{
     width: 100%;
     height: 100vh;
-    
+
     display: flex;
     flex-direction: row;
 }
+
+
+.left-container{
+    background: linear-gradient(var(--color-purple1), var(--color-purple2));
+    width: 30%;
+    height: 93.5%;
+    margin-top: auto;
+
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-text{
+    text-align: center;
+
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+header{
+    position: absolute;
+    height: 6.5%;
+    width: 100%;
+
+    border-bottom: solid var(--color-purple1) 2px;
+
+    background: linear-gradient(to right, var(--color-purple1), var(--color-purple2));
+
+    display: flex;
+    align-items: center;
+}
+
+.studdle-logo{
+    margin-left: 1.1vw;
+    height: 70%;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.welcome-title{
+    font-size: 32px;
+    margin: 0;
+}
+
+.switchpage-info{
+    font-size: 20px;
+    margin: 0;
+}
+
+.switchpage-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35%;
+    height: 55px;
+    margin-top: 12vw;
+    font-size: 20px;
+
+    border: solid var(--color-white) 2px;
+    border-radius: 10px;
+    user-select: none;
+
+    transition: 0.08s;
+    cursor: pointer;
+}
+
+.switchpage-button:hover{
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.411);
+    transform: scale(1.02);
+}
+
 
 
 .right-container{
@@ -16,31 +93,77 @@ main{
     text-align: left;
     margin: 0;
 
-    background-color: var(--color-dark_gray-0);
     width: 100%;
     height: 100%;
+
+    overflow-x: hidden;
+
+    &::before {
+        content: '';
+        position: absolute !important;
+        inset: 0;
+        z-index: -1;
+
+        background: url('/assets/images/background_studdle.png') center / cover no-repeat;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position-x: 100px;
+
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    &.bg-loaded::before {
+        opacity: 1;
+    }
 }
 
 .right-container-son{
-    width: 80%;
+    position: relative;
+    isolation: isolate;
+
+    width: 30%;
+    padding: 40px 60px;
+
+    &::before{
+        content: '';
+        position: absolute;
+        inset: -28px;
+        z-index: -1;
+
+        border-radius: 12px;
+
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+
+        background-color: color-mix(in srgb, var(--color-white) 2%, transparent);
+    }
 }
 
-// form title
-
 .form-title-container{
-    margin-bottom: 2%;
+    margin-bottom: 26px;
     width: 100%;
 }
 
 .form-title{
-    font-size: 32px;
-    margin: 0;
-    width: 35vw;
+    margin: 0 0 6px;
+
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+
+    max-width: 420px;
+    color: var(--color-white);
 }
 
 .form-subtitle{
-    font-size: 20px;
     margin: 0;
+
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--color-light_gray);
 }
 
 // signin with google
@@ -48,7 +171,7 @@ main{
     width: 100%;
     height: auto;
 
-    margin-bottom: 4%;
+    margin-bottom: 7%;
 
     display: flex;
     align-items: center;
@@ -84,7 +207,7 @@ form{
     display: flex;
     align-items: left;
     flex-direction: column;
-    
+
     width: 100%;
     color: var(--color-white);
 }
@@ -92,161 +215,200 @@ form{
 
 // alterar o sistema de formulário com o materials
 
+.emailinput-container,
+.passwordinput-container,
+.confirm-passwordinput-container{
+    box-sizing: border-box;
 
-.input-containers{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: left;
-    
-    width: 100%;
-    height: 60px;
-    margin: 20px 0;
 
-    background-color: var(--color-white);
-    border-radius: 100vw;
+    width: 100%;
+    height: 52px;
+    margin: 10px 0;
+
+    background-color: var(--color-gray-4);
+    border: 1px solid var(--color-gray-3);
+    border-radius: 4px;
     color: var(--color-light_gray);
+
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+
+    &:hover {
+        border-color: var(--color-gray-0);
+    }
+
+    // acende a borda inteira quando o input de dentro recebe foco
+    &:focus-within {
+        border-color: var(--color-purple2);
+        background-color: var(--color-gray-3);
+
+        mat-label{
+            background-color: var(--color-purple2) !important;
+            color: white !important;
+        }
+    }
 }
 
 .input-icons {
-    position: relative;
     display: flex;
-    color: var(--color-light_gray) !important;
-    margin-left: 20px;
+    color: var(--color-gray-0) !important;
+    margin-left: 16px;
 
-    transform: scale(1.4);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    transform: none;
 }
 
-// .passwordinput-container{
-//     margin-bottom: 15%;
-// }
+// o respiro antes do botão fica no ÚLTIMO campo, não no de senha
+// (no login a senha era o último; aqui vem o confirmar)
+.confirm-passwordinput-container{
+    margin-bottom: 26px;
+}
 
 .login-button{
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    // background-color: var(--color-purple2);
-    background: transparent;
-    border: solid var(--color-purple2) 2px;
-    box-shadow: 0 0 5px var(--color-purple2);
-    color: var(--color-purple2);
+    width: 100%;
+    max-width: 420px;   // mesma largura dos campos
+    height: 48px;
 
-    width: 30%;
-    height: 65px;
-    font-size: 20px;
-    margin-top: 30px;
+    background-color: var(--color-purple2);
+    border: none;
+    box-shadow: none;
+    color: var(--color-white);
 
-    border-radius: 40px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+
     user-select: none;
-
-    transition: 0.08s;
     cursor: pointer;
+    transition: background-color 0.18s ease, transform 0.1s ease;
 }
-
 .login-button:hover{
-    box-shadow: 0 0 20px var(--color-purple1);
-    transform: scale(1.02);
+    background-color: var(--color-purple2_5);
+    box-shadow: none;
+    transform: none;
+}
+.login-button:active{
+    transform: scale(0.99);
+}
+.login-button:focus-visible{
+    outline: 2px solid var(--color-lightpurple1);
+    outline-offset: 2px;
 }
 
 
 .mat-mdc-form-field{
-    width: 95%;
-    height: 55px;
+    flex: 1;
+    height: 52px;
     align-self: center;
-    font-size: 20px;
+    font-size: 14px;
 }
 
-#forgot-password-text{
-    color: var(--color-white);
-
-    font-size: 16px;
-
-    margin-top: 5%;
-    margin-bottom: 30px;
-}
-#forgot-password-text:hover{
-    transition-duration: 0.06s;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-::ng-deep .mat-mdc-text-field-wrapper {
+:host ::ng-deep .mat-mdc-text-field-wrapper {
     background-color: transparent;
-    border-radius: 40px !important;
+    border-radius: 8px !important;
     border: none;
+    padding: 0 12px !important;
 }
 
-
-::ng-deep .mat-mdc-form-field-focus-overlay {
-    background-color: rgba(0, 0, 0, 0.05) !important;
+:host ::ng-deep .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
 }
+
 
 
 // remover a borda dos elementos
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
     border: none !important;
 }
 
-::ng-deep .mat-mdc-text-field-wrapper {
+:host ::ng-deep .mat-mdc-text-field-wrapper {
     background-color: transparent;
 }
 
 // remover borda do botão de ver senha:
-::ng-deep .eye-button {
+:host ::ng-deep .eye-button {
     background: none !important;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
 
-    transform: scale(1.4);
+    transform: none;
+    margin-right: 8px;
 
-    margin-right: 20px;
+    color: var(--color-gray-0) !important;
 
-    color: var(--color-light_gray) !important;
+    &:hover {
+        color: var(--color-light_gray) !important;
+    }
 }
 
 // para alterar a cor do preview "email" e "senha" pra algo mais claro
 mat-label{
     color: var(--color-light_gray) !important;
-    background-color: var(--color-white);
+    background-color: var(--color-gray-4) !important;
     padding: 0 10px !important;
-    border-radius: 20px;
-    font-size: 20px;
+    font-size: 14px;
+    border-radius: 5px 5px 0 0;
 }
 
 // remove a cor diferente lá daquela barra que exibe o local de edição que você está dentro do texto (aquela barra que fica piscando)
-::ng-deep .mat-mdc-input-element {
-    caret-color: auto !important;
-    font-size: 16px !important;
+:host ::ng-deep .mat-mdc-input-element {
+    caret-color: var(--color-purple2) !important;
+    color: var(--color-light_gray_1) !important;
+    font-size: 14px !important;
 }
 
 
-::ng-deep .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
+:host ::ng-deep .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
     content: "" !important;
 }
 
 
 
+
 // MOBILE
 @media (max-width: 768px) {
-    .right-container{
+    .right-container {
         display: flex;
         align-items: start;
-        padding-top: 25px;
+
+        &::before {
+            background-position-x: center;
+        }
     }
-    .right-container-son{
+    .right-container-son {
         display: flex;
         flex-direction: column;
         text-align: center;
 
         width: 90%;
+
+        &::before{
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+
+            background-color: color-mix(in srgb, transparent 20%, transparent);
+        }
     }
     .form-title{
+        margin-top: 20px;
         font-size: 33px !important;
         width: 100% !important;
+        max-width: none;
     }
     .form-subtitle{
         margin-bottom: 20px;
@@ -268,10 +430,59 @@ mat-label{
     }
     .input-containers{
         height: 50px;
-        margin: 10px 0 25px 0;
+        margin: 8px 0;
+    }
+    .confirm-passwordinput-container{
+        margin-bottom: 22px;
     }
     form {
         display: flex;
         align-items: center;
     }
+
+    .emailinput-container,
+    .passwordinput-container,
+    .confirm-passwordinput-container{
+        height: 70px !important;
+        margin: 22px 0 !important;
+    }
+
+    .confirm-passwordinput-container{
+        margin-bottom: 24px !important;
+    }
+
+    .mat-mdc-form-field{
+        flex: 1;
+        height: 56px;
+        align-self: center;
+        font-size: 14px;
+    }
+
+    .login-button{
+        height: 52px;
+        margin-top: 40px;
+    }
+
+    #forgot-password-text{
+        margin-top: 20px;
+        font-size: 1rem !important;
+    }
+}
+
+
+// aquele bug clássico do auto-fill, solução simples com -webkit, qualquer coisa é só alterar o valor de background-color que eu coloquei ali
+:host ::ng-deep input:-webkit-autofill,
+:host ::ng-deep input:-webkit-autofill:hover,
+:host ::ng-deep input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-light_gray_1) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-gray-4) inset !important;
+    caret-color: var(--color-purple2) !important;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+.header-component, main{
+    overflow: hidden;
+}
+.right-container {
+    overflow-y: auto;
 }

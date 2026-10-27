@@ -1,0 +1,132 @@
+<div class="quiz-hud">
+    <div class="lives">
+        @for (slot of lifeSlots; track slot) {
+            <mat-icon class="life" [class.lost]="slot >= lives">
+                {{ slot >= lives ? 'heart_broken' : 'favorite' }}
+            </mat-icon>
+        }
+    </div>
+
+    @if (screen === QuizScreen.QUESTION) {
+        <span class="progress">
+            {{ progressLabel }}
+        </span>
+    }
+</div>
+
+<mat-dialog-content class="quiz-content">
+    @for (tick of [animationTick]; track tick) {
+        <div class="screen" [class.reverse]="direction < 0">
+            @switch (screen) {
+                <!-- INTRO -->
+                @case (QuizScreen.INTRO) {
+                    <div class="centered">
+                        <mat-icon class="big-icon">military_tech</mat-icon>
+
+                        <h2 class="headline">
+                            {{ config.title ?? 'Hora do quiz' }}
+                        </h2>
+
+                        <p class="lead">
+                            Você tem <strong>{{ totalLives }}</strong>
+                            {{ totalLives === 1 ? 'vida' : 'vidas' }} para
+                            <strong>{{ questions.length }}</strong>
+                            {{ questions.length === 1 ? 'questão' : 'questões' }}.
+                        </p>
+
+                        <p class="hint">
+                            Cada erro custa uma vida. Zerou, acabou.
+                        </p>
+
+                        <button mat-flat-button type="button" (click)="start()">
+                            Começar
+                        </button>
+                    </div>
+                }
+
+                <!-- QUESTÃO -->
+                @case (QuizScreen.QUESTION) {
+                    <div class="question">
+                        <div class="question-image">
+                            <img [src]="'http://localhost:3000'+currentQuestion.image" alt="Imagem da questão"/>
+                        </div>
+
+                        <ul class="options">
+                            @for (option of currentQuestion.options; track option.id) {
+                                <li>
+                                    <button class="option"
+                                    type="button"
+                                    [disabled]="!!chosenOption"
+                                    (click)="answer(option)">
+                                        {{ option.text }}
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <!-- FEEDBACK ENTRE QUESTÕES -->
+                @case (QuizScreen.FEEDBACK) {
+                    <div class="centered clickable" (click)="advance()">
+                        <mat-icon class="big-icon">
+                            {{ lastWasCorrect ? 'check_circle' : 'cancel' }}
+                        </mat-icon>
+
+                        <h2 class="headline">
+                            {{ lastWasCorrect ? 'Acertou!' : 'Não foi dessa vez' }}
+                        </h2>
+
+                        <p class="lead">
+                            {{ feedbackPhrase }}
+                        </p>
+
+                        <p class="hint">
+                            Clique para continuar
+                        </p>
+                    </div>
+                }
+
+                <!-- DERROTA -->
+                @case (QuizScreen.GAME_OVER) {
+                    <div class="centered clickable" (click)="finish()">
+                        <mat-icon class="big-icon">heart_broken</mat-icon>
+
+                        <h2 class="headline">
+                            Suas vidas acabaram
+                        </h2>
+
+                        <p class="lead">
+                            Você acertou {{ correctCount }} de {{ answeredCount }}
+                            {{ answeredCount === 1 ? 'questão' : 'questões' }} respondidas.
+                        </p>
+
+                        <p class="hint">
+                            Clique para fechar
+                        </p>
+                    </div>
+                }
+
+                <!-- VITÓRIA -->
+                @case (QuizScreen.FINISHED) {
+                    <div class="centered clickable" (click)="finish()">
+                        <mat-icon class="big-icon">military_tech</mat-icon>
+
+                        <h2 class="headline">
+                            Quiz concluído!
+                        </h2>
+
+                        <p class="lead">
+                            {{ correctCount }} de {{ questions.length }} corretas, com
+                            {{ lives }} {{ lives === 1 ? 'vida restante' : 'vidas restantes' }}.
+                        </p>
+
+                        <p class="hint">
+                            Clique para fechar
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+    }
+</mat-dialog-content>

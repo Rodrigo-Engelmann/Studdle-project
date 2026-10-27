@@ -205,10 +205,8 @@ export class UserService {
       'acromatopsia'
     );
 
-    if (index > 0 && index < filters.length) {
+    if (index > 0 && index < filters.length)
       document.body.classList.add(filters[index]);
-    }
   }
   //#endregion
-
 }

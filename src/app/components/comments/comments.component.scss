@@ -1,0 +1,171 @@
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.comments-count {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.state-message,
+.signed-out {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+
+.composer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  .composer-body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .composer-input {
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+    padding: 6px 0;
+    font: inherit;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    transition: border-color 160ms ease;
+
+    &::placeholder {
+      color: inherit;
+      opacity: 0.5;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom-width: 2px;
+      border-bottom-color: color-mix(in srgb, currentColor 70%, transparent);
+    }
+  }
+
+  .composer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+
+.reply-composer {
+  margin-top: 12px;
+}
+
+
+.thread,
+.replies {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.replies {
+  margin-top: 12px;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  .comment-body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .comment-head {
+    display: flex;
+    align-items: start;
+    height: 20px;
+    gap: 8px;
+  }
+
+  .comment-author {
+    font-size: 0.8125rem;
+    font-weight: 600;
+
+    align-self: start;
+    text-align: start;
+  }
+
+  .comment-date {
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .comment-menu {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  &:hover .comment-menu,
+  .comment-menu:focus-visible {
+    opacity: 1;
+  }
+
+  .comment-text {
+    margin: 2px 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
+
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.replies-toggle {
+  margin-top: 4px;
+}
+
+@media (hover: none) {
+  .comment .comment-menu {
+    opacity: 1;
+  }
+}

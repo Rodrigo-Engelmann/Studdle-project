@@ -1,7 +1,8 @@
 <article class="material-sing"
+[style.--thumbnail]="'url(' + 'http://localhost:3000' + material.main_image + ')'"
 (click)="openMaterial()">
-    <img [src]="'http://localhost:3000' + material.main_image"
-    [alt]="material.title">
+    <img class="os-icon" [src]="'http://localhost:3000' + material.main_image"
+    [alt]="material.title" draggable="false">
 
     <div class="mat-info">
         <h2>
@@ -9,18 +10,20 @@
         </h2>
 
         <div class="summary-container">
-            <p [style.width]="privilege === 1 ? '85% !important' : '100%'">
+            <p [style.width]="userData?.privileges !== 0 ? '85% !important' : '100%'">
                 {{ material.summary }}
             </p>
 
-            <!-- menu btn -->
-            <button class="material-menu-btn" matButton
-            [matMenuTriggerFor]="menu"
-            (click)="$event.stopPropagation()">
-                <mat-icon>
-                    more_vert
-                </mat-icon>
-            </button>
+            @if (userData?.privileges !== 0) {
+                <!-- menu btn -->
+                <button class="material-menu-btn" matButton
+                [matMenuTriggerFor]="menu"
+                (click)="$event.stopPropagation()">
+                    <mat-icon>
+                        more_vert
+                    </mat-icon>
+                </button>
+            }
         </div>
 
         <p class="mat-tags">

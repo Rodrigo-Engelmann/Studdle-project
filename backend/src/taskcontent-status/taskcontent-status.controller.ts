@@ -6,6 +6,7 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { TaskContentStatus } from './taskcontent-status.entity';
@@ -21,8 +22,11 @@ export class TaskContentStatusController extends BaseController<TaskContentStatu
 
   // Retorna todos os status de um usuário
   @Get('user/:userId')
-  findByUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.taskContentStatusService.findByUser(userId);
+  findByUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query('module_id', new ParseIntPipe({ optional: true })) moduleId: number,
+  ) {
+    return this.taskContentStatusService.findByUser(userId, moduleId);
   }
 
   // Retorna somente os concluídos de um usuário

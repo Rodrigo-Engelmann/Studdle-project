@@ -88,8 +88,8 @@
   }
 }
 
-::ng-deep .mat-mdc-dialog-component-host .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
-::ng-deep .mat-mdc-dialog-component-host .mat-mdc-tab .mdc-tab__text-label {
+:host ::ng-deep .mat-mdc-dialog-component-host .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
+:host ::ng-deep .mat-mdc-dialog-component-host .mat-mdc-tab .mdc-tab__text-label {
   color: var(--color-light_gray_1) !important;
 }
 @media (max-width: 599px) {

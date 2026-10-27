@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-engine',
   imports: [],
   templateUrl: './engine.html',
-  styleUrl: './engine.scss',
+  styleUrls: ['./engine.scss'],
 })
 export class Engine {
   ngAfterViewInit(): void {

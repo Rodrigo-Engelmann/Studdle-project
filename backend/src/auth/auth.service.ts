@@ -23,13 +23,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  //  NOVOS MÉTODOS — findByEmail e registerUser
-
   async findByEmail(email: string) {
     return await this.usersRepo.findOne({ where: { email } });
   }
 
-  async registerUser(dto: { user_name: string; email: string; password: string }) {
+  async registerUser(dto: {
+    user_name: string;
+    email: string;
+    password: string;
+  }) {
     const existing = await this.findByEmail(dto.email);
     if (existing) {
       throw new BadRequestException('Email já está em uso');
@@ -47,7 +49,6 @@ export class AuthService {
   }
 
   //  LOGIN E VALIDAÇÃO
-
   async validateUser(email: string, password: string) {
     const user = await this.usersRepo.findOne({ where: { email } });
     if (!user) return null;
@@ -75,9 +76,28 @@ export class AuthService {
     return crypto.randomBytes(64).toString('hex');
   }
 
+  private lookupHash(token: string): string {
+    return crypto.createHash('sha256').update(token).digest('hex');
+  }
+
+  private async findStoredToken(token: string, withUser = false) {
+    const stored = await this.tokensRepo.findOne({
+      where: { tokenLookup: this.lookupHash(token) },
+      relations: withUser ? ['user'] : [],
+    });
+
+    if (!stored) return null;
+
+    if (stored.expiresAt.getTime() < Date.now()) {
+      await this.tokensRepo.remove(stored);
+      return null;
+    }
+
+    return stored;
+  }
+
   async createRefreshToken(user: User, deviceInfo?: string) {
     const token = this.getRefreshToken(user);
-    const tokenHash = await bcrypt.hash(token, 10);
 
     const expiresAt = new Date();
     const days = parseInt(
@@ -87,7 +107,7 @@ export class AuthService {
     expiresAt.setDate(expiresAt.getDate() + days);
 
     const rt = this.tokensRepo.create({
-      tokenHash,
+      tokenLookup: this.lookupHash(token),
       expiresAt,
       deviceInfo: deviceInfo ?? undefined,
       user,
@@ -102,23 +122,12 @@ export class AuthService {
     providedToken: string,
     deviceInfo?: string,
   ) {
-    const tokens = await this.tokensRepo.find({
-      where: { user: { id: user.id } },
-      order: { createdAt: 'DESC' },
-    });
+    const stored = await this.findStoredToken(providedToken);
 
-    for (const t of tokens) {
-      if (t.expiresAt.getTime() < Date.now()) continue;
+    if (!stored) throw new UnauthorizedException('Refresh token inválido');
 
-      const match = await bcrypt.compare(providedToken, t.tokenHash);
-      if (match) {
-        await this.tokensRepo.remove(t);
-        const newToken = await this.createRefreshToken(user, deviceInfo);
-        return newToken;
-      }
-    }
-
-    throw new UnauthorizedException('Refresh token inválido');
+    await this.tokensRepo.remove(stored);
+    return await this.createRefreshToken(user, deviceInfo);
   }
 
   async login(user: User, deviceInfo?: string) {
@@ -129,35 +138,19 @@ export class AuthService {
   }
 
   async refreshTokens(providedToken: string) {
-    const tokens = await this.tokensRepo.find({ relations: ['user'] });
+    const stored = await this.findStoredToken(providedToken, true);
 
-    for (const t of tokens) {
-      if (t.expiresAt.getTime() < Date.now()) continue;
+    if (!stored)
+      throw new UnauthorizedException('Refresh token inválido ou expirado');
 
-      const match = await bcrypt.compare(providedToken, t.tokenHash);
-      if (match) {
-        const user = t.user;
+    const user = stored.user;
 
-        await this.tokensRepo.remove(t);
-        const newRefresh = await this.createRefreshToken(user);
+    await this.tokensRepo.remove(stored);
 
-        const newAccess = this.jwtService.sign(
-          {
-            sub: user.id,
-            user_name: user.user_name,
-            email: user.email,
-          },
-          {
-            secret: process.env.JWT_ACCESS_TOKEN_SECRET!,
-            expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION || '25m',
-          },
-        );
+    const newRefresh = await this.createRefreshToken(user);
+    const newAccess = this.getAccessToken(user);
 
-        return { accessToken: newAccess, refreshToken: newRefresh, user };
-      }
-    }
-
-    throw new UnauthorizedException('Refresh token inválido ou expirado');
+    return { accessToken: newAccess, refreshToken: newRefresh, user };
   }
 
   async refreshTokensByUserId(userId: number) {
@@ -181,21 +174,12 @@ export class AuthService {
 
   async logout(providedRefreshToken?: string, userId?: number) {
     if (providedRefreshToken) {
-      const tokens = await this.tokensRepo.find({ relations: ['user'] });
-
-      for (const t of tokens) {
-        try {
-          const match = await bcrypt.compare(providedRefreshToken, t.tokenHash);
-          if (match) {
-            await this.tokensRepo.remove(t);
-          }
-        } catch (err) {}
-      }
+      await this.tokensRepo.delete({
+        tokenLookup: this.lookupHash(providedRefreshToken),
+      });
       return;
     }
 
-    if (userId) {
-      await this.tokensRepo.delete({ user: { id: userId } } as any);
-    }
+    if (userId) await this.tokensRepo.delete({ user: { id: userId } } as any);
   }
 }

@@ -6,14 +6,21 @@
     <img [src]="moduleData.image"
     [alt]="'Imagem ilustrativa do rank ' + moduleData.name"
     [class.loadingimage-rank]="!moduleData?.image"
-    [class.image-loaded]="imageLoaded"
+    [class.image-loaded]="imageLoaded" draggable="false"
     (load)="imageLoaded = true"/>
   </div>
 
-  <div class="linear-progress" aria-label="Progresso geral">
-    <ion-progress-bar [value]="linearProgress / 100" />
-    <span>{{ linearProgress }}% <ion-icon [icon]="personCircle" aria-hidden="true" /></span>
-  </div>
+  @if(linearProgress !== undefined && linearProgress < 100) {
+    <div class="linear-progress" aria-label="Progresso geral">
+      <ion-progress-bar [value]="linearProgress / 100" />
+
+      <span>{{ linearProgress }}%
+        <img class="profile-picture translateYhover" aria-hidden="true"
+        [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
+        alt="" matButton draggable="false">
+      </span>
+    </div>
+  }
 
   <div class="metrics">
     <article class="circle-progress" [style.--progress]="studyProgress + '%'" [ngClass]="studyTasksData.totalStudyContents ? '' : 'transparentProgress' ">
@@ -29,4 +36,10 @@
       </div>
     </article>
   </div>
+
+  @if(linearProgress !== undefined && linearProgress >= 100) {
+    <button class="level-up-button" (click)="pressedLevelUpBtn.emit(true)">
+      ✦ Subir de nível ✦
+    </button>
+  }
 </section>

@@ -5,6 +5,32 @@
     width: 100%;
 }
 
+:host ::ng-deep {
+    .mat-mdc-tab.tab-highlight {
+        border-radius: 20px 20px 0 0;
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+
+        background: transparent;
+    }
+
+    .mat-mdc-tab.tab-highlight::after {
+        content: '';
+        position: absolute;
+        inset: -50% auto -50% -70%;
+        z-index: -1;
+
+        width: 40%;
+        transform: skewX(-22deg);
+
+        background: linear-gradient(90deg, transparent, #ffffff55, #ffffffaa, transparent);
+
+        animation: tab-highlight-shine 2.5s ease-in-out infinite;
+        pointer-events: none;
+    }
+}
+
 header {
     width: 100%;
     flex: 0 0 auto;
@@ -13,27 +39,28 @@ header {
     z-index: 1;
 }
 
-::ng-deep .mat-mdc-tab-label-container {
+:host ::ng-deep .mat-mdc-tab-label-container {
     border: none !important;
 }
 
-::ng-deep .mat-mdc-tab .mdc-tab-indicator__content--underline {
-  border-color: var(--color-purple2) !important;
-  border-width: 2px !important;
+:host ::ng-deep .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border-color: var(--color-purple2) !important;
+    border-width: 2px !important;
 }
 
-::ng-deep .mdc-tab__text-label {
+:host ::ng-deep .mdc-tab__text-label {
     color: var(--color-white) !important;
 }
 
-::ng-deep mat-tab-group {
+:host ::ng-deep mat-tab-group {
     display: flex;
     width: 70%;
 
     user-select: none;
 }
 
-html,body{
+html,
+body {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -60,16 +87,17 @@ html,body{
     height: 40px;
 }
 
-.rightheader-content{
+.rightheader-content {
     display: flex;
     flex-direction: row;
     text-align: center;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 
-    width: 120px;
+    width: 160px;
 }
-.profile-picture{
+
+.profile-picture {
     height: 45px;
     width: 45px;
     border-radius: 100%;
@@ -77,32 +105,34 @@ html,body{
 
     user-select: none;
 }
-.filter-icon{
+
+.filter-icon {
     font-size: 30px;
     width: 30px;
-    padding: 10px 20px;
     border-radius: 40px;
     transition-duration: 0.15s;
     cursor: pointer;
 }
-.filter-icon:hover{
-    // background-color: rgba(255, 255, 255, 0.082);
-    transform: scale(1.15);
+
+.filter-icon:hover {
+    transform: scale(1.05);
 }
-.filter-icon:active{
+
+.filter-icon:active {
     transform: scale(0.90);
 }
 
 
-.translateYhover{
+.translateYhover {
     transition: transform 0.08s ease-in-out, transform 0.08s ease-in-out;
     cursor: pointer;
 }
-.translateYhover:hover{
-    transform:scale(1.03);
+
+.translateYhover:hover {
+    transform: scale(1.03);
 }
 
-.profile-picture:active{
+.profile-picture:active {
     transform: scale(0.95);
 }
 
@@ -113,7 +143,7 @@ html,body{
     margin: 0 auto;
     padding: 5px 30px;
 }
- 
+
 
 
 .page-container {
@@ -144,14 +174,14 @@ html,body{
     transform: translateY(-100%);
 }
 
-.search-form{
+.search-form {
     height: 100%;
 
     display: flex;
     align-items: center;
 }
 
-.selectfilter-inputs{
+.selectfilter-inputs {
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -166,8 +196,8 @@ html,body{
     border-radius: 100000vw;
 }
 
-::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix,
-::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+:host ::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix,
+:host ::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
     height: 40px !important;
     min-height: 40px !important;
 
@@ -179,34 +209,35 @@ html,body{
 
 
 
-::ng-deep .mat-mdc-select-trigger {
+:host ::ng-deep .mat-mdc-select-trigger {
     height: 40px !important;
 
     display: flex !important;
     align-items: center !important;
 }
-.search-input{
+
+.search-input {
     width: 40%;
 }
 
 
-::ng-deep .mat-mdc-tab-label-container {
+:host ::ng-deep .mat-mdc-tab-label-container {
     border: none !important;
 }
 
 
 
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
-::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-text-field--outlined .mdc-notched-outline__trailing {
     border: none !important;
 }
 
-.search-icon-container{
+.search-icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     border: none;
     background-color: var(--color-gray-3);
     color: var(--color-dark-gray-4);
@@ -220,7 +251,7 @@ html,body{
 
     cursor: pointer;
 
-    mat-icon{
+    mat-icon {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -229,49 +260,52 @@ html,body{
         transition-duration: 0.1s;
     }
 
-    &:hover{
-        mat-icon{
+    &:hover {
+        mat-icon {
             transform: scale(1.1);
         }
     }
-    &:active{
-        mat-icon{
+
+    &:active {
+        mat-icon {
             transform: scale(0.8);
         }
     }
 }
 
-.text-origin{
+.text-origin {
     color: var(--color-gray-0);
 }
 
-::ng-deep .search-header-input .mat-mdc-select:focus .mat-mdc-select-arrow {
+:host ::ng-deep .search-header-input .mat-mdc-select:focus .mat-mdc-select-arrow {
     color: var(--color-purple2) !important;
 }
 
-::ng-deep .mat-mdc-notch-piece.mdc-notched-outline__notch {
+:host ::ng-deep .mat-mdc-notch-piece.mdc-notched-outline__notch {
     // display: flex !important;
     // align-items: center !important;
     // justify-content: center !important;
     margin-top: -6.2px;
 }
 
-::ng-deep .mat-mdc-input-element {
-  caret-color: auto !important;
+:host ::ng-deep .mat-mdc-input-element {
+    caret-color: auto !important;
 }
 
-::ng-deep .mat-mdc-select-min-line, ::ng-deep .mat-mdc-input-element {
+:host ::ng-deep .mat-mdc-select-min-line,
+:host ::ng-deep .mat-mdc-input-element {
     color: var(--color-light_gray) !important;
     background-color: transparent;
 }
 
 
-.page_container{
+.page_container {
     height: 100%;
 }
 
-.progress-percentage-text{
+.progress-percentage-text {
     margin-left: 8px;
+    margin-right: 20px;
     color: var(--color-purple2);
     font-size: 18px;
     font-weight: 650;
@@ -280,24 +314,94 @@ html,body{
     width: 20px;
 }
 
-::ng-deep .mat-mdc-menu-panel {
-    background-color: var( --transparent-gray) !important;
+:host ::ng-deep .mat-mdc-menu-panel {
+    background-color: var(--transparent-gray) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 
     border: solid var(--color-gray-3) 1.5px;
 }
 
-::ng-deep .mat-mdc-menu-content{
+:host ::ng-deep .mat-mdc-menu-content {
     padding: 4px 0 !important;
 }
 
-::ng-deep .mat-mdc-menu-panel {
+:host ::ng-deep .mat-mdc-menu-panel {
     color: var(--color-light_gray_1) !important;
 }
-::ng-deep .mat-mdc-menu-item {
+
+:host ::ng-deep .mat-mdc-menu-item {
     color: var(--color-light_gray_1) !important;
 }
-::ng-deep .mat-mdc-menu-item .mat-icon {
+
+:host ::ng-deep .mat-mdc-menu-item .mat-icon {
     color: var(--color-light_gray_1) !important;
+}
+
+@keyframes tab-highlight-gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+
+@keyframes tab-highlight-shine {
+    0%, 20% { left: -70%; }
+    60%, 100% { left: 140%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :host ::ng-deep .mat-mdc-tab.tab-highlight,
+    :host ::ng-deep .mat-mdc-tab.tab-highlight::after {
+        animation: none;
+    }
+}
+
+:host ::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple) .mdc-list-item__primary-text{
+    color: var(--color-lightpurple1) !important;
+    text-shadow: 0 0 7px rgba(0, 0, 0, 0.349);
+}
+
+:host ::ng-deep .mat-mdc-option .mat-pseudo-checkbox {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--color-lightpurple1) !important;
+}
+
+.disabled-filter{
+    opacity: 20%;
+    user-select: none;
+}
+
+.icon-btns{
+    // padding: 20px 10px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+
+.notification-icon{
+    overflow: visible;
+
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 40px;
+    transition-duration: 0.15s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+    &:active {
+        transform: scale(0.90);
+    }
+}
+
+
+.mat-badge-content {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

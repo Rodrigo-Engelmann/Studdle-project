@@ -4,6 +4,28 @@
     height: 100%;
 }
 
+
+// Scroll para o ion-content (como muda o material, ele não aplica com o styles.scss corretamente, então preferi colocar aqui mesmo por congruência)
+ion-content::part(scroll) {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+}
+ion-content::part(scroll)::-webkit-scrollbar {
+    width: 12px;
+    height: 8px;
+}
+ion-content::part(scroll)::-webkit-scrollbar-track {
+    background: #111111;
+}
+ion-content::part(scroll)::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 10px;
+    border: 2px solid #111111;
+}
+ion-content::part(scroll)::-webkit-scrollbar-thumb:hover {
+    background: var(--selected-video);
+}
+
 //header
 ion-header {
     box-shadow: none;
@@ -31,17 +53,36 @@ ion-header {
     height: 42px;
 }
 
+
+.profile-button {
+    position: relative;
+    display: inline-flex;
+
+    margin-left: 15px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+
+    line-height: 0;
+    cursor: pointer;
+}
 .profile-picture {
+    display: block;
+    box-sizing: border-box;
+
     width: 42px;
     height: 42px;
-    margin-left: 30px;
+    margin-left: 0;
+
     border-radius: 50%;
     border: 3px solid var(--color-purple2);
     object-fit: cover;
+    cursor: pointer;
     transition-duration: 0.02s;
-}
-.profile-picture:active{
-    transform: scale(0.95);
+
+    &:active {
+        transform: scale(0.95);
+    }
 }
 
 ion-content {
@@ -73,9 +114,7 @@ ion-content {
     justify-content: center;
     align-items: center;
     text-align: center;
-
     font-size: 18px;
-
     height: 100%;
 }
 .profile-dialogbtn ion-icon{
@@ -219,4 +258,63 @@ span {
     border-radius: 40px;
     padding: 6px 14px;
     font-size: 16px;
+}
+
+
+// animação do sistema de progressão (quando estiver 100% pra chamar atenção do usuário)
+ion-tab-button.tab-highlight {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    --background: transparent;
+    --color: var(--color-white);
+}
+
+ion-tab-button.tab-highlight::after {
+    content: '';
+    position: absolute;
+    inset: -50% auto -50% -70%;
+    z-index: -1;
+
+    width: 40%;
+    transform: skewX(-22deg);
+
+    background: linear-gradient(90deg, transparent, #ffffff55, #ffffffaa, transparent);
+
+    animation: tab-highlight-shine 2.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes tab-highlight-shine {
+    0%, 20%   { left: -70%; }
+    60%, 100% { left: 140%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ion-tab-button.tab-highlight::after {
+        animation: none;
+    }
+}
+
+.disabled-filter{
+    opacity: 20%;
+    user-select: none;
+}
+
+
+.notification-badge{
+    position: relative;
+    width: 40px !important;
+}
+:host ::ng-deep .mat-badge-content-2{
+    position: absolute !important;
+    right: 80px !important;
+    margin-left: 20px;
+}
+
+::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center !important;
 }

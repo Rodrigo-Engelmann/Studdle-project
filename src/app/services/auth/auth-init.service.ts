@@ -13,17 +13,12 @@ export class AuthInitService {
 
   async restoreSession() {
     try {
-      // 1) renova tokens (caso access tenha expirado)
       await firstValueFrom(this.userService.refresh());
-      console.log("Refresh OK");
 
-      // 2) pega o usuário e guarda
       this.currentUser = await firstValueFrom(this.userService.getProfile());
-      console.log("Usuário restaurado:", this.currentUser);
 
       return true;
-    } catch (err) {
-      console.warn("Nenhum usuário logado.");
+    } catch (err: any) {
       this.currentUser = null;
       return false;
     }

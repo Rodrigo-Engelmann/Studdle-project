@@ -37,6 +37,17 @@ export interface AnswerResult {
   correct: boolean;
 }
 
+export interface QuizRandomOption {
+  id: number;
+  right_answer: boolean;
+  text: string;
+}
+
+export interface QuizRandom {
+  image: string;
+  options: QuizRandomOption[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -105,5 +116,10 @@ export class QuizService {
     const formData = new FormData();
     formData.append('image', file);
     return this.http.post(`${this.api}/upload`, formData);
+  }
+
+  // GET 1 QUIZ ALEATÓRIO POR TASK DO MÓDULO
+  findRandomByModule(moduleId: number): Observable<QuizRandom[]> {
+    return this.http.get<QuizRandom[]>(`${this.api}/module/${moduleId}/random`);
   }
 }

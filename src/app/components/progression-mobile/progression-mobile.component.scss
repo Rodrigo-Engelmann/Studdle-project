@@ -50,6 +50,8 @@ img {
 
     img {
         width: min(70vw, 340px);
+        min-height: min(70vw, 340px);
+        
         aspect-ratio: 1;
         object-fit: cover;
         border-radius: 50%;
@@ -89,15 +91,19 @@ img {
 
         font-size: 20px;
         font-weight: 800;
-        // margin-right: 26px;
     }
 
-    ion-icon {
+    img {
+        opacity: 1;
         margin-left: 3px;
         color: var(--color-white);
         background: var(--color-black);
         border-radius: 50%;
         font-size: 20px;
+
+        width: 20px;
+        height: 20px;
+        border: solid black 2px;
     }
 }
 
@@ -146,38 +152,15 @@ img {
 }
 
 .loadingimage-rank {
-//     background: url(../../../assets/program/images/loading-gif.gif);
-//     background-repeat: no-repeat, no-repeat;
-//     background-size: 150px;
-//     background-position: center, center;
-
-    // min-height: min(70vw, 340px);
     min-width: 340px;
     opacity: 1;
     
-
-//     font-size: 0;
 }
 
 
 .transparentProgress{
     opacity: 35%;
     user-select: none;
-}
-
-
-
-
-@media (min-width: 490px) {
-    .rank img {
-        height: 340px;
-    }
-}
-
-@media (max-width: 490px) {
-    .rank img {
-        height: 69vw;
-    }
 }
 
 
@@ -192,5 +175,158 @@ img {
                 font-size: 20px;
             }
         }
+    }
+}
+
+// botão para subir de nível (animação bonita demais)
+.level-up-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+
+    height: 100px;
+    padding: 17px 30px;
+
+    color: var(--color-white);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+
+    margin-top: 50px;
+
+    background: linear-gradient(135deg,
+        var(--color-purple1),
+        var(--color-purple3),
+        var(--color-purple2));
+
+    background-size: 200% 200%;
+
+    border: 0;
+    border-radius: 106px;
+
+    box-shadow:
+        0 0 12px #a340ff66,
+        0 0 30px #6d00f944,
+        inset 0 1px 0 #ffffff55,
+        inset 0 -4px 0 #00000035;
+
+    cursor: pointer;
+    transform: translateY(0) scale(1);
+
+    animation:
+        level-up-gradient 5s ease infinite;
+
+    box-shadow:
+        0 0 20px #a340ffbb,
+        0 0 44px #6d00f977,
+        0 0 65px #6d00f922,
+        inset 0 1px 0 #ffffff88,
+        inset 0 -4px 0 #00000035;
+
+    transition:
+        transform 250ms ease,
+        box-shadow 250ms ease,
+        filter 250ms ease;
+}
+
+// Reflexo que atravessa o botão
+.level-up-button::before {
+    content: '';
+    position: absolute;
+    inset: -50% auto -50% -70%;
+    z-index: -1;
+
+    width: 45%;
+    transform: skewX(-22deg);
+
+    background: linear-gradient(90deg, transparent, #ffffff55, #ffffffaa, transparent);
+
+    animation: level-up-shine 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.level-up-button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+
+    background: linear-gradient(120deg, #ffffff99, transparent 35%, #d7a2ff99 70%, #ffffff66);
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    pointer-events: none;
+}
+
+.level-up-button:hover {
+    transform: translateY(-4px) scale(1.035);
+    filter: brightness(1.2);
+
+    box-shadow:
+        0 0 18px #a340ff99,
+        0 0 42px #6d00f977,
+        0 10px 28px #00000066,
+        inset 0 1px 0 #ffffff77;
+}
+
+.level-up-button:active {
+    transform: translateY(1px) scale(0.97);
+
+    box-shadow:
+        0 0 12px #a340ff77,
+        inset 0 3px 8px #00000055;
+}
+
+.level-up-button:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 5px;
+}
+
+@keyframes level-up-gradient {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes level-up-shine {
+    0%,
+    15% {
+        left: -70%;
+    }
+
+    55%,
+    100% {
+        left: 140%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .level-up-button {
+        animation: none;
+        transition: none;
+    }
+
+    .level-up-button::before {
+        animation: none;
     }
 }

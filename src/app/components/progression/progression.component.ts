@@ -1,5 +1,7 @@
+// angular
 import { Component, HostListener, OnInit, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 // components
 import { ProgressionDesktopComponent } from '../progression-desktop/progression-desktop.component'
@@ -9,6 +11,7 @@ import { ProgressionMobileComponent } from '../progression-mobile/progression-mo
 import { TreeNode } from '../dialogs/rank-tree-dialog/models/tree-node.model';
 import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
 import { TaskContentKey } from '../enums/task-content.enums';
+import { QuizOutcome } from '../enums/quiz-player.enums';
 
 // services
 import { RankTreeDialogService } from '../dialogs/rank-tree-dialog/rank-tree-dialog.service';
@@ -19,9 +22,9 @@ import { QuizService } from '../../services/quizzes/quizzes.service';
 import { VideoService } from '../../services/videos/videos.service';
 import { MaterialService } from '../../services/materials/materials.service';
 import { UserService } from '../../services/users/users.service';
-// import { UserTaskService } from '../../services/user_tasks/user_tasks.service';
-import { ImageColorService } from '../services/image-color/imageColor.service'
-import { TaskContentStatusService } from '../../services/taskcontent-status/taskcontent-status.service'
+import { ImageColorService } from '../services/image-color/imageColor.service';
+import { TaskContentStatusService } from '../../services/taskcontent-status/taskcontent-status.service';
+import { ProgressionDataBridgeService } from '../services/progressionData-bridge.service';
 
 // rxjs
 import { firstValueFrom } from 'rxjs';
@@ -55,10 +58,15 @@ export class Progression implements OnInit {
   @Input() mainProgress: number = 0;
   @Input() profile_picture: any = undefined;
 
+  userModuleId: number = -1;
+  userId: number = -1;
   isMobile: boolean = window.innerWidth <= 1082;
   modules: TreeNode[] = [];
   tasks: TreeNode[] = [];
   quizzes: TreeNode[] = [];
+  rankQuiz: any[] = [];
+
+  privilege: number = 0;
 
   constructor(private rankTreeDialogService: RankTreeDialogService
             , private moduleService: ModuleService
@@ -69,13 +77,21 @@ export class Progression implements OnInit {
             , private materialService: MaterialService
             , private userService: UserService
             , private imageColorService: ImageColorService
-            // , private userTaskService: UserTaskService
             , private taskContentStatusService: TaskContentStatusService
+            , private progressionDataBridgeService: ProgressionDataBridgeService
+            , private router: Router
   ) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.updatePage();
+  }
+
+  async updatePage(): Promise<void> {
+    this.mainProgress = 0;
     const userData: any = await this.getUserData();
 
+    this.userModuleId = userData.current_module_id
+    this.userId = userData.id;
     this.moduleUpdate(userData.current_module_id);
     this.userTasksUpdate(userData.id, userData.current_module_id);
   }
@@ -89,7 +105,7 @@ export class Progression implements OnInit {
       this.studyTasksData.totalStudyContents = tasks.length;
 
       const userTasks = await firstValueFrom(
-        this.taskContentStatusService.findByUser(userId)
+        this.taskContentStatusService.findByUser(userId, moduleId)
       );
 
       this.studyTasksData.studyCompleted = userTasks.length;
@@ -107,24 +123,31 @@ export class Progression implements OnInit {
     const practiceCompleted: number = this.practiceTaskData.practiceCompleted;
     
     const totalTasksCnt: number = totalStudyContents + totalPracticeContents;
-    if (!totalTasksCnt)
-      return;
-
-    const userTasksCnt: number = studyCompleted + practiceCompleted;
-    const progressPercentage: number = (userTasksCnt / totalTasksCnt) * 100;
-    this.mainProgress = progressPercentage;
-
-    // atualiza a informação de progressão la no usuario, serve pra visualizar a porcentagem depois nos componentes de tab
+    let progressPercentage: number = 0;
+    if (totalTasksCnt) {
+      const userTasksCnt: number = studyCompleted + practiceCompleted;
+      progressPercentage = (userTasksCnt / totalTasksCnt) * 100;
+      this.mainProgress = progressPercentage;
+    }
+    this.progressionDataBridgeService.updateTabProgressData(progressPercentage);
     this.userService.updateModuleProgress(userId, progressPercentage);
   }
   //#endregion
 
   async getUserData(): Promise<any> {
-    const userData: any = await firstValueFrom(this.userService.getProfile());
-    if (userData.profile_picture !== null)
-      console.log("userData: ", userData)
-      this.profile_picture = `http://localhost:3000${userData.profile_picture}`;
-    return userData.user;
+    try {
+      const userData: any = await firstValueFrom(this.userService.getProfile());
+      if (userData.user.profile_picture !== null)
+        this.profile_picture = `http://localhost:3000${userData.user.profile_picture}`;
+
+      this.privilege = userData.user.privileges;
+      return userData.user;
+    } catch(err: any) {
+      console.error("--error: ERRO AO ENCONTRAR CONTA: ", err);
+
+      if (err.status === 401)
+        this.router.navigate(['/login']);
+    }
   }
   
   moduleUpdate(module_id: number): void {    
@@ -192,25 +215,30 @@ export class Progression implements OnInit {
   }
 
   async openTaskManager() {
+    if (this.privilege === 0)
+      return;
+
     const data = await this.loadManagerData();
     if (!data)
       return;
 
     this.rankTreeDialogService.open(data).subscribe(action => {
-      console.log("action: ", action)
       switch (action.action) {
         case 'edit':
           if (!action.node)
             return;
 
-          if (action.node.type === 'quiz')
-            this.editQuiz(action.node!.id);
-
-          if (action.node.type === 'task')
-            this.editTask(action.node.module.id, action.node!.id);
-
-          if (action.node.type === 'rank')
-            this.editModule(action.node!.id);
+          switch(action.node.type) {
+            case 'quiz':
+              this.editQuiz(action.node!.id);
+              break;
+            case 'task':
+              this.editTask(action.node.module.id, action.node!.id);
+              break;
+            case 'rank':
+              this.editModule(action.node!.id);
+              break;
+          }
           break;
         case 'delete':
           if (!action.node)
@@ -218,21 +246,27 @@ export class Progression implements OnInit {
           
           const selectedId: number = action.node!.id;
 
-          if (action.node.type === 'quiz')
-            this.deleteQuiz(selectedId);
-
-          if (action.node.type === 'task')
-            this.deleteTask(selectedId);
-          
-          if (action.node.type === 'rank')
-            this.deleteModule(selectedId);
+          switch (action.node.type) {
+            case 'quiz':
+              this.deleteQuiz(selectedId);
+              break;
+            case 'task':
+              this.deleteTask(selectedId);
+              break;
+            case 'rank':
+              this.deleteModule(selectedId);
+              break;
+          }
           break;
         case 'add':
-          if (action.parent?.type === 'task')
-            this.createQuiz(action.parent.module.id, action.parent.id);
-
-          if (action.parent?.type === 'rank')
-            this.createTask(action.parent.id);
+          switch (action.parent?.type) {
+            case 'task':
+              this.createQuiz(action.parent.module.id, action.parent.id);
+              break;
+            case 'rank':
+              this.createTask(action.parent.id);
+              break;
+          }
 
           if (action.parent === null)
             this.createModule();
@@ -249,6 +283,9 @@ export class Progression implements OnInit {
 
   //#region TASK CONTENT
   async openTaskContentDialog(taskId: number): Promise<void> {
+    if (this.privilege === 0)
+      return;
+
     try {
       const [videos, materials, task]: any = await Promise.all([
         firstValueFrom(this.videoService.findAll()),
@@ -308,6 +345,9 @@ export class Progression implements OnInit {
 
   //#region QUIZ
   async openQuizFormDialog(model: Partial<QuizForm> = {}): Promise<QuizForm | undefined> {
+    if (this.privilege === 0)
+      return;
+
     const form = await firstValueFrom(
       this.dialogService.openForm<any>({
         title: model.options?.length ? 'Editar quiz' : 'Criar quiz',
@@ -351,8 +391,6 @@ export class Progression implements OnInit {
       this.quizService.uploadImage(data.image)
     );
 
-    console.log('imageData:', imageData);
-
     return imageData.path;
   }
 
@@ -361,7 +399,7 @@ export class Progression implements OnInit {
     if (!formData) return;
 
     formData.image = await this.uploadQuizImage(formData);
-    console.log("formData.image: ", formData.image)
+
     this.quizService.create({ ...formData, module_id: moduleId, task_id: taskId }).subscribe({
       next: () => this.updateManager(),
       error: (error) => console.error('--Error: ', error),
@@ -506,7 +544,6 @@ export class Progression implements OnInit {
 
   async editModule(selectedId: number): Promise<void> {
     const selectedData: TreeNode | undefined = this.modules.find((m: any) => m.id === selectedId);
-    console.log("this.modules: ", this.modules)
     if (!selectedData || !selectedData.valid)
       return;
 
@@ -541,6 +578,42 @@ export class Progression implements OnInit {
       next: () => this.updateManager(),
       error: (err) => console.error("--Rrror: ", err)
     });
+  }
+  //#endregion
+
+  //#region QUIZ DIALOG
+  async openQuizDialog(): Promise<void> {
+    if (this.userModuleId === -1)
+      return;
+
+    const selectedQuizzes: any = await firstValueFrom(this.quizService.findRandomByModule(this.userModuleId));
+
+    this.rankQuiz = selectedQuizzes;
+    const result = await firstValueFrom(
+      this.dialogService.openQuizPlayer({
+        title: 'Quiz para subir de rank!',
+        questions: selectedQuizzes,
+      }),
+    );
+
+    if (result.data?.outcome === QuizOutcome.PASSED)
+      this.liberateNextRank();
+  }
+
+  async liberateNextRank(): Promise<void> {
+    try {
+      const allModules: any[] = await firstValueFrom(this.moduleService.findAll());
+      const allModulesSequence: any[] = allModules.sort((a, b) => a.module - b.module);
+      const currentModuleIndex: number = allModules.findIndex((mod) => mod.id === this.userModuleId);
+      const nextModule: any = allModulesSequence[currentModuleIndex+1];
+      const nextModuleId: number = nextModule.id;
+
+      await firstValueFrom(this.userService.updateModule(this.userId, nextModuleId));
+      this.updatePage();
+      
+    } catch(err) {
+      console.error("--error: ", err)
+    }
   }
   //#endregion
 }

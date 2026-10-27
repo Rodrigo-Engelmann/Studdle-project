@@ -21,7 +21,9 @@ export class UserNotificationService {
 
   async findById(id: number) {
     const notification = await this.notificationRepo.findOne({ where: { id } });
-    if (!notification) throw new NotFoundException(`Notificação #${id} não encontrada`);
+    if (!notification)
+      throw new NotFoundException(`Notificação #${id} não encontrada`);
+
     return notification;
   }
 
@@ -40,15 +42,24 @@ export class UserNotificationService {
   findByUser(userId: number) {
     return this.notificationRepo.find({
       where: { user_id: userId },
-      order: { id: 'DESC' },
+      // created_at em vez de id: ordem correta mesmo se o id não for sequencial
+      order: { created_at: 'DESC' },
     });
   }
 
   findUnread(userId: number) {
     return this.notificationRepo.find({
       where: { user_id: userId, readed: false },
-      order: { id: 'DESC' },
+      order: { created_at: 'DESC' },
     });
+  }
+
+  async countUnread(userId: number) {
+    const total = await this.notificationRepo.count({
+      where: { user_id: userId, readed: false },
+    });
+
+    return { total };
   }
 
   async markAsRead(id: number) {
@@ -58,7 +69,10 @@ export class UserNotificationService {
   }
 
   async markAllAsRead(userId: number) {
-    await this.notificationRepo.update({ user_id: userId, readed: false }, { readed: true });
+    await this.notificationRepo.update(
+      { user_id: userId, readed: false },
+      { readed: true },
+    );
     return { updated: true };
   }
 

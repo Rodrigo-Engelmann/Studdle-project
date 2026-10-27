@@ -1,38 +1,61 @@
-<main class="recommendations">
-    <div class="recommendations-container">
+<div class="header-spacing">
 
+</div>
+
+<!-- <main class="recommendations"> -->
+    <div class="recommendations">
         <section class="content-section">
             <div class="subtitle-container">
-                <h2>Materiais Didáticos</h2>
                 <span class="divisor-line"></span>
+                <h2>Materiais Didáticos</h2>
             </div>
 
             <div id="container-material">
                 @for(material of materials; track material.title) {
-                    <app-mat-card
-                        [material]="material"
+                    <app-mat-card 
+                    [material]="material"
+                    (updateData)="updateSingularVideo($event)"
                     ></app-mat-card>
                 }
             </div>
+            @if (!materials.length) {
+                @if (isLoading.materials) {
+                    <div class="spinner-container">
+                        <mat-spinner class="spinner"
+                        mode="indeterminate">
+                        </mat-spinner>
+                    </div>
+                } @else {
+                    <span class="noLines-text">Nenhuma linha a exibir...</span>
+                }
+            }
         </section>
 
         <section class="content-section">
             <div class="subtitle-container">
-                <h2>Videoaulas</h2>
                 <span class="divisor-line"></span>
+                <h2>Videoaulas</h2>
             </div>
 
             <div id="container-vids">
-                <div id="container-vids">
-                    @for(video of videos; track video.title) {
-                        <app-vid-card
-                            [video]="video"
-                        ></app-vid-card>
-                    }
-                </div>
+                @for(video of videos; track video.title) {
+                    <app-vid-card class="video-card"
+                    [video]="video"
+                    (updateData)="updateSingularMaterial($event)"
+                    ></app-vid-card>
+                }
             </div>
+            @if (!videos.length) {
+                @if (isLoading.videos) {
+                    <div class="spinner-container">
+                        <mat-spinner class="spinner"
+                        mode="indeterminate">
+                        </mat-spinner>
+                    </div>
+                } @else {
+                    <span class="noLines-text">Nenhuma linha a exibir...</span>
+                }
+            }
         </section>
     </div>
-
-    <footer class="footer"></footer>
-</main>
+<!-- </main> -->

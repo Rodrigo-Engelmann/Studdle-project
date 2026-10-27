@@ -1,0 +1,27 @@
+@if (steps.length) {
+    @for (i of [index]; track i) {
+        <img class="mascot" [src]="step.image" [style]="mascotStyle" [alt]="step.name" />
+
+        <div class="bubble-wrapper" [class.to-left]="side === MascotSide.LEFT" [style]="bubbleStyle">
+
+            <span class="mascot-name">
+                {{ step.name }}
+            </span>
+
+            <div class="bubble">
+                <p class="bubble-text">
+                    {{ step.message }}
+                </p>
+            </div>
+
+            <span class="bubble-hint">
+                {{ hint }}
+                @if (steps.length > 1) {
+                <span class="step-counter">
+                    ({{ index + 1 }}/{{ steps.length }})
+                </span>
+                }
+            </span>
+        </div>
+    }
+}

@@ -1,0 +1,17 @@
+.comments-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px 0 24px;
+
+  h2 {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.comments-dialog-content {
+  height: 70vh;
+  padding-top: 16px;
+}

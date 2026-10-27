@@ -19,15 +19,29 @@
   <div class="rank">
     <p>{{ moduleData.name }}</p>
     
-    <img [src]="moduleData.image"
-    [alt]="'Imagem ilustrativa do rank ' + moduleData.name"
-    [class.loadingimage-rank]="!moduleData?.image"
-    [class.image-loaded]="imageLoaded"
-    (load)="imageLoaded = true"/>
+    <div class="rank-img-stack">
+      @if (previousImage) {
+        <img class="prev" [src]="previousImage" alt="" draggable="false"/>
+      }
+      @if (currentImage) {
+        @for (src of [currentImage]; track src) {
+          <img class="current"
+              [src]="src"
+              [class.visible]="imageLoaded"
+              [alt]="'Imagem ilustrativa do rank ' + moduleData.name"
+              (load)="onImageLoad()" draggable="false"/>
+        }
+      }
+    </div>
+
+    @if(linearProgress === 100) {
+      <button class="level-up-button" (click)="pressedLevelUpBtn.emit(true)">
+        ✦ Subir de nível ✦
+      </button>
+    }
   </div>
 
   <div class="linear-progress" aria-label="Progresso geral">
-    
     <div class="linear-progress__track"
     role="progressbar"
     aria-label="Progresso geral"
@@ -45,13 +59,9 @@
             <span class="label_percentage">{{ linearProgress }}%</span>
             
             @if (linearProgress >= 8) {
-              <!-- <mat-icon aria-hidden="true">
-                account_circle
-              </mat-icon> -->
-
               <img class="profile-picture translateYhover"
               [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
-              alt="" matButton>
+              alt="" matButton draggable="false">
             }
           }
         </div>

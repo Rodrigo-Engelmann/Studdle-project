@@ -26,4 +26,20 @@ export class CommentController extends BaseController<Comment> {
   removeByUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.commentService.removeByUser(userId);
   }
+
+  @Get('video/:videoId')
+  findByVideo(@Param('videoId', ParseIntPipe) videoId: number) {
+    return this.commentService.findByVideo(videoId);
+  }
+
+  @Get('material/:materialId')
+  findByMaterial(@Param('materialId', ParseIntPipe) materialId: number) {
+    return this.commentService.findByMaterial(materialId);
+  }
+
+  // Contexto de um comentário: raiz + respostas + o alvo
+  @Get(':id/context')
+  findContext(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.findContext(id);
+  }
 }

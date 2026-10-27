@@ -1,18 +1,21 @@
 // angular
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // services
 import { DialogService } from '../services/dialog.service'
 import { MaterialService } from '../../../app/services/materials/materials.service'
+import { UserDataBridgeService } from '../services/userData-bridge.service';
 
 // common
 import { DialogSize, FieldType, FieldWidth } from '../enums/dialog.enums'
 
 // others
 import { material } from '../../../../common/material';
+import { takeUntil, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-mat-card',
@@ -24,16 +27,34 @@ import { material } from '../../../../common/material';
   styleUrl: './material-card.scss',
 })
 
-export class MaterialCard {
+export class MaterialCard implements OnInit {
   @Output() updateData = new EventEmitter<any>();
   @Input() material!: material;
   
-  privilege: number = 1;
+  userData: any = undefined;
+
+  private destroy$ = new Subject<void>();
 
   constructor(private dialogService: DialogService
             , private materialService: MaterialService
             , private router: Router
-    ) {}
+            , private sanitizer: DomSanitizer
+            , private userDataBridgeService: UserDataBridgeService
+  ) {}
+
+  get thumbnailVar() {
+    return this.sanitizer.bypassSecurityTrustStyle(
+      `url(http://localhost:3000${this.material.main_image})`
+    );
+  }
+
+  ngOnInit(): void {
+    this.userDataBridgeService.userData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bridgeUserData: any) => {
+        this.userData = bridgeUserData;
+    });
+  }
 
   openMaterial(): void {
     const url = 'view/material/'+this.material.link;
@@ -60,8 +81,10 @@ export class MaterialCard {
         { key: 'sequence', label: 'Sequência dos materiais', type: FieldType.NUMBER, required: true }
       ],
     }).subscribe((res: any) => {
+      if (!res.confirmed)
+        return;
+
       const data = res.data;
-      console.log('dados:', data);
       if (data.main_image instanceof File) {
         this.materialService.uploadImage(data.main_image)
           .subscribe((uploadRes) => {
@@ -80,7 +103,6 @@ export class MaterialCard {
   updateMaterial(data: any): void {
     this.materialService.update(this.material.id, data)
       .subscribe((updateRes: any) => {
-        console.log('updateRes:', updateRes);
         this.updateData.emit(updateRes)
       });
   }
@@ -88,16 +110,16 @@ export class MaterialCard {
   
   //#region: delete
   deleteSelect() {
-      const confirmDelete = confirm('Tem certeza que deseja excluir este conteúdo?');
-      if (!confirmDelete)
-        return;
+    const confirmDelete = confirm('Tem certeza que deseja excluir este conteúdo?');
+    if (!confirmDelete)
+      return;
 
-      this.materialService.delete(this.material.id).subscribe((res: any) => {
-        if (res.deleted) {
-          this.material.deletedMaterial = true;
-          this.updateData.emit(this.material);
-        }
-      });
+    this.materialService.delete(this.material.id).subscribe((res: any) => {
+      if (res.deleted) {
+        this.material.deletedMaterial = true;
+        this.updateData.emit(this.material);
+      }
+    });
   }
   //#endregion
 }

@@ -15,7 +15,7 @@ export class video {
     deletedVideo?: boolean;
 
     constructor() {
-        this.id = 0;
+        this.id = -1;
         this.link = '';
         this.video_url = '';
         this.description = '';

@@ -1,4 +1,11 @@
-import { Controller, Get, Patch, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { BaseController } from '../common/base/base.controller';
 import { UserNotification } from './user_notifications.entity';
 import { UserNotificationService } from './user_notifications.service';
@@ -37,5 +44,11 @@ export class UserNotificationController extends BaseController<UserNotification>
   @Delete('user/:userId/read')
   clearRead(@Param('userId', ParseIntPipe) userId: number) {
     return this.notificationService.clearRead(userId);
+  }
+
+  // Contagem dos não lidos do usuário
+  @Get('user/:userId/unread/count')
+  countUnread(@Param('userId', ParseIntPipe) userId: number) {
+    return this.notificationService.countUnread(userId);
   }
 }

@@ -1,0 +1,123 @@
+<div class="thread-head">
+    <h2 mat-dialog-title>
+        {{ config.title ?? 'Resposta ao seu comentário' }}
+    </h2>
+
+    <button mat-icon-button type="button"
+    aria-label="Fechar"
+    (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="thread-content">
+    @if (loading) {
+        <p class="state-message">
+            Carregando a conversa...
+        </p>
+    } @else if (missing || !root) {
+        <p class="state-message">
+            Este comentário não existe mais.
+        </p>
+    } @else {
+        <!-- COMENTÁRIO RAIZ -->
+        <div class="thread-comment root"
+        [class.target]="root.isTarget"
+        [class.mine]="root.isMine">
+            <app-user-avatar
+            [name]="root.user?.user_name ?? ''"
+            [picture]="root.user?.profile_picture"
+            size="40px"/>
+
+            <div class="comment-body">
+                <div class="comment-head">
+                    <span class="comment-author">
+                        {{ root.user?.user_name ?? 'Usuário' }}
+                    </span>
+
+                    @if (root.isMine) {
+                        <span class="badge">você</span>
+                    }
+
+                    <span class="comment-date">
+                        {{ timeAgo(root.publish_date) }}
+                    </span>
+                </div>
+
+                <p class="comment-text">
+                    {{ root.display }}
+                </p>
+            </div>
+        </div>
+
+        <!-- RESPOSTAS DA CONVERSA -->
+        @if (replies.length) {
+            <ul class="replies">
+                @for (reply of replies; track reply.id) {
+                    <li class="thread-comment"
+                    [class.target]="reply.isTarget"
+                    [class.mine]="reply.isMine">
+                        <app-user-avatar
+                        [name]="reply.user?.user_name ?? ''"
+                        [picture]="reply.user?.profile_picture"
+                        size="32px"/>
+
+                        <div class="comment-body">
+                            <div class="comment-head">
+                                <span class="comment-author">
+                                    {{ reply.user?.user_name ?? 'Usuário' }}
+                                </span>
+
+                                @if (reply.isMine) {
+                                    <span class="badge">você</span>
+                                }
+
+                                @if (reply.isTarget) {
+                                    <span class="badge highlight">nova resposta</span>
+                                }
+
+                                <span class="comment-date">
+                                    {{ timeAgo(reply.publish_date) }}
+                                </span>
+                            </div>
+
+                            <p class="comment-text">
+                                {{ reply.display }}
+                            </p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    }
+</mat-dialog-content>
+
+<!-- CAIXA DE RESPOSTA -->
+@if (!loading && !missing && root && currentUser) {
+    <mat-dialog-actions class="thread-actions">
+        <div class="composer">
+            <app-user-avatar
+            [name]="currentUser.user_name"
+            [picture]="currentUser.profile_picture"
+            size="32px"/>
+
+            <div class="composer-body">
+                <textarea class="composer-input"
+                rows="1"
+                placeholder="Escreva uma resposta..."
+                [(ngModel)]="replyDraft"
+                [disabled]="sending"
+                (focus)="prefillMention()"
+                (input)="autoGrow($event)"></textarea>
+
+                <div class="composer-buttons">
+                    <button mat-flat-button type="button"
+                    [disabled]="!replyDraft.trim() || sending"
+                    (click)="submitReply()">
+                        Responder
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-actions>
+}

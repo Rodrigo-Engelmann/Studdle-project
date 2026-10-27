@@ -29,3 +29,10 @@ export interface FlatTreeNode {
   level: number;
   original: TreeNode;
 }
+
+export interface TreeActionType {
+  edit: 'edit',
+  delete: 'delete',
+  add: 'add',
+  content: 'content'
+};

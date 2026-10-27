@@ -12,6 +12,11 @@ export interface Material {
   sequence: number;
 }
 
+export interface MaterialWithWatched extends Material {
+  task_id: number | null;
+  watched: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -65,5 +70,16 @@ export class MaterialService {
   // GET BY URL
   findByURL(url: string): Observable<Material> {
     return this.http.get<Material>(`${this.api}/findByURL/${url}`)
+  }
+
+  // RECOMENDATED MATERIALS
+  getNextMaterials(): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.api}/next`, { withCredentials: true });
+  }
+
+  getMaterialsByModule(moduleId: number): Observable<MaterialWithWatched[]> {
+    return this.http.get<MaterialWithWatched[]>(
+      `${this.api}/module/${moduleId}`, { withCredentials: true },
+    );
   }
 }

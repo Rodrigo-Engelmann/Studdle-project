@@ -1,4 +1,3 @@
-// src/auth/strategies/jwt.strategy.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -17,9 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       // PEGAR TOKEN DO COOKIE
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          if (req?.cookies?.[ACCESS_TOKEN_COOKIE_NAME]) {
+          if (req?.cookies?.[ACCESS_TOKEN_COOKIE_NAME])
             return req.cookies[ACCESS_TOKEN_COOKIE_NAME];
-          }
           return null;
         },
       ]),
@@ -28,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       ignoreExpiration: false,
 
       // chave secreta do access token
-      secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET!
+      secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET!,
     });
   }
 
@@ -39,6 +37,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('Usuário não encontrado');
     }
 
-    return user;
+    // req.user nunca deve carregar o hash da senha: qualquer rota que
+    // devolva req.user acabaria expondo ele na resposta.
+    const { password, ...safeUser } = user;
+
+    return safeUser;
   }
 }

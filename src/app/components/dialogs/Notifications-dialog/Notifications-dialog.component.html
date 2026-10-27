@@ -1,0 +1,70 @@
+<div class="notifications-head">
+    <h2 mat-dialog-title>
+        {{ config.title ?? 'Notificações' }}
+
+        @if (unreadCount) {
+            <span class="unread-badge">{{ unreadCount }}</span>
+        }
+    </h2>
+
+    <div class="head-actions">
+        @if (unreadCount) {
+            <button mat-button type="button" (click)="markAllAsRead()">
+                Marcar todas como lidas
+            </button>
+        }
+
+        <button mat-icon-button type="button"
+        aria-label="Fechar notificações"
+        (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>
+
+<mat-dialog-content class="notifications-content">
+    @if (loading) {
+        <p class="state-message">
+            Carregando notificações...
+        </p>
+    } @else if (!notifications.length) {
+        <p class="state-message">
+            Nada por aqui ainda. Suas notificações aparecem nesta lista.
+        </p>
+    } @else {
+        <ul class="notification-list">
+            @for (notification of notifications; track notification.id) {
+                <li class="notification"
+                [class.unread]="!notification.readed"
+                (click)="select(notification)">
+
+                    <mat-icon class="notification-icon">
+                        {{ notification.type === 'comment_reply' ? 'comment' : 'notifications' }}
+                    </mat-icon>
+
+                    <div class="notification-body">
+                        <p class="notification-text">
+                            {{ notification.text }}
+                        </p>
+
+                        <span class="notification-date">
+                            {{ timeAgo(notification.created_at) }}
+                        </span>
+                    </div>
+
+                    @if (!notification.readed) {
+                        <span class="unread-dot" aria-label="Não lida"></span>
+                    }
+
+                    <button class="notification-remove"
+                    mat-icon-button
+                    type="button"
+                    aria-label="Remover notificação"
+                    (click)="remove(notification, $event)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+</mat-dialog-content>

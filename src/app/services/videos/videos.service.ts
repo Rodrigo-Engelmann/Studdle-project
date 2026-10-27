@@ -68,4 +68,16 @@ export class VideoService {
       { params: { url: url } }
     );
   }
+
+  // RECOMENDATION VIDEOS
+  getNextVideos() {
+    return this.http.get<Video[]>(`${this.api}/next`, { withCredentials: true });
+  }
+
+  // GET VIDEOS BY MODULEID
+  getVideosByModule(moduleId: number): Observable<(Video & { watched: boolean })[]> {
+    return this.http.get<(Video & { watched: boolean })[]>(
+      `${this.api}/module/${moduleId}`, { withCredentials: true },
+    );
+  }
 }

@@ -9,11 +9,17 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
+
+// common
+import { MessageDialogConfig } from '../models/dialog.models';
 
 // services
 import { UserService } from '../../services/users/users.service';
+import { DialogService } from '../services/dialog.service';
 
+// outro
+import { DialogSize, DialogVariant } from '../enums/dialog.enums';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-configs',
@@ -55,11 +61,14 @@ export class UserConfigs implements OnInit {
   ];
   colorBlindSelected = this.colorblindOptions[0];
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService
+            , private router: Router
+            , private dialogService: DialogService) {}
 
   ngOnInit() {
     this.userService.getProfile().subscribe({
       next: (res) => {
+        console.log("TESTE 12 1321 res: ", res)
         const resUsername: string = res.user.user_name;
 
         if (resUsername !== 'undefined')
@@ -68,9 +77,8 @@ export class UserConfigs implements OnInit {
         this.colorBlindSelected = this.colorblindOptions[res.user.colorblindness];
         this.db_email = res.user.email;
 
-        // const name_input = document.getElementsByClassName('mat-input-0')[0] as HTMLInputElement;
-        // const email_input = document.getElementById('mat-input-1') as HTMLInputElement;
-        // // const password_input = document.getElementsByClassName('mat-input-2')[0] as HTMLImageElement;
+        this.userService.updateColorBlindFilter(res.user.colorblindness);
+
         if (res.user.profile_picture !== null)
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
       },
@@ -116,10 +124,19 @@ export class UserConfigs implements OnInit {
             newPassword: this.db_newPassword,
           })
         );
-        console.log('Senha alterada com sucesso!');
       } catch (err: any) {
         console.error(err);
-        if (err.status === 401) alert('Senha atual incorreta.');
+        if (err.status === 401) {
+          const dialogMessage: MessageDialogConfig = {
+            title: 'Falha ao atualizar conta',
+            message: 'Senha incorreta',
+            variant: DialogVariant.WARNING,
+            confirmLabel: 'Fechar',
+            size: DialogSize.SMALL,
+          };
+          this.dialogService.openMessage(dialogMessage);
+        }
+        
         return; // aborta o saveChanges aqui, corretamente
       }
     }
@@ -146,7 +163,14 @@ export class UserConfigs implements OnInit {
       },
       error: (err) => {
         console.error('Error updating user:', err);
-        alert('Erro ao salvar mudanças.');
+        const dialogMessage: MessageDialogConfig = {
+          title: 'Falha ao atualizar conta',
+          message: 'Erro ao salvar mudanças',
+          variant: DialogVariant.WARNING,
+          confirmLabel: 'Fechar',
+          size: DialogSize.SMALL,
+        };
+        this.dialogService.openMessage(dialogMessage);
       },
     });
   }
@@ -161,22 +185,34 @@ export class UserConfigs implements OnInit {
       return;    
 
     this.userService.deleteAccount().subscribe({
-      next: (res) => {
-        console.log("Conta deletada:", res);
-        alert("Sua conta foi removida.");
+      next: (_res) => {
+        const dialogMessage: MessageDialogConfig = {
+          title: 'Sucesso',
+          message: 'Sua conta foi deletada com sucesso!',
+          variant: DialogVariant.SUCCESS,
+          confirmLabel: 'Fechar',
+          size: DialogSize.SMALL,
+        };
+        this.dialogService.openMessage(dialogMessage);
 
         // desloga o usuário
         localStorage.removeItem('token');
       },
       error: (err) => {
         console.error("Account delete error:", err);
-        alert("Erro ao excluir conta.");
+        const dialogMessage: MessageDialogConfig = {
+          title: 'Falha',
+          message: 'Um erro ocorreu ao tentarmos excluir sua conta',
+          variant: DialogVariant.WARNING,
+          confirmLabel: 'Fechar',
+          size: DialogSize.SMALL,
+        };
+        this.dialogService.openMessage(dialogMessage);
       }
     });
 
     this.userService.logout().subscribe({
       next: () => {
-        console.log("Logout realizado com sucesso!");
         this.router.navigate(['/login']);
       },
       error: (err) => {
@@ -185,8 +221,6 @@ export class UserConfigs implements OnInit {
     });
   }
 
-
-
   getProfile() { 
     this.userService.getProfile().subscribe({
       next: (res) => {
@@ -194,14 +228,17 @@ export class UserConfigs implements OnInit {
         this.db_user_name = res.user.user_name;
         this.db_email = res.user.email;
         // this.db_password = res.user.password;
-
-        console.log(`Profile_picture: ${this.profile_picture}\nname ${this.db_user_name}\nemail: ${this.db_email}`);
         
         if (res.profile_picture) {
           this.profile_picture = 'http://localhost:3000' + res.profile_picture;
           this.previewImage = null; // limpa a preview, mostra foto final
         }
+      },
+      error: (err) => {
+        console.error("Failed to find profile:", err);
 
+        if (err.status === 401)
+          this.router.navigate(['/login']);
       }
     });
   }

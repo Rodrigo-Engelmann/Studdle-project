@@ -1,11 +1,12 @@
 <header class="side-padding">
-    <img class="studdle-logo-header translateYhover" src="assets/images/studdleLogo-removed-background.png" alt="logo studdle - clique para voltar pro menu">
+    <img class="studdle-logo-header translateYhover"
+    src="assets/images/studdleLogo-removed-background.png"
+    alt="logo studdle - clique para voltar pro menu" (click)="goBack()">
 
     <img class="profile-picture translateYhover"
     [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
     alt="imagem do usuário - clique para abrir as opções de usuário"
-    matButton
-    [matMenuTriggerFor]="menu">
+    matButton [matMenuTriggerFor]="menu">
     
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="Configuracoes()">
@@ -21,13 +22,17 @@
 
 <main>
     <div class="container-info">
-        <iframe class="video-player"
-        [src]="embedUrl"
-        width="560"
-        height="315"
-        frameborder="0"
-        allowfullscreen
-        ></iframe>
+        @if (embedUrl) {
+            <iframe class="video-player"
+            [src]="embedUrl"
+            width="560"
+            height="315"
+            frameborder="0"
+            allowfullscreen
+            ></iframe>
+        } @else {
+            <div class="video-player"></div>
+        }
 
         <h1 class="title">
             {{ videoData.title }}
@@ -47,388 +52,19 @@
             </button>
         }
 
+        @if (videoData.id !== -1) {
+            <app-comments class="comments-container"
+            [videoId]="videoData.id"
+            ></app-comments>
+        }
     </div>
-
-    <div class="container-comments">
-
-    <div class="comment-input" [style]="{
-        marginLeft: '60px',
-        marginBottom: '80px',
-        width: '90%',
-        paddingTop: '40px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                width: '100%'
-            }">
-
-                <input type="text" [style]="{
-                    margin: '0',
-                    color: 'var(--color-white)',
-                    width: '90%',
-                    height: '100%',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    borderBottom: 'solid var(--color-white) 2px'
-                }" class="comment-content" placeholder="Escreva o seu comentário"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-                <!-- respostas/responder -->
-        <div [style]="{
-            display: 'flex'
-        }">
-        <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p>
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '20px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-             <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-                <!-- respostas/responder -->
-        <div [style]="{
-            display: 'flex'
-        }">
-        <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p>
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '20px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-             <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-        <!-- respostas/responder -->
-        <div [style]="{
-            display: 'flex'
-        }">
-        <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p>
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '20px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-         
-    </div>
-    </div>
-    </div>
-    
-    <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-                 <!-- respostas/responder -->
-        <div [style]="{
-            display: 'flex'
-        }">
-        <!-- <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p> -->
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '69px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-    </div>
-        <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-                <div [style]="{
-            display: 'flex'
-        }">
-        <!-- <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p> -->
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '69px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-         
-    </div>
-        <div class="comment" [style]="{
-        marginLeft: '60px',
-        marginBottom: '10px'
-    }">
-        <div class="comment-elements" [style]="{
-            backgroundColor: 'transparent',
-            width: '100%',
-            height: '60px',
-            display: 'flex'
-        }">
-            <img src="assets/images/profile-picture-placeholder.jpg" [style]="{
-                height: '100%',
-                borderRadius: '100%',
-                marginRight: '10px'
-            }" alt="">
-            <div [style]="{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }">
-                <h4 [style]="{
-                    margin: '0'
-                }" class="user-name">Rodrigo Engelmann</h4>
-                <p [style]="{
-                    margin: '0'
-                }" class="comment-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, excepturi minima itaque alias at in unde dolore dolor repudiandae. Sit lib</p>
-            </div>
-            
-        </div>
-        <div [style]="{
-            display: 'flex'
-        }">
-        <!-- <mat-icon [style]="{
-            margin: '0',
-            transform: 'rotate(90deg)',
-            marginTop: '-4px',
-            marginLeft: '60px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">chevron_right</mat-icon>
-        <p [style]="{
-            margin: '0',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">1 respostas</p> -->
-
-        <p [style]="{
-            margin: '0',
-            marginLeft: '69px',
-            userSelect: 'none',
-            cursor: 'pointer'
-        }">responder</p>
-        </div>
-        <!-- colocar aqui exatasmente essa estrutura de comentário caso haja um reply, senão, colocar dentro do "container-comments" -->
-         
-    </div>
-</div>
 </main>
+
+@if (privilege !== 0) {
+    <div class="video-settings"
+    (click)="settingsSelect()">
+        <mat-icon>
+            settings
+        </mat-icon>
+    </div>
+}

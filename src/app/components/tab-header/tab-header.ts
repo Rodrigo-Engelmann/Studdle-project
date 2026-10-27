@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
 
 // other
 import { filter } from 'rxjs';
@@ -17,6 +18,8 @@ import { NgClass } from '@angular/common';
 
 // services
 import { UserService } from '../../services/users/users.service';
+import { DialogService } from '../../components/services/dialog.service';
+import { UserNotificationService } from '../services/user-notifications/user-notifications.service';
 
 @Component({
   selector: 'app-tab-header',
@@ -32,7 +35,8 @@ import { UserService } from '../../services/users/users.service';
     MatSelectModule,
     MatMenuModule,
     MatButtonModule,
-    NgClass
+    MatBadgeModule,
+    NgClass,
   ],
   templateUrl: 'tab-header.html',
   styleUrls: [
@@ -42,6 +46,11 @@ import { UserService } from '../../services/users/users.service';
 })
 export class TabHeader implements OnInit {
   @Input() progressPercentage: number = 0;
+  @Input() modules: any[] = [];
+  @Input() categories: any[] = [];
+
+  @Output() filterChanges = new EventEmitter<any>();
+  @Output() updateUserData = new EventEmitter<boolean>();
 
   profile_picture: any = undefined;
   selectedIndex: number = 0;
@@ -58,20 +67,6 @@ export class TabHeader implements OnInit {
   showFilters: boolean = false;
   searchQuery: string = '';
 
-  modules: string[] = [
-    'nenhum',
-    'Módulo 1',
-    'Módulo 2',
-    'Módulo 3'
-  ];
-
-  categories: string[] = [
-    'nenhum',
-    'UI/UX',
-    'Backend',
-    'Frontend'
-  ];
-
   selectedModule: string | null = null;
   selectedCategory: string | null = null;
 
@@ -85,9 +80,14 @@ export class TabHeader implements OnInit {
 
   search_header: HTMLElement | null = null;
 
+  unreadCount: number = 0;
+  private userId: number | null = null;
+
   constructor(
-    private router: Router,
-    private userService: UserService
+    private router: Router
+    , private userService: UserService
+    , private dialogService: DialogService
+    , private userNotificationService: UserNotificationService
   ) {
     this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
@@ -120,6 +120,9 @@ export class TabHeader implements OnInit {
 
     this.userService.getProfile().subscribe({
       next: (res) => {
+        this.userId = res.user.id;
+        this.loadUnreadCount();
+
         if (res.user.profile_picture !== null)
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
       },
@@ -133,9 +136,20 @@ export class TabHeader implements OnInit {
     });
   }
 
+  loadUnreadCount(): void {
+    if (!this.userId)
+      return;
+
+    this.userNotificationService.countUnread(this.userId).subscribe({
+      next: (res) =>
+        this.unreadCount = res.total,
+      error: (err) =>
+        console.error('--Error ao contar notificações: ', err)
+    });
+  }
+
   ngAfterViewInit() {
     this.search_header = document.getElementsByClassName("search-header")[0] as HTMLElement;
-    // if (this.search_header) this.search_header.style.zIndex = '1012312';
 
     const header = document.querySelector('app-tab-header') as HTMLElement;
     if (header) {
@@ -150,7 +164,9 @@ export class TabHeader implements OnInit {
   go(index: number) {
     this.resetFilterComponent(index);
     this.selectedIndex = index;
-    this.router.navigate(['/', this.routes[index]]);
+    this.router.navigate(['/', this.routes[index]]);3
+
+    this.updateUserData.emit(true);
   }
 
   resetFilterComponent(index: any) {
@@ -169,7 +185,13 @@ export class TabHeader implements OnInit {
 
   searchUpdate() {
     this.filterConfigUpdate();
-    console.log('-- filtro+search: ', this.searchQuery, this.selectedModule, this.selectedCategory);
+    const filters: any = {
+      searchQuery: this.searchQuery,
+      selectedModule: this.selectedCategory,
+      selectedCategory: this.selectedModule,
+      pageIndex: this.selectedIndex,
+    };
+    this.filterChanges.emit(filters);
   }
 
   showFilterUpdate() {
@@ -180,16 +202,28 @@ export class TabHeader implements OnInit {
   // sistema de popup do profile-picture
   Configuracoes() {
     this.router.navigate(['/userConfigs']);
+    this.updateUserData.emit(true);
   }
 
   Logout() {
     this.userService.logout().subscribe({
       next: () => {
-        console.log("Logout realizado com sucesso!");
         this.router.navigate(['/login']);
+        this.updateUserData.emit(true);
       },
       error: (err) => {
         console.error("Logout error:", err);
+      }
+    });
+  }
+
+  openNotifications(): void {
+    this.dialogService.openNotificationsDialog().subscribe((result) => {
+      this.loadUnreadCount();
+
+      if (result.data?.selected?.page_link) {
+        this.router.navigateByUrl(result.data.selected.page_link);
+        this.updateUserData.emit(true);
       }
     });
   }

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgClass } from '@angular/common';
+import { ChangeDetectorRef, inject } from '@angular/core';
 
 @Component({
   selector: 'app-progression-desktop',
@@ -15,20 +16,36 @@ export class ProgressionDesktopComponent implements OnChanges {
   @Input() moduleData: any = {};
   @Input() studyTasksData = { studyCompleted: 0, totalStudyContents: 0 }
   @Input() practiceTaskData = { practiceCompleted: 0, totalPracticeContents: 0 }
-  @Input() linearProgress: number = 100;
+  @Input() linearProgress: number = 0;
   @Input() profile_picture: any = undefined;
 
+  @Output() pressedLevelUpBtn = new EventEmitter<boolean>();
+
+  private clearPrevTimer?: ReturnType<typeof setTimeout>;
+  private cdr = inject(ChangeDetectorRef);
+
   imageLoaded = false;
+  currentImage?: string;
+  previousImage?: string;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['moduleData'] &&
-        changes['moduleData'].previousValue?.image !== changes['moduleData'].currentValue?.image) {
-      this.imageLoaded = false;
-    }
+    const newSrc: string | undefined = changes['moduleData']?.currentValue?.image;
+    if (!newSrc || newSrc === this.currentImage) return;
 
-    console.log("profile_picture: ", this.profile_picture)
+    clearTimeout(this.clearPrevTimer);
+    this.previousImage = this.currentImage;
+    this.currentImage = newSrc;
+    this.imageLoaded = false;
+  }
+  
+  onImageLoad() {
+    this.imageLoaded = true;
 
-    // if (changes[''])
+    clearTimeout(this.clearPrevTimer);
+    this.clearPrevTimer = setTimeout(() => {
+      this.previousImage = undefined;
+      this.cdr.markForCheck();
+    }, 1500);
   }
 
   get studyProgress(): number {

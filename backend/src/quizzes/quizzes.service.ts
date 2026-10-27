@@ -127,4 +127,35 @@ export class QuizService {
       success_rate: `${rate}%`,
     };
   }
+
+  async findRandomByModule(moduleId: number) {
+    const quizzes = await this.quizRepo.find({
+      where: { module_id: moduleId },
+      relations: ['options'],
+      order: { id: 'ASC', options: { id: 'ASC' } },
+    });
+
+    // agrupa os quizzes por task
+    const byTask = new Map<number, Quiz[]>();
+    for (const quiz of quizzes) {
+      const list = byTask.get(quiz.task_id) ?? [];
+      list.push(quiz);
+      byTask.set(quiz.task_id, list);
+    }
+
+    // sorteia 1 quiz de cada task
+    return [...byTask.values()].map((list) => {
+      const quiz = list[Math.floor(Math.random() * list.length)];
+
+      return {
+        // id: quiz.id, // descomente se precisar para o submitAnswer
+        image: quiz.image,
+        options: quiz.options.map(({ id, right_answer, text }) => ({
+          id,
+          right_answer,
+          text,
+        })),
+      };
+    });
+  }
 }

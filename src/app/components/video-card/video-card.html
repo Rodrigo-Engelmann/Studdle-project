@@ -1,8 +1,8 @@
 <article class="video-card"
 [style.--thumbnail]="'url(' + video.thumbnail + ')'"
 (click)="openVideo()">
-    <img [src]="video.thumbnail"
-    [alt]="video.title">
+    <img class="os-icon" [src]="video.thumbnail"
+    [alt]="video.title" draggable="false">
 
     <h2>{{ video.title }}</h2>
 
@@ -11,23 +11,27 @@
             {{ createdDateFormat }}
         </p>
         <!-- menu btn -->
-        <button class="video-menu-btn" matButton
-        [matMenuTriggerFor]="menu"
-        (click)="$event.stopPropagation()">
-            <mat-icon>
-                more_vert
-            </mat-icon>
-        </button>
+        @if (userData?.privileges !== 0) {
+            <button class="video-menu-btn" matButton
+            [matMenuTriggerFor]="menu"
+            (click)="$event.stopPropagation()">
+                <mat-icon>
+                    more_vert
+                </mat-icon>
+            </button>
+        }
     </div>    
 </article>
 
 <!-- video adm menu -->
 <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="settingsSelect()">
+    <button class="menu-btns" mat-menu-item (click)="settingsSelect()">
+        <span class="menubtn-underline"></span>
         <mat-icon>settings</mat-icon>
         <span>Configurações</span>
     </button>
-    <button mat-menu-item (click)="deleteSelect()">
+    <button class="menu-btns" mat-menu-item (click)="deleteSelect()">
+        <span class="menubtn-underline"></span>
         <mat-icon>delete</mat-icon>
         <span>Deletar</span>
     </button>

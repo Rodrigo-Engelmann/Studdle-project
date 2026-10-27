@@ -39,7 +39,6 @@ export class TaskService {
 
   // GET BY ID
   findByModule(moduleId: number): Observable<Task[]> {
-    console.log("MODULE ID: ", moduleId)
     return this.http.get<Task[]>(`${this.api}/module/${moduleId}`);
   }
 

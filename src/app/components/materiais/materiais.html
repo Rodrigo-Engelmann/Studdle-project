@@ -2,7 +2,7 @@
     @if (materials.length) {
         <div id="container-material">
             @for(material of materials; track material.title) {
-                <app-mat-card 
+                <app-mat-card
                 [material]="material"
                 (updateData)="updateSingular($event)"
                 ></app-mat-card>
@@ -18,8 +18,10 @@
         }
     }
 
-    <div class="addvideo-btn"
-    (click)="newMaterialDialog()">
-        <mat-icon> add </mat-icon>
-    </div>
+    @if (userData?.privileges !== 0) {
+        <div class="addmaterial-btn"
+        (click)="newMaterialDialog()">
+            <mat-icon> add </mat-icon>
+        </div>
+    }
 </main>

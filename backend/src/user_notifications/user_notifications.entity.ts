@@ -4,8 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from '../users/users.entity';
+import { Comment } from '../comments/comments.entity';
 
 @Entity('user_notifications')
 export class UserNotification {
@@ -15,16 +17,35 @@ export class UserNotification {
   @Column({ nullable: true })
   user_id!: number;
 
-  @Column({ length: 50, nullable: true })
-  text!: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  text!: string | null;
 
   @Column({ default: false })
   readed!: boolean;
 
-  @Column({ length: 255 })
-  page_link!: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  page_link!: string | null;
 
-  @ManyToOne(() => User, (user) => user.notifications, { onDelete: 'CASCADE' })
+  @Column({ length: 30, default: 'generic' })
+  type!: string;
+
+  @Column({ nullable: true })
+  comment_id!: number | null;
+
+  @CreateDateColumn({
+    type: 'datetime',
+    precision: 6,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at!: Date;
+
+  @ManyToOne(() => User, (user) => user.notifications, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: User;
+
+  @ManyToOne(() => Comment, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'comment_id' })
+  comment!: Comment | null;
 }

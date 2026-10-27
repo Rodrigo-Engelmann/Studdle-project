@@ -1,0 +1,173 @@
+<section class="comments">
+    <h3 class="comments-count">
+        {{ total }} {{ total === 1 ? 'comentário' : 'comentários' }}
+    </h3>
+
+    <!-- CAIXA DE NOVO COMENTÁRIO -->
+    @if (currentUser) {
+    <div class="composer">
+        <app-user-avatar [name]="currentUser.user_name" [picture]="currentUser.profile_picture" size="40px" />
+
+        <div class="composer-body">
+            <textarea class="composer-input" rows="1" placeholder="Adicione um comentário..." [(ngModel)]="draft"
+                [disabled]="sending" (focus)="composerFocused = true" (input)="autoGrow($event)"></textarea>
+
+            @if (composerFocused || draft) {
+            <div class="composer-actions">
+                <button mat-button type="button" [disabled]="sending" (click)="cancel()">
+                    Cancelar
+                </button>
+
+                <button mat-flat-button type="button" [disabled]="!draft.trim() || sending" (click)="submit()">
+                    Comentar
+                </button>
+            </div>
+            }
+        </div>
+    </div>
+    } @else {
+    <p class="signed-out">
+        Entre na sua conta para comentar.
+    </p>
+    }
+
+    <!-- LISTA -->
+    @if (loading) {
+    <p class="state-message">
+        Carregando comentários...
+    </p>
+    } @else if (!nodes.length) {
+    <p class="state-message">
+        Ninguém comentou ainda. Seja o primeiro.
+    </p>
+    } @else {
+    <ul class="thread">
+        @for (node of nodes; track node.id) {
+        <li class="comment">
+            <app-user-avatar [name]="node.user?.user_name ?? ''" [picture]="node.user?.profile_picture" size="40px" />
+
+            <div class="comment-body">
+                <div class="comment-head">
+                    <span class="comment-author">
+                        {{ node.user?.user_name ?? 'Usuário' }}
+                    </span>
+
+                    <span class="comment-date">
+                        {{ timeAgo(node.publish_date) }}
+                    </span>
+
+                    @if (isOwn(node)) {
+                    <button class="comment-menu" mat-icon-button [matMenuTriggerFor]="ownMenu"
+                        aria-label="Opções do comentário">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #ownMenu="matMenu">
+                        <button mat-menu-item (click)="remove(node)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Excluir</span>
+                        </button>
+                    </mat-menu>
+                    }
+                </div>
+
+                <!-- display, não content: as menções @[id] já viraram @nome -->
+                <p class="comment-text">
+                    {{ node.display }}
+                </p>
+
+                @if (currentUser) {
+                <button class="link-button" type="button" (click)="startReply(node.id!)">
+                    Responder
+                </button>
+                }
+
+                <!-- CAIXA DE RESPOSTA -->
+                @if (replyingTo === node.id) {
+                <div class="composer reply-composer">
+                    <app-user-avatar [name]="currentUser!.user_name" [picture]="currentUser!.profile_picture"
+                        size="32px" />
+
+                    <div class="composer-body">
+                        <textarea class="composer-input" rows="1" placeholder="Escreva uma resposta..."
+                            [(ngModel)]="replyDraft" [disabled]="sending" (input)="autoGrow($event)"></textarea>
+
+                        <div class="composer-actions">
+                            <button mat-button type="button" [disabled]="sending" (click)="cancelReply()">
+                                Cancelar
+                            </button>
+
+                            <button mat-flat-button type="button" [disabled]="!replyDraft.trim() || sending"
+                                (click)="submitReply(node.id!)">
+                                Responder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                <!-- RESPOSTAS -->
+                @if (node.replies.length) {
+                <button class="link-button replies-toggle" type="button" (click)="toggleReplies(node.id!)">
+                    <mat-icon>
+                        {{ isExpanded(node.id!) ? 'expand_less' : 'expand_more' }}
+                    </mat-icon>
+
+                    {{ node.replies.length }}
+                    {{ node.replies.length === 1 ? 'resposta' : 'respostas' }}
+                </button>
+
+                @if (isExpanded(node.id!)) {
+                <ul class="replies">
+                    @for (reply of node.replies; track reply.id) {
+                    <li class="comment">
+                        <app-user-avatar [name]="reply.user?.user_name ?? ''" [picture]="reply.user?.profile_picture"
+                            size="32px" />
+
+                        <div class="comment-body">
+                            <div class="comment-head">
+                                <span class="comment-author">
+                                    {{ reply.user?.user_name ?? 'Usuário' }}
+                                </span>
+
+                                <span class="comment-date">
+                                    {{ timeAgo(reply.publish_date) }}
+                                </span>
+
+                                @if (isOwn(reply)) {
+                                <button class="comment-menu" mat-icon-button [matMenuTriggerFor]="replyMenu"
+                                    aria-label="Opções do comentário">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #replyMenu="matMenu">
+                                    <button mat-menu-item (click)="remove(reply)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Excluir</span>
+                                    </button>
+                                </mat-menu>
+                                }
+                            </div>
+
+                            <p class="comment-text">
+                                {{ reply.display }}
+                            </p>
+
+                            @if (currentUser) {
+                            <button class="link-button" type="button"
+                                (click)="startReply(node.id!, reply.user?.user_name)">
+                                Responder
+                            </button>
+                            }
+                        </div>
+                    </li>
+                    }
+                </ul>
+                }
+                }
+            </div>
+        </li>
+        }
+    </ul>
+    }
+</section>

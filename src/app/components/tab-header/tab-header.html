@@ -2,7 +2,7 @@
     <div class="main-header side-padding">
         <img class="studdle-logo-header translateYhover"
         src="assets/images/studdleLogo-removed-background.png"
-        alt="logo studdle - clique para voltar pro menu">
+        alt="logo studdle" draggable="false">
 
         <mat-tab-group
         [selectedIndex]="selectedIndex"
@@ -12,7 +12,7 @@
             <mat-tab label="Vídeos"></mat-tab>
             <mat-tab label="Materiais"></mat-tab>
             <mat-tab label="Engine"></mat-tab>
-            <mat-tab>
+            <mat-tab [labelClass]="progressPercentage >= 100 && selectedIndex !== 4 ? 'tab-highlight' : ''">
                 <ng-template mat-tab-label>
                     <span>Progresso</span>
                     <span class="progress-percentage-text">
@@ -24,15 +24,21 @@
 
         <div class="rightheader-content">
             @if (pagesConfig[selectedIndex].hasFilterOptions) {
-                <mat-icon class="filter-icon" (click)="showFilterUpdate()">filter_list</mat-icon>
+                <mat-icon class="filter-icon icon-btns" (click)="showFilterUpdate()">filter_list</mat-icon>
             } @else {
                 <div class="filter-icon"></div>
             }
+
+            <span class="notification-badge icon-btns"
+            [matBadge]="unreadCount || null" matBadgeSize="small"
+            (click)="openNotifications()" class="notification-icon icon-btns">
+                <mat-icon class="notification-icon">notifications_none</mat-icon>
+            </span>
             
             <img class="profile-picture translateYhover"
             [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
             alt="imagem do usuário - clique para abrir as opções de usuário"
-            matButton [matMenuTriggerFor]="menu">
+            matButton [matMenuTriggerFor]="menu" draggable="false">
         </div>
         
         <mat-menu #menu="matMenu">
@@ -45,49 +51,59 @@
                 <mat-icon class="white-menucontent">logout</mat-icon>
                 Logout
             </button>
-
         </mat-menu>
     </div>
 
-    <!-- @if (showFilters) { -->
-        <div class="search-header" [ngClass]="showFilters ? '' : 'hideFilters' ">
-            <form class="search-form side-padding">
-                <!-- Campo de busca -->
-                <mat-form-field appearance="outline" class="search-input search-header-input">
-                    <mat-label class="text-origin">Pesquisar</mat-label>
-                    <input class="writing-color" matInput placeholder="Busque algo..." [(ngModel)]="searchQuery" name="search" aria-label="Pesquisar">
-                    <button class="search-icon-container" matSuffix (click)="searchUpdate()" aria-label="Buscar">
-                        <mat-icon>search</mat-icon>
-                    </button>
+    <div class="search-header" [ngClass]="showFilters ? '' : 'hideFilters'">
+        <form class="search-form side-padding">
+            <mat-form-field appearance="outline" class="search-input search-header-input">
+                <mat-label class="text-origin">Pesquisar</mat-label>
+
+                <input class="writing-color"
+                matInput
+                placeholder="Busque algo..."
+                [(ngModel)]="searchQuery"
+                (ngModelChange)="searchUpdate()"
+                name="search"
+                aria-label="Pesquisar">
+
+                <div class="search-icon-container" matSuffix (click)="searchUpdate()" aria-label="Buscar">
+                    <mat-icon>search</mat-icon>
+                </div>
+            </mat-form-field>
+
+            <div class="selectfilter-inputs">
+                <mat-form-field appearance="outline" class="filter search-header-input">
+                    <mat-label class="text-origin">Módulo</mat-label>
+
+                    <mat-select
+                    [(ngModel)]="selectedCategory"
+                    (ngModelChange)="searchUpdate()"
+                    name="category">
+                        <mat-option *ngFor="let category of modules" [value]="category">
+                            {{ category.name }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
 
-                <div class="selectfilter-inputs">
-                    <!-- Filtro 1 -->
-                    <mat-form-field appearance="outline" class="filter search-header-input">
-                        <mat-label class="text-origin">Módulo</mat-label>
-                        <mat-select [(ngModel)]="selectedCategory" name="category">
-                            <mat-option *ngFor="let category of modules" [value]="category">
-                                {{ category }}
+                <mat-form-field appearance="outline" class="filter search-header-input" [ngClass]="{ 'disabled-filter': categories.length <= 1 }">
+                    <mat-label class="text-origin">Categoria</mat-label>
+
+                    <mat-select
+                    [(ngModel)]="selectedModule"
+                    (ngModelChange)="searchUpdate()"
+                    [disabled]="categories.length <= 1"
+                    name="order">
+                        @for (order of categories; track order.id) {
+                            <mat-option [value]="order.id">
+                                {{ order.name }}
                             </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <!-- Filtro 2 -->
-                    <mat-form-field appearance="outline" class="filter search-header-input">
-                        <mat-label class="text-origin"> Categoria </mat-label>
-
-                        <mat-select [(ngModel)]="selectedModule" name="order">
-                            @for (order of categories; track order) {
-                                <mat-option [value]="order">
-                                    {{ order }}
-                                </mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </form>
-        </div>
-    <!-- } -->
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
 </header>
 
 <div class="page-container">

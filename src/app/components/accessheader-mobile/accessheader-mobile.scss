@@ -1,49 +1,99 @@
 :host{
     position: sticky;
     top: 0;
-    z-index: 121231;
+    z-index: 20;
 
-    height: 10%;
+    display: block;
+    // 10% da altura da tela dava 90px num celular grande — o header
+    // comia a tela inteira. Altura fixa resolve em qualquer aparelho.
+    height: 64px;
+    flex-shrink: 0;
 }
 
 .mobile-header {
+    box-sizing: border-box;
+
     height: 100%;
     width: 100%;
 
-    border-bottom: solid var(--color-purple1) 2px;
+    padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
 
     background: linear-gradient(to right, var(--color-purple1), var(--color-purple2));
+
+    // linha fina escura no lugar dos 2px roxos: separa sem engrossar
+    border-bottom: 1px solid color-mix(in srgb, var(--color-black) 22%, transparent);
+    // sombra curta: o header se descola do conteúdo ao rolar
+    box-shadow: 0 2px 12px -6px var(--color-black);
 
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 0 20px;
-    box-sizing: border-box;
+    gap: 12px;
 }
 
 .studdle-logo{
-    height: 70%;
+    height: 52%;
+    max-height: 34px;
+    width: auto;
+    user-select: none;
 }
 
 .switchpage-button{
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    height: 60%;
-    font-size: 20px;
-    padding: 0 10px;
+    height: 44px;
+    padding: 0 18px;
 
-    border: solid var(--color-white) 2px;
-    border-radius: 5px;
+    font-size: 14px;
+
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    color: var(--color-white);
+
+    border: solid color-mix(in srgb, var(--color-white) 70%, transparent) 1.5px;
+    border-radius: 999px;
+
     user-select: none;
-
-    transition: 0.08s;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.1s ease;
+
+    // no celular não existe hover: o retorno tem que estar no toque
+    &:active{
+        background-color: color-mix(in srgb, var(--color-white) 22%, transparent);
+        border-color: var(--color-white);
+        transform: scale(0.97);
+    }
+
+    &:focus-visible{
+        outline: 2px solid var(--color-white);
+        outline-offset: 2px;
+    }
 }
 
-.switchpage-button:hover{
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.411);
-    transform: scale(1.02);
+// mantido para quem abrir em tela larga com mouse
+@media (hover: hover) {
+    .switchpage-button:hover{
+        background-color: color-mix(in srgb, var(--color-white) 15%, transparent);
+        border-color: var(--color-white);
+    }
+}
+
+@media (max-width: 360px) {
+    .switchpage-button{
+        padding: 0 11px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .switchpage-button{
+        transition: none;
+    }
 }

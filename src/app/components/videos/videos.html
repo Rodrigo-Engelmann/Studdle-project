@@ -18,8 +18,10 @@
         }
     }
 
-    <div class="addvideo-btn"
-    (click)="newVideoDialog()">
-        <mat-icon> add </mat-icon>
-    </div>
+    @if (userData?.privileges !== 0) {
+        <div class="addvideo-btn"
+        (click)="newVideoDialog()">
+            <mat-icon> add </mat-icon>
+        </div>
+    }
 </main>

@@ -30,7 +30,7 @@ import { UserNotificationModule } from './user_notifications/user_notifications.
         password: config.get<string>('DB_PASS', 'root'),
         database: config.get<string>('DB_NAME', 'Studdle'),
         autoLoadEntities: true,
-        synchronize: false, // nunca true em "produção", já que ele recarrega as tabelas.
+        synchronize: false, // nunca true na prática, já que ele recarrega as tabelas.
       }),
       inject: [ConfigService],
     }),

@@ -7,11 +7,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
 
-import { UpdateUserDto } from '../auth/dto/update-user.dto';
+import { UpdateUserDto, UserResponseDto } from '../auth/dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
+  private toUserResponse(user: User): UserResponseDto {
+    return {
+      id: user.id,
+      user_name: user.user_name,
+      profile_picture: user.profile_picture,
+      account_bio: user.account_bio,
+      xp: user.xp,
+      current_module_id: user.current_module_id,
+      module_progress: user.module_progress,
+      createdDate: user.createdDate,
+    };
+  }
+
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
@@ -22,8 +35,19 @@ export class UserService {
     return this.userRepo.save(user);
   }
 
-  findAll() {
-    return this.userRepo.find();
+  async findAll(): Promise<UserResponseDto[]> {
+    const users = await this.userRepo.find({
+      select: [
+        'id',
+        'user_name',
+        'profile_picture',
+        'account_bio',
+        'xp',
+        'createdDate',
+      ],
+    });
+
+    return users.map((user) => this.toUserResponse(user));
   }
 
   async findById(id: number) {

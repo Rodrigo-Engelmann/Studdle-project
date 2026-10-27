@@ -2,12 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TaskContentStatus } from './taskcontent-status.entity';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class TaskContentStatusService {
   constructor(
     @InjectRepository(TaskContentStatus)
     private readonly statusRepo: Repository<TaskContentStatus>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   create(data: Partial<TaskContentStatus>) {
@@ -42,11 +45,29 @@ export class TaskContentStatusService {
   }
 
   // Retorna todos os status de um usuário (com task_content populado)
-  findByUser(userId: number) {
+  async findByUser(userId: number, moduleId?: number) {
+    let targetModuleId = moduleId;
+
+    // sem módulo informado: usa o módulo atual do usuário
+    if (targetModuleId === undefined) {
+      const user = await this.userRepo.findOne({
+        where: { id: userId },
+        select: ['id', 'current_module_id'],
+      });
+      if (!user)
+        throw new NotFoundException(`Usuário #${userId} não encontrado`);
+
+      targetModuleId = user.current_module_id;
+    }
+
     return this.statusRepo.find({
-      where: { user_id: userId },
+      where: {
+        user_id: userId,
+        task_content: { task: { module_id: targetModuleId } },
+      },
       relations: [
         'task_content',
+        'task_content.task',
         'task_content.video',
         'task_content.material',
       ],
