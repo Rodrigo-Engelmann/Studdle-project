@@ -129,6 +129,7 @@ export class TabHeaderMobile implements OnInit {
 
                 this.userId = res.user.id;
                 this.loadUnreadCount();
+                this.userService.updateColorScheme(res.user.color_scheme??1);
             },
             error: (err) => {
                 console.error("Failet to find profile:", err);

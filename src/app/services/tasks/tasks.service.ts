@@ -66,9 +66,4 @@ export class TaskService {
   findQuiz(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/${id}/quiz`);
   }
-
-  // GET CONTAGEM DE CONCLUSÕES DA TASK
-  findCompletions(id: number): Observable<TaskCompletions> {
-    return this.http.get<TaskCompletions>(`${this.api}/${id}/completions`);
-  }
 }

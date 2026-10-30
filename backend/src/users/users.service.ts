@@ -93,16 +93,6 @@ export class UserService {
     return this.findById(id);
   }
 
-  async getTasks(id: number) {
-    const user = await this.userRepo.findOne({
-      where: { id },
-      relations: ['user_tasks', 'user_tasks.task'],
-    });
-    if (!user) throw new NotFoundException(`Usuário #${id} não encontrado`);
-
-    return user.user_tasks;
-  }
-
   async getNotifications(id: number) {
     const user = await this.userRepo.findOne({
       where: { id },
@@ -146,6 +136,9 @@ export class UserService {
     // atualiza a opção de colorblindness
     if (data.colorblindness !== undefined)
       user.colorblindness = Number(data.colorblindness);
+
+    if (data.color_scheme !== undefined)
+      user.color_scheme = Number(data.color_scheme);
 
     return this.userRepo.save(user);
   }

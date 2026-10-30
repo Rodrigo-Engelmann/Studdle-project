@@ -12,7 +12,6 @@ import { VideoModule } from './videos/videos.module';
 import { TaskModule } from './tasks/tasks.module';
 import { CommentModule } from './comments/comments.module';
 import { TaskContentModule } from './task_contents/task_contents.module';
-import { UserTaskModule } from './user_tasks/user_tasks.module';
 import { QuizModule } from './quizzes/quizzes.module';
 import { UserNotificationModule } from './user_notifications/user_notifications.module';
 
@@ -41,7 +40,6 @@ import { UserNotificationModule } from './user_notifications/user_notifications.
     TaskModule,
     CommentModule,
     TaskContentModule,
-    UserTaskModule,
     QuizModule,
     UserNotificationModule,
     AuthModule,

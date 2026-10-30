@@ -69,6 +69,7 @@ export class ViewMaterial implements OnInit {
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
 
         this.privilege = res.user.privileges;
+        this.userService.updateColorScheme(res.user.color_scheme??1);
       },
       error: (err) => {
         console.error("Failed to find profile:", err);

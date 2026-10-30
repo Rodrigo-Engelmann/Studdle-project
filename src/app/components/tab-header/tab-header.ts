@@ -125,6 +125,8 @@ export class TabHeader implements OnInit {
 
         if (res.user.profile_picture !== null)
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
+
+        this.userService.updateColorScheme(res.user.color_scheme??1);
       },
       error: (err) => {
         console.error("failed to find profile:", err);

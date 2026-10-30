@@ -23,7 +23,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-configs',
-  imports: [    
+  imports: [
     MatButtonModule
     , CommonModule
     , MatIconModule
@@ -61,6 +61,13 @@ export class UserConfigs implements OnInit {
   ];
   colorBlindSelected = this.colorblindOptions[0];
 
+  // O índice é o valor gravado no banco: 0 = Modo Claro, 1 = Modo Escuro
+  color_schemeOptions = [
+    'Modo Claro',
+    'Modo Escuro'
+  ];
+  color_schemeSelected = this.color_schemeOptions[1];
+
   constructor(private userService: UserService
             , private router: Router
             , private dialogService: DialogService) {}
@@ -68,16 +75,21 @@ export class UserConfigs implements OnInit {
   ngOnInit() {
     this.userService.getProfile().subscribe({
       next: (res) => {
-        console.log("TESTE 12 1321 res: ", res)
         const resUsername: string = res.user.user_name;
 
         if (resUsername !== 'undefined')
           this.db_user_name = res.user.user_name;
 
-        this.colorBlindSelected = this.colorblindOptions[res.user.colorblindness];
+        const colorblindness = res.user.colorblindness ?? 0;
+        const colorScheme = res.user.color_scheme ?? 1;
+
+        this.colorBlindSelected = this.colorblindOptions[colorblindness];
+        this.color_schemeSelected = this.color_schemeOptions[colorScheme];
+
         this.db_email = res.user.email;
 
-        this.userService.updateColorBlindFilter(res.user.colorblindness);
+        this.userService.updateColorBlindFilter(colorblindness);
+        this.userService.updateColorScheme(colorScheme);
 
         if (res.user.profile_picture !== null)
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
@@ -136,17 +148,19 @@ export class UserConfigs implements OnInit {
           };
           this.dialogService.openMessage(dialogMessage);
         }
-        
+
         return; // aborta o saveChanges aqui, corretamente
       }
     }
 
     const colorblindness = this.colorblindOptions.indexOf(this.colorBlindSelected);
+    const colorScheme = this.color_schemeOptions.indexOf(this.color_schemeSelected);
 
     const formData = new FormData();
     formData.append('name', this.db_user_name);
     formData.append('email', this.db_email);
     formData.append('colorblindness', colorblindness.toString());
+    formData.append('color_scheme', colorScheme.toString());
 
     if (this.selectedFile) formData.append('file', this.selectedFile);
 
@@ -159,6 +173,8 @@ export class UserConfigs implements OnInit {
         this.db_email = res.email;
 
         this.userService.updateColorBlindFilter(colorblindness);
+        this.userService.updateColorScheme(colorScheme);
+
         this.getBackToHome();
       },
       error: (err) => {
@@ -179,10 +195,10 @@ export class UserConfigs implements OnInit {
     this.router.navigate(['/recomendacoes']);
     this.userService.updateColorBlindFilter(-1)
   }
-  
+
   deleteAccount() {
     if (!confirm("Tem certeza que deseja deletar sua conta? Será permanente"))
-      return;    
+      return;
 
     this.userService.deleteAccount().subscribe({
       next: (_res) => {
@@ -221,17 +237,16 @@ export class UserConfigs implements OnInit {
     });
   }
 
-  getProfile() { 
+  getProfile() {
     this.userService.getProfile().subscribe({
       next: (res) => {
         this.profile_picture = res.user.profile_picture;
         this.db_user_name = res.user.user_name;
         this.db_email = res.user.email;
-        // this.db_password = res.user.password;
-        
+
         if (res.profile_picture) {
           this.profile_picture = 'http://localhost:3000' + res.profile_picture;
-          this.previewImage = null; // limpa a preview, mostra foto final
+          this.previewImage = null;
         }
       },
       error: (err) => {

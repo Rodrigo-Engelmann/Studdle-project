@@ -12,6 +12,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
   colorblindness?: string;
+
+  @IsOptional()
+  @IsEmail()
+  color_scheme?: string;
 }
 
 export class UserResponseDto {

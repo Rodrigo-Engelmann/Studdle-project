@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { Module } from '../modules/modules.entity';
 import { TaskContent } from '../task_contents/task_contents.entity';
-import { UserTask } from '../user_tasks/user_tasks.entity';
 import { Quiz } from '../quizzes/quizzes.entity';
 
 @Entity('tasks')
@@ -28,9 +27,6 @@ export class Task {
 
   @OneToMany(() => TaskContent, (tc) => tc.task)
   task_contents!: TaskContent[];
-
-  @OneToMany(() => UserTask, (ut) => ut.task)
-  user_tasks!: UserTask[];
 
   @OneToMany(() => Quiz, (quiz) => quiz.task)
   quizzes!: Quiz[];

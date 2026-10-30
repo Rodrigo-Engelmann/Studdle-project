@@ -9,6 +9,7 @@
 
 // Esse CSS serve somente para as cores, será importado para cada HTML e usado neles
 :root{
+  --color-perma-white: white;
   --color-white: #FFFFFF;
   --color-light_gray_1: #dadada;
   --color-light_gray: #B1B1B1;
@@ -67,7 +68,7 @@ body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
   // user's system settings.
-  color-scheme: light;
+  color-scheme: dark;
 
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
@@ -162,22 +163,125 @@ body.acromatopsia {
 
 
 
+//  MODO CLARO
+body.light {
+  color-scheme: light;
+
+  --color-white: #24202B;
+  --color-light_gray_1: #45404F;
+  --color-light_gray: #716A7D;
+  --color-gray-0: #817A8C;
+
+  --color-gray-1: #B2A9C2;
+  --color-gray-2: #CCC4DB;
+  --color-gray-3: #DDD6E9;
+  --color-gray-4: #E7E1F0;
+
+  --color-dark-gray-5: #D5CDE1;
+  --color-dark_gray-0: #DFD8EA;
+  --color-dark_gray-05: #E8E2F1;
+  --color-dark-gray-4: #EEE9F5;
+  --color-dark_gray-2: #F2EEF8;
+  --color-dark_gray-1: #F6F3FA;
+  --color-dark_gray-3: #FAF8FD;
+
+  --color-black: #FAF8FD;
+
+  --color-transparent-dark-gray: #F2EEF8E8;
+
+  --color-lightpurple1: #6E35A0;
+  --color-purple1: #E4D1F5;
+  --color-purple2: #8738CA;
+  --color-purple2_5: #702BAA;
+  --color-purple3: #531A8C;
+  --color-dark_purple: #D0B9E6;
+
+  --color-warning: #B02326;
+
+  --selected-video: #8738CA30;
+
+  --dialog-background: #FAF8FDF2;
+  --dialog-input: #0000000C;
+  --dialog-input-2: #E8E2F1;
+
+  --transparent-gray: #00000018;
+
+  --spinner: var(--color-purple2);
+
+  --link-text: var(--color-lightpurple1);
+}
+
+
+//  MODO CLARO + DALTONISMO
+body.light.protanopia {
+  --color-lightpurple1: #1E40AF;
+  --color-purple1: #DBE4FA;
+  --color-purple2: #2456C8;
+  --color-purple2_5: #1E40AF;
+  --color-purple3: #1E3A8A;
+  --color-dark_purple: #D2DCF2;
+
+  --color-warning: #8A5A00;
+
+  --selected-video: #2456c826;
+}
+
+body.light.deuteranopia {
+  --color-lightpurple1: #1E40AF;
+  --color-purple1: #DBE4FA;
+  --color-purple2: #2A5BD0;
+  --color-purple2_5: #1E40AF;
+  --color-purple3: #1E3A8A;
+  --color-dark_purple: #D2DCF2;
+
+  --color-warning: #8A5A00;
+
+  --selected-video: #2a5bd026;
+}
+
+body.light.tritanopia {
+  --color-lightpurple1: #A3185F;
+  --color-purple1: #F8DCEA;
+  --color-purple2: #B01E6B;
+  --color-purple2_5: #A3185F;
+  --color-purple3: #8F1452;
+  --color-dark_purple: #EFD4E2;
+
+  --color-warning: #8F4300;
+
+  --selected-video: #b01e6b26;
+}
+
+body.light.acromatopsia {
+  --color-lightpurple1: #454545;
+  --color-purple1: #E0E0E0;
+  --color-purple2: #595959;
+  --color-purple2_5: #454545;
+  --color-purple3: #3D3D3D;
+  --color-dark_purple: #D8D8D8;
+
+  --color-warning: #5A5A5A;
+
+  --selected-video: #59595926;
+}
+
+
 // Scrollbar
 ::-webkit-scrollbar {
-    width: 12px;
-    height: 8px;
+  width: 12px;
+  height: 8px;
 }
 
 // Fundo da scrollbar
 ::-webkit-scrollbar-track {
-    background: #111111;
+  background: #111111;
 }
 
 // Barra que você arrasta
 ::-webkit-scrollbar-thumb {
-    background: #3a3a3a;
-    border-radius: 10px;
-    border: 2px solid #111111;
+  background: #3a3a3a;
+  border-radius: 10px;
+  border: 2px solid #111111;
 }
 
 // Hover na barra

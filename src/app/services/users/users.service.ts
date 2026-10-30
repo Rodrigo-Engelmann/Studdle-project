@@ -208,5 +208,10 @@ export class UserService {
     if (index > 0 && index < filters.length)
       document.body.classList.add(filters[index]);
   }
+
+  updateColorScheme(index: number): void {
+    // 0 = Modo Claro -> body.light ; 1 = Modo Escuro -> sem classe
+    document.body.classList.toggle('light', index === 0);
+  }
   //#endregion
 }

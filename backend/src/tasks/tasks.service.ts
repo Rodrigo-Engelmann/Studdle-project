@@ -98,14 +98,4 @@ export class TaskService {
     if (!task) throw new NotFoundException(`Task #${id} não encontrada`);
     return task.quizzes;
   }
-
-  async findCompletions(id: number) {
-    const task = await this.taskRepo.findOne({
-      where: { id },
-      relations: ['user_tasks'],
-    });
-    if (!task) throw new NotFoundException(`Task #${id} não encontrada`);
-    const completed = task.user_tasks.filter((ut) => ut.completed).length;
-    return { task_id: id, total: task.user_tasks.length, completed };
-  }
 }

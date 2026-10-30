@@ -34,12 +34,6 @@ export class TaskController extends BaseController<Task> {
     return this.taskService.findQuiz(id);
   }
 
-  // Retorna quantos usuários completaram esta task
-  @Get(':id/completions')
-  findCompletions(@Param('id', ParseIntPipe) id: number) {
-    return this.taskService.findCompletions(id);
-  }
-
   // Atualiza o task content
   @Patch(':id/content')
   updateContent(

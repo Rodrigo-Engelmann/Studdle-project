@@ -152,6 +152,7 @@ export class TabHeaderLayoutComponent implements OnInit {
         this.detectNewUserModule(res.user);
 
       this.userTasksUpdate(res.user.id, res.user.current_module_id);
+      this.userService.updateColorScheme(res.user.color_scheme??1);
 
       this.userDataBridgeService.updateTabProgressData(res.user);
       },

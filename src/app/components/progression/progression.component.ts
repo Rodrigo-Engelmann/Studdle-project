@@ -141,6 +141,7 @@ export class Progression implements OnInit {
         this.profile_picture = `http://localhost:3000${userData.user.profile_picture}`;
 
       this.privilege = userData.user.privileges;
+      this.userService.updateColorScheme(userData.user.color_scheme??1);
       return userData.user;
     } catch(err: any) {
       console.error("--error: ERRO AO ENCONTRAR CONTA: ", err);

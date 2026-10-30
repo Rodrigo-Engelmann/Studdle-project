@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { Module } from '../modules/modules.entity';
 import { Comment } from '../comments/comments.entity';
-import { UserTask } from '../user_tasks/user_tasks.entity';
 import { UserNotification } from '../user_notifications/user_notifications.entity';
 
 @Entity('users')
@@ -60,6 +59,9 @@ export class User {
   @Column({ default: 5 })
   comments_notification_ceiling_number!: number;
 
+  @Column({ type: 'int', default: 1 })
+  color_scheme!: number;
+
   @ManyToOne(() => Module, (module) => module.users, {
     onDelete: 'SET NULL',
     nullable: true,
@@ -69,9 +71,6 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments!: Comment[];
-
-  @OneToMany(() => UserTask, (ut) => ut.user)
-  user_tasks!: UserTask[];
 
   @OneToMany(() => UserNotification, (n) => n.user)
   notifications!: UserNotification[];

@@ -54,6 +54,7 @@ export class Recomendacoes implements OnInit {
       next: (res) => {
         const user = res.user;
         this.userService.updateColorBlindFilter(user.colorblindness);
+        this.userService.updateColorScheme(user.color_scheme??1);
       },
       error: (err) => {
         console.error("Failed to find profile:", err);

@@ -44,7 +44,7 @@
     <ul class="thread">
         @for (node of nodes; track node.id) {
         <li class="comment">
-            <app-user-avatar [name]="node.user?.user_name ?? ''" [picture]="node.user?.profile_picture" size="40px" />
+            <app-user-avatar class="img-avatar" [name]="node.user?.user_name ?? ''" [picture]="node.user?.profile_picture" size="40px" />
 
             <div class="comment-body">
                 <div class="comment-head">

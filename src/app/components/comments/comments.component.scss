@@ -164,6 +164,11 @@
   margin-top: 4px;
 }
 
+app-user-avatar{
+  border-radius: 50%;
+  border: solid var(--color-light_gray_1) 1.3px;
+}
+
 @media (hover: none) {
   .comment .comment-menu {
     opacity: 1;

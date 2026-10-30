@@ -64,6 +64,8 @@ export class NotificationsDialogComponent {
       next: (data: any) => {
         this.currentUser = data?.user ?? data;
         this.load();
+
+        this.userService.updateColorScheme(data.user.color_scheme??1);
       },
       error: (err) => {
         console.error('--Error ao identificar o usuário: ', err);

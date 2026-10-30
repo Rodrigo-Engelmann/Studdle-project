@@ -72,6 +72,8 @@ export class CommentsComponent implements OnChanges {
           this.currentUser.profile_picture = data.profile_picture;
 
         this.cdr.markForCheck();
+
+        this.userService.updateColorScheme(data.user.color_scheme??1);
       },
       error: (err) => {
         this.currentUser = null;

@@ -49,7 +49,7 @@
                             </button>
                         </div>
 
-                        <img class="profile-picture os-icon" [draggable]="false" [src]="previewImage || profile_picture" alt="foto de perfil">
+                        <img class="profile-picture" [draggable]="false" [src]="previewImage || profile_picture" alt="foto de perfil">
                     </div>
 
                 </div>
@@ -64,6 +64,21 @@
                         <mat-select [(ngModel)]="colorBlindSelected" name="category">
                             <mat-option *ngFor="let category of colorblindOptions" [value]="category">
                                 {{ category }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- color scheme -->
+                <div class="input-columns-big input-column-name IC">
+                    <p class="input-title">
+                        Tema do Site
+                    </p>
+
+                    <mat-form-field class="colorblindinput-container passwordinput-container" appearance="outline">
+                        <mat-select [(ngModel)]="color_schemeSelected" name="color_scheme">
+                            <mat-option *ngFor="let scheme of color_schemeOptions" [value]="scheme">
+                                {{ scheme }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

@@ -78,6 +78,7 @@ export class CommentThreadDialogComponent {
         if (this.currentUser && !this.currentUser.profile_picture && data?.profile_picture)
           this.currentUser.profile_picture = data.profile_picture;
 
+        this.userService.updateColorScheme(data.user.color_scheme??1);
         this.load();
       },
       error: (err) => {

@@ -35,12 +35,6 @@ export class UserController extends BaseController<User> {
     return this.userService.updateModule(id, moduleId);
   }
 
-  // Retorna as tasks do usuário com status de conclusão
-  @Get(':id/tasks')
-  getTasks(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getTasks(id);
-  }
-
   // Retorna as notificações do usuário
   @Get(':id/notifications')
   getNotifications(@Param('id', ParseIntPipe) id: number) {
