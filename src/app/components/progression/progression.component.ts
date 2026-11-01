@@ -619,8 +619,6 @@ export class Progression implements OnInit {
 
   async nextRankMascot(): Promise<void> {
     await this.loadManagerData();
-    console.log("this.moduleData: ", this.moduleData)
-    console.log("this.tasks: ", this.tasks)
     const tasksName: string[] = this.tasks.map((task) => task.name);
 
     const last: string = tasksName[tasksName.length - 1];
