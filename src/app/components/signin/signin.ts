@@ -61,6 +61,8 @@ export class Signin implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.userService.updateColorScheme(1);
+    this.userService.updateColorBlindFilter(-1);
     const img = new Image();
     img.src = this.bgUrl;
 

@@ -4,6 +4,7 @@
             @for(video of videos; track video.title) {
                 <app-vid-card class="video-card"
                 [video]="video"
+                [backNavType]="0"
                 (updateData)="updateSingular($event)"
                 ></app-vid-card>
             }

@@ -28,12 +28,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/users.entity';
 
-import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from '../users/users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { ImageUploadInterceptor } from '../common/upload/image-upload.interceptor';
 
 dotenv.config();
 
@@ -222,29 +220,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Put('update-profile')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: 'uploads/profile',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
-      fileFilter: (req, file, callback) => {
-        const allowed = /\/(jpg|jpeg|png|gif|webp)$/;
-        if (!file.mimetype.match(allowed))
-          return callback(
-            new Error('Apenas imagens são permitidas para a foto de perfil'),
-            false,
-          );
-
-        callback(null, true);
-      },
-    }),
-  )
+  @UseInterceptors(ImageUploadInterceptor('file', 'profile'))
   async updateProfile(
     @Req() req: any,
     @UploadedFile() file: Express.Multer.File,

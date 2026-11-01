@@ -39,13 +39,21 @@ export class ViewVideo implements OnInit {
   @ViewChild('descriptionContainer')
   descriptionContainer!: ElementRef<HTMLDivElement>;
 
-  embedUrl: SafeResourceUrl | null = null;
   videoData: video = new video;
   descriptionExpanded = false;
   profile_picture: any;
   videoPrefix: string = 'https://www.youtube.com/watch?v=';
   userData: any = undefined;
   privilege: number = 0;
+  color_scheme: number = 1;
+
+  embedUrl: SafeResourceUrl | null = null;
+  backNav: number = -1;
+
+  navigationOptions = [
+    '/videos',
+    '/recomendacoes'
+  ]
 
   constructor(private router: Router
             , private userService: UserService
@@ -59,11 +67,19 @@ export class ViewVideo implements OnInit {
 
   // sistema de popup da profile-picture:
   Configuracoes() {
-    this.router.navigate(['/userConfigs']);
+    const settingsNavOptions: number[] = [ 1, 4 ];
+    this.router.navigate([`/userConfigs/${settingsNavOptions[this.backNav]}`]);
   }
 
   Logout() {
-    console.log("Usuário clicou em Logout");
+    this.userService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error("Logout error:", err);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -75,6 +91,7 @@ export class ViewVideo implements OnInit {
 
         this.privilege = res.user.privileges;
         this.userService.updateColorScheme(res.user.color_scheme??1);
+        this.color_scheme = res.user.color_scheme??1;
       },
       error: (err) => {
         console.error("Failed to find profile:", err);
@@ -89,9 +106,10 @@ export class ViewVideo implements OnInit {
   updateVideoData() {
     this.route.paramMap.subscribe(params => {
       const videoUrl: string | null = params.get('videoUrl');
+      this.backNav = Number(params.get('backNav') ?? -1);
 
       if (videoUrl !== null)
-        this.videoService.findByURL(videoUrl).subscribe(async(res: any)=>{
+        this.videoService.findByURL(videoUrl).subscribe(async(res: any) => {
           this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
             `https://www.youtube.com/embed/${res.video_url}?controls=1`
           );
@@ -138,7 +156,7 @@ export class ViewVideo implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/videos']);
+    this.router.navigate([this.navigationOptions[this.backNav]]);
   }
 
   settingsSelect() {

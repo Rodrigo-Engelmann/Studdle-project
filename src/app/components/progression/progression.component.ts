@@ -127,7 +127,7 @@ export class Progression implements OnInit {
     if (totalTasksCnt) {
       const userTasksCnt: number = studyCompleted + practiceCompleted;
       progressPercentage = (userTasksCnt / totalTasksCnt) * 100;
-      this.mainProgress = progressPercentage;
+      this.mainProgress = Math.round(progressPercentage);
     }
     this.progressionDataBridgeService.updateTabProgressData(progressPercentage);
     this.userService.updateModuleProgress(userId, progressPercentage);
@@ -305,7 +305,6 @@ export class Progression implements OnInit {
               key: TaskContentKey.VIDEOS,
               label: 'Vídeos',
               emptyMessage: 'Nenhum vídeo cadastrado ainda.',
-              // cada linha tem video_id OU material_id preenchido
               selected: contents.filter((c) => c.video_id).map((c) => c.video_id),
               items: videos.map((v: any) => ({
                 id: v.id,
@@ -611,10 +610,68 @@ export class Progression implements OnInit {
 
       await firstValueFrom(this.userService.updateModule(this.userId, nextModuleId));
       this.updatePage();
-      
+
+      this.nextRankMascot()
     } catch(err) {
       console.error("--error: ", err)
     }
+  }
+
+  async nextRankMascot(): Promise<void> {
+    await this.loadManagerData();
+    console.log("this.moduleData: ", this.moduleData)
+    console.log("this.tasks: ", this.tasks)
+    const tasksName: string[] = this.tasks.map((task) => task.name);
+
+    const last: string = tasksName[tasksName.length - 1];
+    const before: string[] = tasksName.slice(0, -1);
+
+    const tasksListMessage: string = before.length ? `${before.join(', ')} e ${last}`
+                                          : last;
+
+    const moduleName = this.moduleData.name;
+    const messageOptions: string[] = [
+      `Boa!! Tu anda se esforçando bastante, hein?? Seja muito bem-vindo ao rank ${moduleName}! hehe`,
+      `Parabéns!! Você mandou muito bem! Bem-vindo ao rank ${moduleName}!`,
+      `Mandou muito! Depois de muito esforço... Bem-vindo ao rank ${moduleName}!!!`,
+      `EITAAA!! Olha só quem está evoluindo!! Tu merece demais esse rank ${moduleName}!`,
+      `Mais uma conquista pra conta!! Parabéns por alcançar o rank ${moduleName}!!`,
+      `UHUULL!! Eu sabia que tu conseguiria!! Aproveita teu novo rank ${moduleName}!`,
+      `Olha só até onde tu chegou!! Todo esse esforço está valendo a pena, hein?!`,
+      `ISSOOO!! Mais um passo na tua jornada! Seja muito bem-vindo ao rank ${moduleName}!`,
+      `Caramba!! Tu não para de evoluir!! Parabéns pelo novo rank ${moduleName}!!`,
+      `Hehe, eu já estava esperando por esse momento!! Tu conquistou o rank ${moduleName}!`,
+      `Opa!! Temos alguém ficando cada vez melhor por aqui!! Parabéns pelo rank ${moduleName}!`,
+      `Cada desafio superado te trouxe até aqui! E agora... UM NOVO RANK!! Parabéns!!`,
+      `Tu está construindo uma trajetória incrível!! Que venham muitas outras conquistas!`,
+      `Pode comemorar!! Essa conquista é resultado de todo o teu esforço! Bem-vindo ao rank ${moduleName}!`,
+      `NÃOOO, PERA!! TU SUBIU DE RANK!! Parabéns!! O ${moduleName} é teu agora!!`,
+      `Mais uma etapa concluída!! Continua assim que eu quero ver até onde tu consegue chegar!!`,
+      `Eu tô adorando acompanhar tua evolução!! Parabéns por alcançar o rank ${moduleName}!`,
+      `Olha o progresso desse estudante!! Tu conquistou mais um pedacinho da tua jornada!`,
+      `DESBLOQUEADO!! Um novo rank pra chamar de teu! Parabéns pelo ${moduleName}!!`,
+      `Tu merece essa comemoração!! Cada atividade fez diferença pra chegar até aqui!`
+    ];
+    const randomStartMessage: string = messageOptions[
+      Math.floor(Math.random() * messageOptions.length)
+    ];
+    
+    this.dialogService.openMascot({
+      steps: [
+        {
+          image: '../../../assets/mascot/studd_urrai.gif',
+          pos: { x: 50, y: 50 },
+          message: randomStartMessage,
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking_pointing_right.gif',
+          pos: { x: 60, y: 35 },
+          message: `Os conteúdos desse rank são: ${tasksListMessage}. Boa sorte no aprendizado!`,
+          name: 'Studd',
+        },
+      ],
+    });
   }
   //#endregion
 }

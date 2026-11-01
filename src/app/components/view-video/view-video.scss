@@ -6,6 +6,8 @@
     min-height: 100dvh;
 
     background-color: var(--color-dark_gray-0) !important;
+
+    overflow: hidden !important;
 }
 
 main {
@@ -19,6 +21,12 @@ main {
 }
 
 header {
+    position: sticky;
+    content: '';
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+
     box-sizing: border-box;
 
     height: 4.3rem;
@@ -30,13 +38,7 @@ header {
     justify-content: space-between;
 
     background-color: var(--color-dark_gray-1);
-    border-bottom: solid var(--color-purple2) 3px;
-
-    position: sticky;
-    top: 0;
-    z-index: 10;
-
-    flex-shrink: 0;
+    border-bottom: solid var(--color-purple2) 2px;
 }
 
 .side-padding {
@@ -51,15 +53,16 @@ header {
 }
 
 .studdle-logo-header {
-    height: 44px;
+    height: 30px;
 }
 
 .profile-picture {
-    height: 42px;
-    width: 42px;
+    height: 35px;
+    width: 35px;
     border-radius: 100%;
     border: solid var(--color-purple2) 2px;
     object-fit: cover;
+    object-position: center;
 }
 
 .translateYhover {
@@ -68,7 +71,7 @@ header {
 }
 
 .translateYhover:hover {
-    transform: scale(1.04);
+    transform: scale(1.02);
 }
 
 .container-info {
@@ -261,7 +264,7 @@ header {
     }
 
     .side-padding {
-        padding: 0 16px;
+        padding: 0 30px;
     }
 
     .studdle-logo-header,
@@ -270,7 +273,7 @@ header {
     }
 
     .profile-picture {
-        width: 38px;
+        width: 35px;
     }
 
     .container-info {

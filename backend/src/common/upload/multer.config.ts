@@ -6,8 +6,7 @@ import { existsSync, mkdirSync } from 'fs';
 
 export function createMulterConfig(folder: string) {
   const uploadPath = `./uploads/${folder}`;
-  if (!existsSync(uploadPath))
-    mkdirSync(uploadPath, { recursive: true });
+  if (!existsSync(uploadPath)) mkdirSync(uploadPath, { recursive: true });
 
   return {
     storage: diskStorage({
@@ -15,10 +14,7 @@ export function createMulterConfig(folder: string) {
       filename: (_req, file, callback) => {
         const extension = extname(file.originalname);
 
-        callback(
-          null,
-          `${randomUUID()}${extension}`,
-        );
+        callback(null, `${randomUUID()}${extension}`);
       },
     }),
 

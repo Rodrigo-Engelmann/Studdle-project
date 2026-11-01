@@ -8,27 +8,25 @@
 
 <mat-dialog-content class="tree-content">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-    <!-- Rank ou task: podem ganhar filhos, então o menu inclui "adicionar" -->
-    <mat-tree-node
-    *matTreeNodeDef="let node; when: isContainer"
-    matTreeNodePadding
-    class="tree-node"
-    [class.menu-open]="menuOpenNode === node">
-      <button
-      *ngIf="node.expandable; else spacer"
-      mat-icon-button
-      matTreeNodeToggle
+    <mat-tree-node class="tree-node" *matTreeNodeDef="let node; when: isContainer"
+    matTreeNodePadding [class.menu-open]="menuOpenNode === node">
+      <button *ngIf="node.expandable; else spacer"
+      mat-icon-button matTreeNodeToggle
       [attr.aria-label]="'Expandir ' + node.name">
         <mat-icon>{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
       </button>
+
       <ng-template #spacer><span class="node-toggle-spacer"></span></ng-template>
 
       <mat-icon class="node-icon">{{ nodeIcon[node.type] }}</mat-icon>
-      <span class="node-name">{{ node.name }}</span>
+      @if (node.type === 'rank') {
+        <span class="node-name">{{ node.original.module + ' - ' + node.name }}</span>
+      } @else {
+        <span class="node-name">{{ node.name }}</span>
+      }
 
       <span class="node-actions">
-        <button
-        mat-icon-button
+        <button mat-icon-button
         [matMenuTriggerFor]="menu"
         (menuOpened)="menuOpenNode = node"
         (menuClosed)="menuOpenNode = null"
@@ -52,6 +50,7 @@
         *ngIf="node.type === 'task'"
         (click)="onManageContent(node.original)">
           <mat-icon>playlist_add_check</mat-icon>
+
           <span>Gerenciar conteúdos</span>
         </button>
 
@@ -72,7 +71,11 @@
     matTreeNodePadding
     [class.menu-open]="menuOpenNode === node">
       <span class="node-toggle-spacer"></span>
-      <mat-icon class="node-icon">{{ nodeIcon[node.type] }}</mat-icon>
+
+      <mat-icon class="node-icon">
+        {{ nodeIcon[node.type] }}
+      </mat-icon>
+
       <span class="node-name">{{ node.name }}</span>
 
       <span class="node-actions">
@@ -102,5 +105,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Fechar</button>
+  <button mat-button mat-dialog-close>
+    Fechar
+  </button>
 </mat-dialog-actions>

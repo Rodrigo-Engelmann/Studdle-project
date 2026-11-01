@@ -1,10 +1,9 @@
 // Angular
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
 
 // Services
 import { UserService } from '../../services/users/users.service';
@@ -36,6 +35,13 @@ export class ViewMaterial implements OnInit {
   materialData: material = new material;
   userData: any = undefined;
   privilege: number = 0;
+  color_scheme: number = 1;
+  backNav: number = -1;
+  
+  navigationOptions: string[] = [
+      '/materiais',
+      '/recomendacoes'
+  ];
 
   constructor( private router: Router
              , private userService: UserService
@@ -70,6 +76,7 @@ export class ViewMaterial implements OnInit {
 
         this.privilege = res.user.privileges;
         this.userService.updateColorScheme(res.user.color_scheme??1);
+        this.color_scheme = res.user.color_scheme??1;
       },
       error: (err) => {
         console.error("Failed to find profile:", err);
@@ -85,6 +92,8 @@ export class ViewMaterial implements OnInit {
   updateMaterialData(): void {
     this.route.paramMap.subscribe(params => {
       const materialUrl: string | null = params.get('materialUrl');
+      this.backNav = Number(params.get('backNav') ?? -1);
+
       if (materialUrl !== null)
         this.materialService.findByURL(materialUrl).subscribe(async(res: any) => {
           const materialId: number = res.id;
@@ -102,7 +111,11 @@ export class ViewMaterial implements OnInit {
                       , user_id: userId
                       , completed: true
                     };
-                    await this.taskContentStatusService.create(data);
+                    await this.taskContentStatusService.create(data).subscribe({
+                      error: (err) => {
+                        console.error('--error: ', err);
+                      }
+                    });
                     return;
                   }
                 },
@@ -119,11 +132,19 @@ export class ViewMaterial implements OnInit {
 
   // sistema de popup da profile-picture:
   Configuracoes() {
-    this.router.navigate(['/userConfigs']);
+    const settingsNavOptions: number[] = [ 2, 4 ];
+    this.router.navigate([`/userConfigs/${settingsNavOptions[this.backNav]}`]);
   }
 
   Logout() {
-    console.log("Usuário clicou em Logout");
+    this.userService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error("Logout error:", err);
+      }
+    });
   }
 
   openComments(): void {
@@ -131,7 +152,7 @@ export class ViewMaterial implements OnInit {
   }
   
   goBack() {
-    this.router.navigate(['/materiais']);
+    this.router.navigate([this.navigationOptions[this.backNav]]);
   }
 
   settingsSelect() {

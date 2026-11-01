@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
@@ -48,9 +48,12 @@ export class UserConfigs implements OnInit {
   profile_picture: string = '../../../assets/images/profile-picture-placeholder.jpg';
   selectedFile?: File;
   previewImage: string | null = null;
+  backNav: number = -1;
 
   editName: string = '';
   editEmail: string = '';
+
+  color_scheme: number = 1;
 
   colorblindOptions = [
     'Sem filtro de daltonismo',
@@ -61,6 +64,14 @@ export class UserConfigs implements OnInit {
   ];
   colorBlindSelected = this.colorblindOptions[0];
 
+  getBackOptions: string[] = [
+    '/recomendacoes'
+    , '/videos'
+    , '/materiais'
+    , '/engine'
+    , '/progression'
+  ]
+
   // O índice é o valor gravado no banco: 0 = Modo Claro, 1 = Modo Escuro
   color_schemeOptions = [
     'Modo Claro',
@@ -70,6 +81,7 @@ export class UserConfigs implements OnInit {
 
   constructor(private userService: UserService
             , private router: Router
+            , private route: ActivatedRoute
             , private dialogService: DialogService) {}
 
   ngOnInit() {
@@ -82,6 +94,7 @@ export class UserConfigs implements OnInit {
 
         const colorblindness = res.user.colorblindness ?? 0;
         const colorScheme = res.user.color_scheme ?? 1;
+        this.color_scheme = colorScheme;
 
         this.colorBlindSelected = this.colorblindOptions[colorblindness];
         this.color_schemeSelected = this.color_schemeOptions[colorScheme];
@@ -100,6 +113,9 @@ export class UserConfigs implements OnInit {
         if (err.status === 401)
           this.router.navigate(['/login']);
       }
+    });
+    this.route.paramMap.subscribe((params: any) => {
+      this.backNav = Number(params.get('backNav') ?? -1);
     });
   }
 
@@ -149,7 +165,7 @@ export class UserConfigs implements OnInit {
           this.dialogService.openMessage(dialogMessage);
         }
 
-        return; // aborta o saveChanges aqui, corretamente
+        return;
       }
     }
 
@@ -192,7 +208,7 @@ export class UserConfigs implements OnInit {
   }
 
   getBackToHome() {
-    this.router.navigate(['/recomendacoes']);
+    this.router.navigate([this.getBackOptions[this.backNav]]);
     this.userService.updateColorBlindFilter(-1)
   }
 
@@ -256,5 +272,15 @@ export class UserConfigs implements OnInit {
           this.router.navigate(['/login']);
       }
     });
+  }
+
+  onColorSchemeChange(change: string) {
+    const schemeIndex = this.color_schemeOptions.indexOf(change);
+    this.userService.updateColorScheme(schemeIndex);
+    this.color_scheme = schemeIndex;
+  }
+  onColorBlindnessChange(change: string) {
+    const schemeIndex = this.colorblindOptions.indexOf(change);
+    this.userService.updateColorBlindFilter(schemeIndex);
   }
 }

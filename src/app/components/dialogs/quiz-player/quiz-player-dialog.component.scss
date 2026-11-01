@@ -9,8 +9,9 @@
     display: flex;
     gap: 4px;
   }
-
+  
   .life {
+    color: var(--color-purple2) !important;
     font-size: 22px;
     width: 22px;
     height: 22px;
@@ -174,6 +175,10 @@
       opacity: 0.6;
     }
   }
+}
+
+.mascotImg{
+  height: 20rem;
 }
 
 @media (max-width: 599px) {

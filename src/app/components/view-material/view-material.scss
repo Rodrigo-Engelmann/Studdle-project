@@ -12,7 +12,7 @@
 header {
     height: 68px;
     width: 100%;
-    padding: 0 40px;
+    padding: 0 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -23,20 +23,26 @@ header {
 }
 
 .side-padding {
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    width: 100%;
+    padding: 0 30px;
 }
 
 .studdle-logo-header {
-    height: 36px;
+    height: 30px;
     cursor: pointer;
 }
 
 .profile-picture {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     object-fit: cover;
+    object-position: center;
     border: 2px solid var(--color-purple2);
     border-radius: 50%;
     cursor: pointer;
@@ -47,7 +53,7 @@ header {
 }
 
 .translateYhover:hover {
-    transform: scale(1.04);
+    transform: scale(1.02);
 }
 
 main {
@@ -354,7 +360,7 @@ h1 {
         justify-content: center;
         margin: 0;
 
-        font-size: 40px;
+        font-size: 30px;
 
         color: var(--color-light_gray_1);
     }
@@ -420,8 +426,6 @@ h1 {
     }
 
     .profile-picture {
-        width: 36px;
-        height: 36px;
         border-width: 2px;
     }
 

@@ -1,7 +1,7 @@
 <header>
     <div class="main-header side-padding">
         <img class="studdle-logo-header translateYhover"
-        src="assets/images/studdleLogo-removed-background.png"
+        [src]="color_scheme === 1 ? 'assets/images/Studdle-logo-blackScheme.png' : 'assets/images/white_scheme/Studdle-logo-whiteScheme.png' "
         alt="logo studdle" draggable="false">
 
         <mat-tab-group

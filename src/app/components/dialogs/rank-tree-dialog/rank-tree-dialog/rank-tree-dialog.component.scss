@@ -1,8 +1,7 @@
 :host {
-  // Sobrescreva essas variáveis no componente pai pra casar com o tema do site.
-  --tree-hover-bg: rgba(0, 0, 0, 0.04);
-  --tree-icon-color: rgba(0, 0, 0, 0.54);
-  --tree-action-color: rgba(0, 0, 0, 0.6);
+  --tree-hover-bg: rgba(163, 64, 255, 0.08);
+  --tree-icon-color: var(--color-light_gray);
+  --tree-action-color: var(--color-light_gray_1);
   display: block;
 }
 

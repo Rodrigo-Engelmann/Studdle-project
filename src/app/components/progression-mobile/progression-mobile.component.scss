@@ -75,6 +75,10 @@ img {
         overflow: hidden;
     }
 
+    .progress-text-content{
+        color: var(--color-perma-white);
+    }
+
     span {
         position: absolute;
         inset: 0;
@@ -103,7 +107,7 @@ img {
 
         width: 20px;
         height: 20px;
-        border: solid black 2px;
+        border: solid black 1.2px;
     }
 }
 

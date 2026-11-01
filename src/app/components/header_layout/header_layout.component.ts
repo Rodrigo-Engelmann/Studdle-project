@@ -44,7 +44,9 @@ export class TabHeaderLayoutComponent implements OnInit {
   @Input() categories: any[] = [ { name:'Nenhum', id: -1 } ];
   @Input() filterChanges: any = undefined;
 
-  mobile = window.innerWidth <= 768;
+  mobileBaseSize: number = 984;
+
+  mobile = window.innerWidth <= this.mobileBaseSize;
   pageFilters = [
     { pageIndex: 1 },
     { pageIndex: 2 },
@@ -66,10 +68,10 @@ export class TabHeaderLayoutComponent implements OnInit {
 
   @HostListener('window:resize')
   onResize() {
-    if ((this.mobile && !(window.innerWidth <= 768)) || (!this.mobile && (window.innerWidth <= 768)))
+    if ((this.mobile && !(window.innerWidth <= this.mobileBaseSize)) || (!this.mobile && (window.innerWidth <= this.mobileBaseSize)))
       this.resetPagesFilters();
 
-    this.mobile = window.innerWidth <= 768;
+    this.mobile = window.innerWidth <= this.mobileBaseSize;
   }
 
   resetPagesFilters() {
@@ -120,7 +122,7 @@ export class TabHeaderLayoutComponent implements OnInit {
   }
 
   updateProgressionData(progress: number): void {
-    this.progressPercentage = progress;
+    this.progressPercentage = Math.round(progress);
   }
 
   ngOnDestroy(): void {
@@ -170,25 +172,36 @@ export class TabHeaderLayoutComponent implements OnInit {
     const orderedModules:any[] = allModules.sort((a, b) => a.module - b.module);
     const allModuleIds: any[] = orderedModules.map((m) => m.id);
     
-    // mensagem do mascote
     await firstValueFrom(this.dialogService.openMascot({
       steps: [
         {
+          image: '../../../assets/mascot/studd_urrai.gif',
+          pos: { x: 20, y: 70 },
+          message: 'OLÁÁÁ!!!',
+          name: 'Studd',
+        },
+        {
           image: '../../../assets/mascot/studd_hello.gif',
           pos: { x: 20, y: 70 },
-          message: `Bem vindo ao Studdle, ${userData.user_name}!!`,
+          message: `Prazer em conhecer você, ${userData.user_name}!!!`,
           name: 'Studd',
         },
         {
           image: '../../../assets/mascot/studd_talking.gif',
           pos: { x: 80, y: 40 },
-          message: 'Antes de começar, queremos saber o que você já sabe...',
+          message: 'Eu me chamo Studd! E vou ser seu companheiro nessa jornada!',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_urrai.gif',
+          pos: { x: 80, y: 40 },
+          message: 'Seja muito bem-vindo(a) ao Studdle!!',
           name: 'Studd',
         },
         {
           image: '../../../assets/mascot/studd_thinking.gif',
           pos: { x: 50, y: 65 },
-          message: 'Pra isso, vamos colocar para você responder um questionário bem simples para nós!! Boa sorte!!',
+          message: 'Mas, antes de começarmos, queria saber o que tu já sabe...',
           name: 'Studd',
         },
       ],
@@ -208,25 +221,72 @@ export class TabHeaderLayoutComponent implements OnInit {
       }
     });
 
-    // mensagem do mascote
     await firstValueFrom(this.dialogService.openMascot({
       steps: [
         {
           image: '../../../assets/mascot/studd_talking.gif',
           pos: { x: 20, y: 70 },
-          message: 'Perfeito, agora que sabemos o seu nível, vou te mostrar como a plataforma funciona.',
+          message: 'Bommm! Antes de começarmos de verdade, queria te contextualizar!',
           name: 'Studd',
         },
         {
           image: '../../../assets/mascot/studd_talking_pointing_right.gif',
           pos: { x: 80, y: 40 },
-          message: 'Aqui ficam os seus módulos. Cada um libera o próximo.',
+          message: 'O site em que você está agora será o seu HUB de aprendizagem!',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking_pointing_left.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Por aqui, você encontrará videoaulas para aprender novos conceitos',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking_pointing_right.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Também temos materiais didáticos para complementar seus estudos!',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking.gif',
+          pos: { x: 50, y: 65 },
+          message: 'E não para por aí! Você também poderá acompanhar seu progresso enquanto aprende',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking_pointing_left.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Temos um sistema de ranks que evolui conforme reconhecemos seu avanço na plataforma!',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking.gif',
+          pos: { x: 50, y: 65 },
+          message: 'E sabe o melhor? Você também terá acesso à nossa Game Engine para colocar tudo o que aprender em prática!',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_thinking.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Então, preparado para começar essa jornada?',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_thinking.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Hehe! Acho que já falei bastante, né?',
+          name: 'Studd',
+        },
+        {
+          image: '../../../assets/mascot/studd_talking.gif',
+          pos: { x: 50, y: 65 },
+          message: 'Não se preocupe, vou estar por aqui sempre que precisar de ajuda!',
           name: 'Studd',
         },
         {
           image: '../../../assets/mascot/studd_urrai.gif',
           pos: { x: 50, y: 65 },
-          message: 'Pronto, é só isso!\nBons estudos.',
+          message: 'Agora chega de conversa... VAMOS APRENDER!!!',
           name: 'Studd',
         },
       ],
@@ -307,7 +367,7 @@ export class TabHeaderLayoutComponent implements OnInit {
     const userTasksCnt: number = studyCompleted + practiceCompleted;
 
     const progressPercentage: number = (userTasksCnt / totalTasksCnt) * 100;
-    this.progressPercentage = progressPercentage;
+    this.progressPercentage = Math.round(progressPercentage);
 
     // atualiza a informação de progressão la no usuario, serve pra visualizar a porcentagem depois nos componentes de tab
     this.userService.updateModuleProgress(userId, progressPercentage);

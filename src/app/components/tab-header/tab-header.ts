@@ -66,9 +66,10 @@ export class TabHeader implements OnInit {
   // filtros
   showFilters: boolean = false;
   searchQuery: string = '';
-
   selectedModule: string | null = null;
   selectedCategory: string | null = null;
+  // outro
+  color_scheme: number = 1;
 
   pagesConfig: any[] = [
     { page: 'recomendacoes', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null },
@@ -98,19 +99,19 @@ export class TabHeader implements OnInit {
 
     switch (this.router.url) {
       case '/videos':
-          this.selectedIndex = 1;
-          break;
+        this.selectedIndex = 1;
+        break;
       case '/materiais':
-          this.selectedIndex = 2;
-          break;
+        this.selectedIndex = 2;
+        break;
       case '/engine':
-          this.selectedIndex = 3;
-          break;
+        this.selectedIndex = 3;
+        break;
       case '/progression':
-          this.selectedIndex = 4;
-          break;
+        this.selectedIndex = 4;
+        break;
       default:
-          this.selectedIndex = 0;
+        this.selectedIndex = 0;
     }
   }
 
@@ -127,13 +128,13 @@ export class TabHeader implements OnInit {
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
 
         this.userService.updateColorScheme(res.user.color_scheme??1);
+        this.color_scheme = res.user.color_scheme;
       },
       error: (err) => {
         console.error("failed to find profile:", err);
 
-        if (err.status === 401) {
+        if (err.status === 401)
           this.router.navigate(['/login']);
-        }
       }
     });
   }
@@ -203,7 +204,8 @@ export class TabHeader implements OnInit {
 
   // sistema de popup do profile-picture
   Configuracoes() {
-    this.router.navigate(['/userConfigs']);
+    const url = `/userConfigs/${this.selectedIndex}`;
+    this.router.navigate([url]);
     this.updateUserData.emit(true);
   }
 

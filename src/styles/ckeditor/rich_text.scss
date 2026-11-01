@@ -1,0 +1,127 @@
+// Mudanças do ck editor, cores root padrão da lib
+@import 'ckeditor5/ckeditor5.css';
+
+:root {
+  --ck-color-base-background: var(--color-dark_gray-0);
+  --ck-color-base-foreground: var(--dialog-input-2);
+  --ck-color-base-border: var(--color-gray-2);
+  --ck-color-base-text: var(--color-light_gray_1);
+  --ck-color-base-active: var(--color-purple2);
+  --ck-color-base-focus: var(--color-purple2);
+  --ck-color-base-error: var(--color-warning);
+
+  --ck-color-focus-border: var(--color-purple2);
+  --ck-color-text: var(--color-light_gray_1);
+
+  --ck-color-shadow-drop: var(--transparent-gray);
+  --ck-color-shadow-drop-active: var(--transparent-gray);
+  --ck-color-shadow-inner: var(--transparent-gray);
+
+  --ck-color-button-default-background: transparent;
+  --ck-color-button-default-hover-background: var(--color-gray-3);
+  --ck-color-button-default-active-background: var(--color-gray-2);
+  --ck-color-button-default-disabled-background: transparent;
+
+  --ck-color-button-on-background: var(--selected-video);
+  --ck-color-button-on-hover-background: var(--color-purple2_5);
+  --ck-color-button-on-active-background: var(--color-purple2_5);
+  --ck-color-button-on-disabled-background: transparent;
+  --ck-color-button-on-color: var(--color-perma-white);
+
+  --ck-color-button-action-background: var(--color-purple2);
+  --ck-color-button-action-hover-background: var(--color-purple2_5);
+  --ck-color-button-action-active-background: var(--color-purple3);
+  --ck-color-button-action-disabled-background: var(--color-gray-2);
+  --ck-color-button-action-text: var(--color-perma-white);
+
+  --ck-color-button-save: var(--color-purple2);
+  --ck-color-button-cancel: var(--color-warning);
+
+  --ck-color-split-button-hover-background: var(--color-gray-3);
+  --ck-color-split-button-hover-border: var(--color-gray-2);
+
+  --ck-color-input-background: var(--dialog-input-2);
+  --ck-color-input-border: var(--color-gray-2);
+  --ck-color-input-text: var(--color-white);
+  --ck-color-input-disabled-background: var(--color-gray-4);
+  --ck-color-input-disabled-border: var(--color-gray-2);
+  --ck-color-input-disabled-text: var(--color-gray-0);
+
+  --ck-color-labeled-field-label-background: var(--dialog-input-2);
+
+  --ck-color-list-background: var(--color-dark_gray-0);
+  --ck-color-list-button-hover-background: var(--color-gray-3);
+  --ck-color-list-button-on-background: var(--color-purple2);
+  --ck-color-list-button-on-background-focus: var(--color-purple2_5);
+  --ck-color-list-button-on-text: var(--color-perma-white);
+
+  --ck-color-panel-background: var(--color-dark_gray-0);
+  --ck-color-panel-border: var(--color-gray-2);
+  --ck-color-dropdown-panel-background: var(--color-dark_gray-0);
+  --ck-color-dropdown-panel-border: var(--color-gray-2);
+
+  --ck-color-toolbar-background: var(--dialog-input-2);
+  --ck-color-toolbar-border: var(--color-gray-2);
+
+  --ck-color-tooltip-background: var(--color-gray-1);
+  --ck-color-tooltip-text: var(--color-white);
+
+  --ck-color-widget-blurred-border: var(--color-gray-1);
+  --ck-color-widget-hover-border: var(--color-purple2);
+  --ck-color-widget-editable-focus-background: var(--color-dark_gray-0);
+
+  --ck-color-link-default: var(--link-text);
+  --ck-color-image-caption-background: var(--color-gray-4);
+  --ck-color-image-caption-text: var(--color-light_gray);
+  --ck-content-color-image-caption-background: var(--color-gray-4);
+  --ck-content-color-image-caption-text: var(--color-light_gray);
+
+  --ck-color-engine-placeholder-text: var(--color-gray-0);
+  --ck-color-upload-bar-background: var(--color-purple2);
+
+  --ck-color-surface-canvas: var(--color-dark_gray-0);
+  --ck-color-surface-control: var(--dialog-input-2);
+  --ck-color-surface-container: var(--color-dark_gray-0);
+  --ck-color-surface-inverse: var(--color-white);
+
+  --ck-color-border-control: var(--color-gray-2);
+  --ck-color-border-container: var(--color-gray-2);
+  --ck-color-divider: var(--color-gray-2);
+
+  --ck-color-text-primary: var(--color-white);
+  --ck-color-text-secondary: var(--color-light_gray);
+  --ck-color-text-disabled: var(--color-gray-0);
+  --ck-color-text-inverse: var(--color-dark_gray-0);
+
+  --ck-color-interactive-focus-shadow: var(--selected-video);
+  --ck-color-interactive-hover-surface: var(--color-gray-3);
+  --ck-color-interactive-active-surface: var(--color-gray-2);
+  --ck-color-interactive-selected-surface: var(--selected-video);
+  --ck-color-interactive-selected-surface-hover: var(--color-purple2_5);
+  --ck-color-interactive-selected-text: var(--color-perma-white);
+  --ck-color-interactive-primary-surface: var(--color-purple2);
+  --ck-color-interactive-primary-surface-hover: var(--color-purple2_5);
+  --ck-color-interactive-primary-text: var(--color-perma-white);
+}
+
+.ck.ck-dropdown__panel,
+.ck.ck-balloon-panel {
+  background-color: var(--color-dark_gray-0);
+  border-color: var(--color-gray-2);
+}
+
+.ck.ck-list {
+  background-color: var(--color-dark_gray-0);
+}
+
+.ck.ck-list__item .ck-button {
+  color: var(--color-light_gray);
+}
+
+.ck.ck-list__item .ck-button:hover {
+  background-color: var(--color-gray-3);
+}
+
+.ck.ck-label {
+  color: var(--color-light_gray);
+}

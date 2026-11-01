@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { IonProgressBar } from '@ionic/angular/standalone';
 import { personCircle } from 'ionicons/icons';
 import { NgClass } from '@angular/common';
+import { UserDataBridgeService } from '../services/userData-bridge.service';
+import { takeUntil, Subject } from 'rxjs';
+
 @Component({
   selector: 'app-progression-mobile',
   standalone: true,
@@ -10,7 +13,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './progression-mobile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressionMobileComponent implements OnChanges {
+export class ProgressionMobileComponent implements OnChanges, OnInit {
   @Input() moduleData: any = {};
   @Input() studyTasksData = { studyCompleted: 0, totalStudyContents: 0 }
   @Input() practiceTaskData = { practiceCompleted: 0, totalPracticeContents: 0 }
@@ -22,9 +25,20 @@ export class ProgressionMobileComponent implements OnChanges {
   imageLoaded = false;
   
   readonly personCircle = personCircle;
+  private destroy$ = new Subject<void>();
 
   get studyProgress(): number { return this.toPercentage(this.studyTasksData.studyCompleted, this.studyTasksData.totalStudyContents); }
   get practiceProgress(): number { return this.toPercentage(this.practiceTaskData.practiceCompleted, this.practiceTaskData.totalPracticeContents); }
+
+  constructor(private userDataBridgeService: UserDataBridgeService) {}
+
+  ngOnInit(): void {
+    this.userDataBridgeService.userData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bridgeUserData: any) => {
+        this.profile_picture = `http://localhost:3000${bridgeUserData.profile_picture}`;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['moduleData'] &&

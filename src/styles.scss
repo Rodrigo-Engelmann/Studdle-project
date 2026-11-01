@@ -1,15 +1,12 @@
-
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use './styles/white_scheme/white_scheme.scss';
+@use './styles/ckeditor/rich_text.scss';
 
-
-// Esse CSS serve somente para as cores, será importado para cada HTML e usado neles
 :root{
+  color-scheme: dark;
+
   --color-perma-white: white;
+  
   --color-white: #FFFFFF;
   --color-light_gray_1: #dadada;
   --color-light_gray: #B1B1B1;
@@ -50,6 +47,75 @@
   --link-text: var(--color-lightpurple1);
 }
 
+// colorblind settings:
+body.protanopia {
+  --color-lightpurple1: #8FB0FF;
+  --color-purple1: #2E3A8C;
+  --color-purple2: #4F7BFF;
+  --color-purple2_5: #4369D9;
+  --color-purple3: #3366FF;
+  --color-dark_purple: #2A355F;
+
+  --color-warning: #C67E00;
+
+  --selected-video: #4f7bff2c;
+}
+body.deuteranopia {
+  --color-lightpurple1: #95B2FF;
+  --color-purple1: #31448F;
+  --color-purple2: #5A7DFF;
+  --color-purple2_5: #4D6BD9;
+  --color-purple3: #4169E1;
+  --color-dark_purple: #30406A;
+
+  --color-warning: #CC7A00;
+
+  --selected-video: #5a7dff2c;
+}
+body.tritanopia {
+  --color-lightpurple1: #F59CC6;
+  --color-purple1: #6D2358;
+  --color-purple2: #E35CA3;
+  --color-purple2_5: #C14E8B;
+  --color-purple3: #D63384;
+  --color-dark_purple: #563B47;
+
+  --color-warning: #C44E00;
+
+  --selected-video: #e35ca32c;
+}
+body.acromatopsia {
+  --color-lightpurple1: #C4C4C4;
+  --color-purple1: #444444;
+  --color-purple2: #9A9A9A;
+  --color-purple2_5: #838383;
+  --color-purple3: #666666;
+  --color-dark_purple: #2F2F2F;
+
+  --color-warning: #777777;
+
+  --selected-video: #9a9a9a2c;
+}
+
+$cb-targets: 'img, video, canvas, .cb-media';
+
+// :root.protanopia :is(#{$cb-targets}):not(.no-cb) {
+//   filter: url('#cb-protanopia');
+// }
+
+// :root.deuteranopia :is(#{$cb-targets}):not(.no-cb) {
+//   filter: url('#cb-deuteranopia');
+// }
+
+// :root.tritanopia :is(#{$cb-targets}):not(.no-cb) {
+//   filter: url('#cb-tritanopia');
+// }
+
+// :root.acromatopsia :is(#{$cb-targets}):not(.no-cb) {
+//   filter: url('#cb-acromatopsia');
+// }
+
+
 *{
   font-size: 15px;
 }
@@ -65,206 +131,25 @@ html {
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: dark;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--color-dark_gray-1);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
 }
-/* You can add global styles to this file, and also import other style files */
 
 
 
 html, body{
-    width: 100%;
-    font-family: "Inter", sans-serif;
-
-    color: var(--color-white);
-
-    margin: 0;
-}
-
-
-html, body {
+  width: 100%;
   height: 100%;
+  font-family: "Inter", sans-serif;
+  color: var(--color-white);
+  margin: 0;
 }
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-
-
-
-// colorblind settings:
-
-body.protanopia {
-  --color-lightpurple1: #8FB0FF;
-  --color-purple1: #2E3A8C;
-  --color-purple2: #4F7BFF;
-  --color-purple2_5: #4369D9;
-  --color-purple3: #3366FF;
-  --color-dark_purple: #2A355F;
-
-  --color-warning: #C67E00;
-
-  --selected-video: #4f7bff2c;
-}
-
-body.deuteranopia {
-  --color-lightpurple1: #95B2FF;
-  --color-purple1: #31448F;
-  --color-purple2: #5A7DFF;
-  --color-purple2_5: #4D6BD9;
-  --color-purple3: #4169E1;
-  --color-dark_purple: #30406A;
-
-  --color-warning: #CC7A00;
-
-  --selected-video: #5a7dff2c;
-}
-
-body.tritanopia {
-  --color-lightpurple1: #F59CC6;
-  --color-purple1: #6D2358;
-  --color-purple2: #E35CA3;
-  --color-purple2_5: #C14E8B;
-  --color-purple3: #D63384;
-  --color-dark_purple: #563B47;
-
-  --color-warning: #C44E00;
-
-  --selected-video: #e35ca32c;
-}
-
-body.acromatopsia {
-  --color-lightpurple1: #C4C4C4;
-  --color-purple1: #444444;
-  --color-purple2: #9A9A9A;
-  --color-purple2_5: #838383;
-  --color-purple3: #666666;
-  --color-dark_purple: #2F2F2F;
-
-  --color-warning: #777777;
-
-  --selected-video: #9a9a9a2c;
-}
-
-
-
-
-//  MODO CLARO
-body.light {
-  color-scheme: light;
-
-  --color-white: #24202B;
-  --color-light_gray_1: #45404F;
-  --color-light_gray: #716A7D;
-  --color-gray-0: #817A8C;
-
-  --color-gray-1: #B2A9C2;
-  --color-gray-2: #CCC4DB;
-  --color-gray-3: #DDD6E9;
-  --color-gray-4: #E7E1F0;
-
-  --color-dark-gray-5: #D5CDE1;
-  --color-dark_gray-0: #DFD8EA;
-  --color-dark_gray-05: #E8E2F1;
-  --color-dark-gray-4: #EEE9F5;
-  --color-dark_gray-2: #F2EEF8;
-  --color-dark_gray-1: #F6F3FA;
-  --color-dark_gray-3: #FAF8FD;
-
-  --color-black: #FAF8FD;
-
-  --color-transparent-dark-gray: #F2EEF8E8;
-
-  --color-lightpurple1: #6E35A0;
-  --color-purple1: #E4D1F5;
-  --color-purple2: #8738CA;
-  --color-purple2_5: #702BAA;
-  --color-purple3: #531A8C;
-  --color-dark_purple: #D0B9E6;
-
-  --color-warning: #B02326;
-
-  --selected-video: #8738CA30;
-
-  --dialog-background: #FAF8FDF2;
-  --dialog-input: #0000000C;
-  --dialog-input-2: #E8E2F1;
-
-  --transparent-gray: #00000018;
-
-  --spinner: var(--color-purple2);
-
-  --link-text: var(--color-lightpurple1);
-}
-
-
-//  MODO CLARO + DALTONISMO
-body.light.protanopia {
-  --color-lightpurple1: #1E40AF;
-  --color-purple1: #DBE4FA;
-  --color-purple2: #2456C8;
-  --color-purple2_5: #1E40AF;
-  --color-purple3: #1E3A8A;
-  --color-dark_purple: #D2DCF2;
-
-  --color-warning: #8A5A00;
-
-  --selected-video: #2456c826;
-}
-
-body.light.deuteranopia {
-  --color-lightpurple1: #1E40AF;
-  --color-purple1: #DBE4FA;
-  --color-purple2: #2A5BD0;
-  --color-purple2_5: #1E40AF;
-  --color-purple3: #1E3A8A;
-  --color-dark_purple: #D2DCF2;
-
-  --color-warning: #8A5A00;
-
-  --selected-video: #2a5bd026;
-}
-
-body.light.tritanopia {
-  --color-lightpurple1: #A3185F;
-  --color-purple1: #F8DCEA;
-  --color-purple2: #B01E6B;
-  --color-purple2_5: #A3185F;
-  --color-purple3: #8F1452;
-  --color-dark_purple: #EFD4E2;
-
-  --color-warning: #8F4300;
-
-  --selected-video: #b01e6b26;
-}
-
-body.light.acromatopsia {
-  --color-lightpurple1: #454545;
-  --color-purple1: #E0E0E0;
-  --color-purple2: #595959;
-  --color-purple2_5: #454545;
-  --color-purple3: #3D3D3D;
-  --color-dark_purple: #D8D8D8;
-
-  --color-warning: #5A5A5A;
-
-  --selected-video: #59595926;
-}
-
 
 // Scrollbar
 ::-webkit-scrollbar {
@@ -356,6 +241,16 @@ app-root{
     color: var(--color-light_gray_1) !important;
   }
 }
+// botão com background das dialogs
+.mat-mdc-dialog-actions .mat-mdc-button-base+.mat-mdc-button-base {
+  background-color: var(--color-purple2);
+  * {
+  color: white;
+  }
+}
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch{
+  border-left: 0 !important;
+}
 
 
 // Tooltip
@@ -386,7 +281,10 @@ app-root{
 
 .mat-mdc-dialog-surface,
 .mat-mdc-dialog-surface * {
-  color: var(--color-light_gray_1) !important;
+  color: var(--color-light_gray_1);
+  .mdc-checkbox *{
+    color: var(--color-black) !important;
+  }
 }
 .mat-mdc-dialog-surface .mat-icon {
   color: var(--color-light_gray_1) !important;
@@ -458,4 +356,24 @@ body.tritanopia :is(#{$cb-targets}):not(.no-cb) {
  
 body.acromatopsia :is(#{$cb-targets}):not(.no-cb) {
     filter: url('#cb-acromatopsia');
+}
+
+
+
+
+
+
+
+
+// ver onde colocar isso:
+::ng-deep .mat-mdc-button-ripple {
+  background-color: var(--color-purple2) !important;
+
+  &:hover{
+    background-color: var(--color-purple3);
+  }
+}
+
+:root{
+  --mat-button-filled-container-color: var(--color-purple2);
 }

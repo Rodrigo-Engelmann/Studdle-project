@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgClass } from '@angular/common';
 import { ChangeDetectorRef, inject } from '@angular/core';
+import { UserDataBridgeService } from '../services/userData-bridge.service';
+import { takeUntil, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-progression-desktop',
@@ -12,7 +14,7 @@ import { ChangeDetectorRef, inject } from '@angular/core';
   styleUrls: ['./progression-desktop.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressionDesktopComponent implements OnChanges {
+export class ProgressionDesktopComponent implements OnChanges, OnInit {
   @Input() moduleData: any = {};
   @Input() studyTasksData = { studyCompleted: 0, totalStudyContents: 0 }
   @Input() practiceTaskData = { practiceCompleted: 0, totalPracticeContents: 0 }
@@ -23,10 +25,21 @@ export class ProgressionDesktopComponent implements OnChanges {
 
   private clearPrevTimer?: ReturnType<typeof setTimeout>;
   private cdr = inject(ChangeDetectorRef);
+  private destroy$ = new Subject<void>();
+
+  constructor(private userDataBridgeService: UserDataBridgeService) {}
 
   imageLoaded = false;
   currentImage?: string;
   previousImage?: string;
+
+  ngOnInit(): void {
+    this.userDataBridgeService.userData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bridgeUserData: any) => {
+        this.profile_picture = `http://localhost:3000${bridgeUserData.profile_picture}`;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const newSrc: string | undefined = changes['moduleData']?.currentValue?.image;

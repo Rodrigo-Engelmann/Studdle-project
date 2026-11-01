@@ -20,13 +20,18 @@
             <ul class="download-list">
                 <li class="download-row">
                     <span class="os-badge">
-                        <img class="os-icon" src="../../../assets/engine_icons/windows_icon.png" alt="" aria-hidden="true" />
+                        <img class="os-icon" [src]="userData?.color_scheme === 1 ? '../../../assets/engine_icons/windows_icon.png' : '../../../assets/engine_icons/white_scheme/windows_icon_whitescheme.png'"
+                        alt="" aria-hidden="true" />
                     </span>
 
                     <div class="download-info">
-                        <h3 class="download-name">Studdle-Engine-1.0-win.zip</h3>
+                        <h3 class="download-name">
+                            Studdle-Engine-1.0-win.zip
+                        </h3>
 
-                        <p class="download-meta">Windows - x64 - 5 GB</p>
+                        <p class="download-meta">
+                            Windows - x64 - 5 GB
+                        </p>
                     </div>
 
                     <a href="../../../assets/engine_downloads/studdle-engine.txt" download>
@@ -36,13 +41,18 @@
 
                 <li class="download-row">
                     <span class="os-badge">
-                        <img class="os-icon" src="../../../assets/engine_icons/mac_icon.png" alt="" aria-hidden="true" />
+                        <img class="os-icon" [src]="userData?.color_scheme === 1 ? '../../../assets/engine_icons/mac_icon.png' : '../../../assets/engine_icons/white_scheme/mac_icon_whitescheme.png'"
+                        alt="" aria-hidden="true" />
                     </span>
 
                     <div class="download-info">
-                        <h3 class="download-name">Studdle-Engine-1.0-mac.zip</h3>
+                        <h3 class="download-name">
+                            Studdle-Engine-1.0-mac.zip
+                        </h3>
 
-                        <p class="download-meta">macOS - x64 - 5 GB</p>
+                        <p class="download-meta">
+                            macOS - x64 - 5 GB
+                        </p>
                     </div>
 
                     <a href="../../../assets/engine_downloads/studdle-engine.txt" download>
@@ -52,13 +62,18 @@
 
                 <li class="download-row">
                     <span class="os-badge">
-                        <img class="os-icon" src="../../../assets/engine_icons/linux_icon.png" alt="" aria-hidden="true" />
+                        <img class="os-icon" [src]="userData?.color_scheme === 1 ? '../../../assets/engine_icons/linux_icon.png' : '../../../assets/engine_icons/white_scheme/linux_icon_whitescheme.png'"
+                        alt="" aria-hidden="true" />
                     </span>
 
                     <div class="download-info">
-                        <h3 class="download-name">Studdle-Engine-1.0-linux.tar.gz</h3>
+                        <h3 class="download-name">
+                            Studdle-Engine-1.0-linux.tar.gz
+                        </h3>
 
-                        <p class="download-meta">Linux - x64 - 5 GB</p>
+                        <p class="download-meta">
+                            Linux - x64 - 5 GB
+                        </p>
                     </div>
 
                     <a href="../../../assets/engine_downloads/studdle-engine.txt" download>
@@ -87,7 +102,7 @@
                 <div class="info-item">
                     <h3 class="info-term">Versão atual</h3>
 
-                    <p class="info-desc">v1.0 — 10 de novembro de 2025</p>
+                    <p class="info-desc">v1.0 - 10 de novembro de 2025</p>
                 </div>
 
                 <div class="info-item">

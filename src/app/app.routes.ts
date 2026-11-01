@@ -27,7 +27,7 @@ export const routes: Routes = [
     },
     {path: 'login', component: Login},
     {path: 'signin', component: Signin},
-    {path: 'video/watch/:videoUrl', component: ViewVideo},
-    {path: 'view/material/:materialUrl', component: ViewMaterial},
-    {path: 'userConfigs', component: UserConfigs},
+    {path: 'video/watch/:backNav/:videoUrl', component: ViewVideo},
+    {path: 'view/material/:backNav/:materialUrl', component: ViewMaterial},
+    {path: 'userConfigs/:backNav', component: UserConfigs},
 ];

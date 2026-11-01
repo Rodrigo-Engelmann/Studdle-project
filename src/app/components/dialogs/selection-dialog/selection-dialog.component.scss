@@ -1,9 +1,14 @@
+::ng-deep .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+  background-color: var(--color-purple2_5) !important;
+  border-color: var(--color-purple2_5) !important;
+  color: red !important;
+}
+
 .selection-content {
   padding-top: 0;
 
   .subtitle {
     margin: 0 0 12px;
-    color: rgba(0, 0, 0, 0.6);
     font-size: 0.875rem;
     line-height: 1.4;
   }
@@ -80,7 +85,6 @@
 
   .item-subtitle {
     font-size: 0.75rem;
-    color: rgba(0, 0, 0, 0.6);
   }
 
   .item-check {
@@ -98,4 +102,8 @@
     width: 64px;
     height: 36px;
   }
+}
+
+::ng-deep .mat-mdc-dialog-surface .mdc-checkbox *, .mat-mdc-dialog-surface * .mdc-checkbox *{
+  color: rgb(226, 226, 226) !important;
 }

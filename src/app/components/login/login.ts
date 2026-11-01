@@ -108,6 +108,7 @@ export class Login implements OnInit {
 
   ngOnInit() {
     this.userService.updateColorBlindFilter(-1);
+    this.userService.updateColorScheme(1);
     this.preloadBackground();
   }
 

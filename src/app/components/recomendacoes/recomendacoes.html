@@ -14,6 +14,7 @@
                 @for(material of materials; track material.title) {
                     <app-mat-card 
                     [material]="material"
+                    [backNavType]="1"
                     (updateData)="updateSingularVideo($event)"
                     ></app-mat-card>
                 }
@@ -41,6 +42,7 @@
                 @for(video of videos; track video.title) {
                     <app-vid-card class="video-card"
                     [video]="video"
+                    [backNavType]="1"
                     (updateData)="updateSingularMaterial($event)"
                     ></app-vid-card>
                 }

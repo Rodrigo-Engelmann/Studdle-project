@@ -34,7 +34,7 @@ const DEFAULT_CORRECT_PHRASES: string[] = [
 const DEFAULT_WRONG_PHRASES: string[] = [
   'Dessa vez não foi, mas segue.',
   'Errar faz parte de aprender.',
-  'Quase lá — respira e vai pra próxima.',
+  'Quase lá, respira e vai pra próxima.',
   'Uma vida a menos, mas o jogo continua.',
   'Anota essa pra não esquecer.',
   'Tudo bem, a próxima é sua.',

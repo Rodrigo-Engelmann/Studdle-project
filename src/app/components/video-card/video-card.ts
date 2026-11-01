@@ -28,6 +28,7 @@ import { firstValueFrom, takeUntil, Subject } from 'rxjs';
 
 export class VideoCard implements OnChanges, OnInit {
   @Input() video: video = new video;
+  @Input() backNavType: number = 0;
   @Output() updateData = new EventEmitter<video>();
 
   videoPrefix: string = 'https://www.youtube.com/watch?v=';
@@ -57,7 +58,8 @@ export class VideoCard implements OnChanges, OnInit {
   ) {}
 
   openVideo(): void {
-    this.router.navigate([`/video/watch/${this.video.video_url}`]);
+    const url = `/video/watch/${this.backNavType}/${this.video.video_url}`;
+    this.router.navigate([url]);
   }
 
   async getYTdata(videoUrl: string): Promise<object> {

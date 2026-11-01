@@ -4,8 +4,6 @@
     z-index: 20;
 
     display: block;
-    // 10% da altura da tela dava 90px num celular grande — o header
-    // comia a tela inteira. Altura fixa resolve em qualquer aparelho.
     height: 64px;
     flex-shrink: 0;
 }
@@ -20,9 +18,7 @@
 
     background: linear-gradient(to right, var(--color-purple1), var(--color-purple2));
 
-    // linha fina escura no lugar dos 2px roxos: separa sem engrossar
     border-bottom: 1px solid color-mix(in srgb, var(--color-black) 22%, transparent);
-    // sombra curta: o header se descola do conteúdo ao rolar
     box-shadow: 0 2px 12px -6px var(--color-black);
 
     display: flex;

@@ -12,10 +12,6 @@ export class RankTreeDialogService {
 
   constructor(private readonly dialog: MatDialog) {}
 
-  // Abre a dialog de ranks. Retorna um Observable com cada ação
-  // (editar / excluir / adicionar) que o usuário confirmar, enquanto a
-  // dialog estiver aberta. O Observable completa quando a dialog fecha.
-
   open(ranks: TreeNode[]): Observable<TreeNodeAction> {
     this.dataSubject.next(ranks);
 
@@ -29,8 +25,6 @@ export class RankTreeDialogService {
     return this.dialogRef.componentInstance.action$;
   }
 
-  // Atualiza os dados exibidos sem fechar a dialog — útil depois que o
-  // backend confirmar uma edição, exclusão ou criação.
   updateData(ranks: TreeNode[]): void {
     this.dataSubject.next(ranks);
   }

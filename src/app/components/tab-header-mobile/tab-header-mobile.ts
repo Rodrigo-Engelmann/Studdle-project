@@ -181,8 +181,9 @@ export class TabHeaderMobile implements OnInit {
         this.filterConfigUpdate()
     }
 
-    Configuracoes() {
-        this.router.navigate(['/userConfigs']);
+    gotoUserSettings() {
+        const url = `/userConfigs/${this.selectedIndex}`;
+        this.router.navigate([url]);
     }
     
     Logout() {

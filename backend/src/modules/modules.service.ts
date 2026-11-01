@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Module } from './modules.entity';
+import { deleteUploadedFile } from '../common/upload/file.utils';
 
 @Injectable()
 export class ModuleService {
@@ -26,14 +27,25 @@ export class ModuleService {
   }
 
   async update(id: number, data: Partial<Module>) {
-    await this.findById(id);
+    const module = await this.findById(id);
+    const oldImage = module.image;
+
     await this.moduleRepo.update(id, data);
+
+    if (data.image && oldImage && oldImage !== data.image)
+      deleteUploadedFile(oldImage);
+
     return this.findById(id);
   }
 
   async remove(id: number) {
-    await this.findById(id);
+    const module = await this.findById(id);
+    const image = module.image;
+
     await this.moduleRepo.delete(id);
+
+    deleteUploadedFile(image);
+
     return { deleted: true };
   }
 

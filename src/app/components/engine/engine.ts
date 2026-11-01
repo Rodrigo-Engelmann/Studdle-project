@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+// services
+import { UserDataBridgeService } from '../services/userData-bridge.service';
+
+// others
+import { takeUntil, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-engine',
@@ -6,7 +12,21 @@ import { Component } from '@angular/core';
   templateUrl: './engine.html',
   styleUrls: ['./engine.scss'],
 })
-export class Engine {
+export class Engine implements OnInit {
+  userData: any = undefined;
+
+  constructor(private userDataBridgeService: UserDataBridgeService) {}
+
+  private destroy$ = new Subject<void>();
+
+  ngOnInit(): void {
+    this.userDataBridgeService.userData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bridgeUserData: any) => {
+        this.userData = bridgeUserData;
+    });
+  }
+
   ngAfterViewInit(): void {
     const buttons = document.querySelectorAll('button');
 

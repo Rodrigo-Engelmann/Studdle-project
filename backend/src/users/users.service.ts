@@ -9,6 +9,7 @@ import { User } from './users.entity';
 
 import { UpdateUserDto, UserResponseDto } from '../auth/dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { deleteUploadedFile } from '../common/upload/file.utils';
 
 @Injectable()
 export class UserService {
@@ -120,31 +121,39 @@ export class UserService {
     data: Partial<UpdateUserDto>,
     file?: Express.Multer.File,
   ) {
-    // Usando o repositório correto
     const user = await this.userRepo.findOne({ where: { id } });
-
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    // Atualizar campos se existirem
-    if (data.name) user.user_name = data.name; // se no frontend está "name", aqui atualiza "user_name", é mais pra segurança mermo
+    const oldPicture = user.profile_picture;
+    if (data.name) user.user_name = data.name;
 
     if (data.email) user.email = data.email;
 
-    // Atualiza a  foto
     if (file) user.profile_picture = `/uploads/profile/${file.filename}`;
 
-    // atualiza a opção de colorblindness
     if (data.colorblindness !== undefined)
       user.colorblindness = Number(data.colorblindness);
 
     if (data.color_scheme !== undefined)
       user.color_scheme = Number(data.color_scheme);
 
-    return this.userRepo.save(user);
+    const saved = await this.userRepo.save(user);
+    if (file && oldPicture) deleteUploadedFile(oldPicture);
+
+    return saved;
   }
 
   async deleteAccount(userId: number) {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('Usuário não encontrado');
+
+    const picture = user.profile_picture;
+
     await this.userRepo.delete(userId);
+
+    deleteUploadedFile(picture);
+
     return { message: 'Conta deletada com sucesso' };
   }
 

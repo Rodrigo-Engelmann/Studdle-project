@@ -30,9 +30,10 @@ import { takeUntil, Subject } from 'rxjs';
 export class MaterialCard implements OnInit {
   @Output() updateData = new EventEmitter<any>();
   @Input() material!: material;
-  
-  userData: any = undefined;
+  @Input() backNavType: number = 0;
 
+  userData: any = undefined;
+  
   private destroy$ = new Subject<void>();
 
   constructor(private dialogService: DialogService
@@ -57,7 +58,7 @@ export class MaterialCard implements OnInit {
   }
 
   openMaterial(): void {
-    const url = 'view/material/'+this.material.link;
+    const url = `view/material/${this.backNavType}/${this.material.link}`;
     this.router.navigate([url]);
   }
 

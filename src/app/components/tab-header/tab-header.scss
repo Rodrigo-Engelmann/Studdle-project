@@ -7,7 +7,7 @@
 
 :host ::ng-deep {
     .mat-mdc-tab.tab-highlight {
-        border-radius: 20px 20px 0 0;
+        // border-radius: 20px 20px 0 0;
         position: relative;
         isolation: isolate;
         overflow: hidden;
@@ -84,7 +84,7 @@ body {
 }
 
 .studdle-logo-header {
-    height: 40px;
+    height: 30px;
 }
 
 .rightheader-content {
@@ -98,10 +98,13 @@ body {
 }
 
 .profile-picture {
-    height: 45px;
-    width: 45px;
+    height: 35px;
+    width: 35px;
     border-radius: 100%;
     border: solid var(--color-purple2) 2px;
+
+    object-fit: cover;
+    object-position: center;
 
     user-select: none;
 }
@@ -129,7 +132,7 @@ body {
 }
 
 .translateYhover:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .profile-picture:active {
@@ -141,7 +144,7 @@ body {
     justify-content: space-between;
     max-width: calc(100% - 60px);
     margin: 0 auto;
-    padding: 5px 30px;
+    padding: 0px 30px;
 }
 
 

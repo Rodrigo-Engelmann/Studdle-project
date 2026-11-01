@@ -25,6 +25,7 @@ const PLACEHOLDER = '/assets/images/profile-picture-placeholder.jpg';
     .avatar {
       border-radius: 50%;
       object-fit: cover;
+      object-position: center;
       background-color: color-mix(in srgb, currentColor 12%, transparent);
     }
   `]

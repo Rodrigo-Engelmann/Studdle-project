@@ -39,13 +39,12 @@ const NODE_LABEL: Record<string, string> = {
 })
 export class RankTreeDialogComponent implements OnDestroy {
   private readonly actionSubject = new Subject<TreeNodeAction>();
-  // Stream pública de ações — o service repassa isso pra quem chamou a dialog
+  // Stream pública de ações
   readonly action$: Observable<TreeNodeAction> = this.actionSubject.asObservable();
 
   readonly nodeIcon = NODE_ICON;
   readonly nodeLabel = NODE_LABEL;
 
-  // Fica marcado enquanto o menu de um nó estiver aberto (mantém o botão visível)
   menuOpenNode: FlatTreeNode | null = null;
 
   private readonly transformer = (node: TreeNode, level: number): FlatTreeNode => ({
@@ -89,7 +88,6 @@ export class RankTreeDialogComponent implements OnDestroy {
     this.actionSubject.complete();
   }
 
-  // Rank e task podem ter filhos (mesmo vazios); quiz é sempre folha
   isContainer = (_: number, node: FlatTreeNode) => node.type !== 'quiz';
 
   onEdit(node: TreeNode): void {
@@ -122,17 +120,16 @@ export class RankTreeDialogComponent implements OnDestroy {
     });
 
     ref.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
+      if (confirmed)
         this.actionSubject.next({ action: 'delete', node });
-      }
     });
   }
 
   private childrenWarning(node: TreeNode): string {
-    if (node.type === 'rank') 
+    if (node.type === 'rank')
       return ' Isso também removerá as tarefas e quizzes vinculados a ele.';
     
-    if (node.type === 'task') 
+    if (node.type === 'task')
       return ' Isso também removerá os quizzes vinculados a ela.';
     
     return '';
