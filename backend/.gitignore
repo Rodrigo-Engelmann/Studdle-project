@@ -2,10 +2,19 @@
 /dist
 /node_modules
 /build
-/uploads/materials/
-/uploads/profile/
-/uploads/quizzes/
-/uploads/modules/
+
+/uploads/materials/*
+!/uploads/materials/.gitkeep
+
+/uploads/profile/*
+!/uploads/profile/.gitkeep
+
+/uploads/quizzes/*
+!/uploads/quizzes/.gitkeep
+
+/uploads/modules/*
+!/uploads/modules/.gitkeep
+
 
 # Logs
 logs
