@@ -2,12 +2,13 @@
     display: flex;
     flex-direction: column;
 
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100%;
 
     background-color: var(--color-dark_gray-0) !important;
 
-    overflow: hidden !important;
+    overflow: hidden;
+
+    color: var(--color-white);
 }
 
 main {
@@ -16,7 +17,10 @@ main {
     align-items: center;
 
     flex: 1;
+    min-height: 0;
+
     width: 100%;
+    overflow-y: auto;
     background-color: var(--color-dark_gray-0);
 }
 
@@ -235,6 +239,36 @@ header {
     }
 }
 
+.close-icon-container{
+    position: fixed;
+    top: 95px;
+    right: 30px;
+
+    height: 60px;
+    width: 60px;
+    background-color: var(--selected-video);
+    border-radius: 100%;
+
+    cursor: pointer;
+
+    mat-icon {
+        font-size: 40px;
+        height: 60px;
+        width: 60px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &:hover{
+        transform: scale(1.04);
+    }
+    &:active{
+        transform: scale(0.9);
+    }
+}
+
 // responsividade
 @media (max-width: 1280px) {
     .container-info {
@@ -243,6 +277,45 @@ header {
 }
 
 @media (max-width: 1000px) {
+    .close-icon-container {
+        position: fixed !important;
+        top: auto;
+        bottom: 120px;
+        
+        height: 70px;
+        width: 70px;
+
+        z-index: 1212;
+
+        mat-icon {
+            height: 70px;
+            width: 70px;
+            font-size: 50px !important;
+        }
+
+        background-color: var(--color-dark_gray-1);
+        left: 0;
+        border-radius: 0 100% 100% 0;
+
+        border-right: solid var(--color-dark_gray-0) 2px;
+        border-top: solid var(--color-dark_gray-0) 2px;
+        border-bottom: solid var(--color-dark_gray-0) 2px;
+
+        &:hover{
+            transform: scale(1) !important;
+        }
+        &:active{
+            transform: scale(1) !important;
+        }
+    }
+    .video-settings{
+        bottom: 120px;
+        height: 70px;
+        width: 70px;
+        font-family: 50px;
+        right: 20px;
+    }
+
     .container-info {
         --content-width: 92%;
         margin-top: 24px;

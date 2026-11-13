@@ -1,7 +1,7 @@
 <!-- header -->
 <ion-header>
     <ion-toolbar class="toolbar">
-        @if (pagesConfig[selectedIndex].hasFilterOptions) {
+        @if (pagesConfig[selectedIndex].hasFilterOptions && !filtersPageLock) {
             <div class="toolbar-content">
                 <ion-button class="filter-btn"
                 fill="clear" (click)="showFilterUpdate()">

@@ -1,25 +1,3 @@
-<header class="side-padding">
-    <img class="studdle-logo-header translateYhover"
-    [src]="color_scheme === 1 ? 'assets/images/Studdle-logo-blackScheme.png' : 'assets/images/white_scheme/Studdle-logo-whiteScheme.png' "
-    alt="logo studdle - clique para voltar pro menu" (click)="goBack()">
-
-    <img class="profile-picture translateYhover"
-    [src]="profile_picture || '../../../assets/images/profile-picture-placeholder.jpg'"
-    alt="imagem do usuário - clique para abrir as opções de usuário"
-    matButton [matMenuTriggerFor]="menu">
-    
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="Configuracoes()">
-        <mat-icon>settings</mat-icon>
-        Configurações
-      </button>
-      <button mat-menu-item (click)="Logout()">
-        <mat-icon>logout</mat-icon>
-        Logout
-      </button>
-    </mat-menu>
-</header>
-
 <main>
     <div class="container-info">
         @if (embedUrl) {
@@ -68,3 +46,9 @@
         </mat-icon>
     </div>
 }
+
+<div class="close-icon-container" (click)="goBack()">
+    <mat-icon>
+        close
+    </mat-icon>
+</div>

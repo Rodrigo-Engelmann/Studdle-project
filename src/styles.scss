@@ -6,6 +6,8 @@
   color-scheme: dark;
 
   --color-perma-white: white;
+  --color-perma-black: black;
+  --color-perma-light_gray_1: #dadada;
   
   --color-white: #FFFFFF;
   --color-light_gray_1: #dadada;
@@ -159,19 +161,19 @@ body {
 
 // Fundo da scrollbar
 ::-webkit-scrollbar-track {
-  background: #111111;
+  background: var(--color-dark_gray-1);
 }
 
 // Barra que você arrasta
 ::-webkit-scrollbar-thumb {
-  background: #3a3a3a;
+  background: var(--color-gray-1);
   border-radius: 10px;
-  border: 2px solid #111111;
+  border: 2px solid var(--color-dark_gray-1);
 }
 
 // Hover na barra
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--selected-video);
+  background: var(--color-purple2);
 }
 
 app-root{
@@ -202,11 +204,11 @@ app-root{
 }
 
 .mat-mdc-menu-item {
-  color: var(--color-light_gray_1) !important;
+  color: var(--color-perma-light_gray_1) !important;
 }
 
 .mat-mdc-menu-item .mat-icon {
-  color: var(--color-light_gray_1) !important;
+  color: var(--color-perma-light_gray_1) !important;
 }
 
 

@@ -5,6 +5,7 @@
         alt="logo studdle" draggable="false">
 
         <mat-tab-group
+        [class.no-indicator]="selectedIndex === -1"
         [selectedIndex]="selectedIndex"
         (selectedIndexChange)="go($event)"
         animationDuration="400ms">
@@ -23,9 +24,9 @@
         </mat-tab-group>
 
         <div class="rightheader-content">
-            @if (pagesConfig[selectedIndex].hasFilterOptions) {
+            @if (pagesConfig[selectedIndex]?.hasFilterOptions && !filtersPageLock) {
                 <mat-icon class="filter-icon icon-btns" (click)="showFilterUpdate()">filter_list</mat-icon>
-            } @else {
+            } @else if (!(pagesConfig[selectedIndex]?.hasFilterOptions)) {
                 <div class="filter-icon"></div>
             }
 
@@ -54,7 +55,7 @@
         </mat-menu>
     </div>
 
-    <div class="search-header" [ngClass]="showFilters ? '' : 'hideFilters'">
+    <div class="search-header " [ngClass]="showFilters ? '' : 'hideFilters'">
         <form class="search-form side-padding">
             <mat-form-field appearance="outline" class="search-input search-header-input">
                 <mat-label class="text-origin">Pesquisar</mat-label>

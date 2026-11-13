@@ -70,7 +70,7 @@ export class VideoCard implements OnChanges, OnInit {
   }
 
   //#region: update
-  settingsSelect() {
+  settingsSelect(): void {
     this.dialogService.openForm<any>({
       title: 'Atualizar vídeo',
       model: {link: this.video.link, sequence: this.video.sequence},
@@ -102,7 +102,7 @@ export class VideoCard implements OnChanges, OnInit {
   //#endregion
   
   //#region: delete
-  deleteSelect() {
+  deleteSelect(): void {
     const confirmDelete = confirm('Tem certeza que deseja excluir este conteúdo?');
     if (!confirmDelete)
       return;

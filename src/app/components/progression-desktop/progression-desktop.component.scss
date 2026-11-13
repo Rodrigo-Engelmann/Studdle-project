@@ -9,7 +9,7 @@
     box-sizing: border-box;
     display: grid;
     grid-template-columns: 1fr 400px;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: 1fr 200px;
     gap: 12px 48px;
     padding: 82px clamp(24px, 5vw, 80px) 112px;
     padding-bottom: 0;
@@ -180,7 +180,7 @@ img {
     pointer-events: none;
 
     .label_percentage {
-        color: var(--color-black);
+        color: var(--color-perma-black);
         font-size: 20px !important;
         font-weight: 450;
         margin-right: 10px;
@@ -234,7 +234,7 @@ img {
     height: 100px;
     padding: 17px 30px;
 
-    color: var(--color-white);
+    color: var(--color-perma-white);
     font-size: 17px;
     font-weight: 800;
     letter-spacing: 0.7px;

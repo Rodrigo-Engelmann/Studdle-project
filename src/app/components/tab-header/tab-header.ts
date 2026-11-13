@@ -60,14 +60,17 @@ export class TabHeader implements OnInit {
     'videos',
     'materiais',
     'engine',
-    'progression'
+    'progression',
+    'video',
+    'view'
   ];
 
   // filtros
   showFilters: boolean = false;
+  filtersPageLock: boolean = false;
   searchQuery: string = '';
-  selectedModule: string | null = null;
-  selectedCategory: string | null = null;
+  selectedModule: any | null = null;
+  selectedCategory: any | null = null;
   // outro
   color_scheme: number = 1;
 
@@ -93,31 +96,35 @@ export class TabHeader implements OnInit {
     this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe(() => {
-      const url = this.router.url.replace('/', '');
-      this.selectedIndex = this.routes.indexOf(url);
+      this.filtersPageLock = false;
+      const url = this.router.url.split('/')[1];
+      let urlIndex: number = this.routes.indexOf(url);
+      if (urlIndex === 5) {
+        urlIndex = 1;
+        this.filtersPageLock = true;
+      }
+      else if (urlIndex === 6) {
+        urlIndex = 2;
+        this.filtersPageLock = true;
+      }
+      
+      this.selectedIndex = urlIndex;
     });
-
-    switch (this.router.url) {
-      case '/videos':
-        this.selectedIndex = 1;
-        break;
-      case '/materiais':
-        this.selectedIndex = 2;
-        break;
-      case '/engine':
-        this.selectedIndex = 3;
-        break;
-      case '/progression':
-        this.selectedIndex = 4;
-        break;
-      default:
-        this.selectedIndex = 0;
-    }
   }
 
-  ngOnInit() {
-    const url = this.router.url.replace('/', '');
-    this.selectedIndex = this.routes.indexOf(url);
+  ngOnInit(): void {
+      const url = this.router.url.split('/')[1];
+      let urlIndex: number = this.routes.indexOf(url);
+      if (urlIndex === 5) {
+        urlIndex = 1;
+        this.filtersPageLock = true;
+      }
+      else if (urlIndex === 6) {
+        urlIndex = 2;
+        this.filtersPageLock = true;
+      }
+      
+      this.selectedIndex = urlIndex;
 
     this.userService.getProfile().subscribe({
       next: (res) => {
@@ -151,7 +158,7 @@ export class TabHeader implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.search_header = document.getElementsByClassName("search-header")[0] as HTMLElement;
 
     const header = document.querySelector('app-tab-header') as HTMLElement;
@@ -164,52 +171,53 @@ export class TabHeader implements OnInit {
     if (page_container) page_container.style.height = '100%';
   }
 
-  go(index: number) {
+  go(index: number): void {
     this.resetFilterComponent(index);
     this.selectedIndex = index;
-    this.router.navigate(['/', this.routes[index]]);3
+    
+    this.router.navigate(['/', this.routes[index]]);
 
     this.updateUserData.emit(true);
   }
 
-  resetFilterComponent(index: any) {
+  resetFilterComponent(index: any): void {
     this.showFilters = this.pagesConfig[index].showFilters;
     this.searchQuery = this.pagesConfig[index].searchQuery;
     this.selectedModule = this.pagesConfig[index].selectedModule;
     this.selectedCategory = this.pagesConfig[index].selectedCategory;
   }
 
-  filterConfigUpdate() {
+  filterConfigUpdate(): void {
     this.pagesConfig[this.selectedIndex].showFilters = this.showFilters;
     this.pagesConfig[this.selectedIndex].searchQuery = this.searchQuery;
-    this.pagesConfig[this.selectedIndex].selectedModule = this.selectedModule;
     this.pagesConfig[this.selectedIndex].selectedCategory = this.selectedCategory;
+    this.pagesConfig[this.selectedIndex].selectedModule = this.selectedModule;
   }
 
-  searchUpdate() {
+  searchUpdate(): void {
     this.filterConfigUpdate();
     const filters: any = {
       searchQuery: this.searchQuery,
       selectedModule: this.selectedCategory,
-      selectedCategory: this.selectedModule,
+      selectedCategory: !this.selectedCategory || this.selectedCategory.id === -1 ? null : this.selectedModule,
       pageIndex: this.selectedIndex,
     };
     this.filterChanges.emit(filters);
   }
 
-  showFilterUpdate() {
+  showFilterUpdate(): void {
     this.showFilters = !this.showFilters;
     this.filterConfigUpdate();
   }
 
   // sistema de popup do profile-picture
-  Configuracoes() {
+  Configuracoes(): void {
     const url = `/userConfigs/${this.selectedIndex}`;
     this.router.navigate([url]);
     this.updateUserData.emit(true);
   }
 
-  Logout() {
+  Logout(): void {
     this.userService.logout().subscribe({
       next: () => {
         this.router.navigate(['/login']);

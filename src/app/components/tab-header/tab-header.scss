@@ -334,11 +334,11 @@ body {
 }
 
 :host ::ng-deep .mat-mdc-menu-item {
-    color: var(--color-light_gray_1) !important;
+    color: var(--color-perma-light_gray_1) !important;
 }
 
 :host ::ng-deep .mat-mdc-menu-item .mat-icon {
-    color: var(--color-light_gray_1) !important;
+    color: var(--color-perma-light_gray_1) !important;
 }
 
 @keyframes tab-highlight-gradient {

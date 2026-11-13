@@ -36,7 +36,8 @@ export class ProgressionMobileComponent implements OnChanges, OnInit {
     this.userDataBridgeService.userData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bridgeUserData: any) => {
-        this.profile_picture = `http://localhost:3000${bridgeUserData.profile_picture}`;
+        if (bridgeUserData.profile_picture)
+          this.profile_picture = `http://localhost:3000${bridgeUserData.profile_picture}`;
     });
   }
 

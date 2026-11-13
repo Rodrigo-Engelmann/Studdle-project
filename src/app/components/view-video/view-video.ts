@@ -53,7 +53,7 @@ export class ViewVideo implements OnInit {
   navigationOptions = [
     '/videos',
     '/recomendacoes'
-  ]
+  ];
 
   constructor(private router: Router
             , private userService: UserService
@@ -66,12 +66,12 @@ export class ViewVideo implements OnInit {
   ) {}
 
   // sistema de popup da profile-picture:
-  Configuracoes() {
+  Configuracoes(): void {
     const settingsNavOptions: number[] = [ 1, 4 ];
     this.router.navigate([`/userConfigs/${settingsNavOptions[this.backNav]}`]);
   }
 
-  Logout() {
+  Logout(): void {
     this.userService.logout().subscribe({
       next: () => {
         this.router.navigate(['/login']);
@@ -88,7 +88,7 @@ export class ViewVideo implements OnInit {
         this.userData = res.user;
         if (res.user.profile_picture !== null)
           this.profile_picture = `http://localhost:3000${res.user.profile_picture}`;
-
+        
         this.privilege = res.user.privileges;
         this.userService.updateColorScheme(res.user.color_scheme??1);
         this.color_scheme = res.user.color_scheme??1;
@@ -103,17 +103,17 @@ export class ViewVideo implements OnInit {
     this.updateVideoData();
   }
 
-  updateVideoData() {
+  updateVideoData(): void {
     this.route.paramMap.subscribe(params => {
       const videoUrl: string | null = params.get('videoUrl');
       this.backNav = Number(params.get('backNav') ?? -1);
 
-      if (videoUrl !== null)
+      if (videoUrl !== null) {
         this.videoService.findByURL(videoUrl).subscribe(async(res: any) => {
           this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
             `https://www.youtube.com/embed/${res.video_url}?controls=1`
           );
-
+          
           const taskContent: any = await this.getTaskContent(res.id);
           if (taskContent !== undefined && taskContent.length) {
             const taskContentId: number = taskContent[0].id;
@@ -132,7 +132,7 @@ export class ViewVideo implements OnInit {
                         console.error("--error: ", err);
                       }
                     });
-                    return
+                    return;
                   }
                 },
                 error: (err) => {
@@ -142,7 +142,8 @@ export class ViewVideo implements OnInit {
             }
           }
           this.videoData = res;
-        })
+        });
+      }
     });
   }
 
@@ -155,11 +156,11 @@ export class ViewVideo implements OnInit {
     }
   }
 
-  goBack() {
+  goBack(): void {
     this.router.navigate([this.navigationOptions[this.backNav]]);
   }
 
-  settingsSelect() {
+  settingsSelect(): void {
     this.dialogService.openForm<any>({
       title: 'Atualizar vídeo',
       model: {link: this.videoData.link, sequence: this.videoData.sequence},

@@ -14,7 +14,7 @@ import { ViewVideo } from './components/view-video/view-video';
 import { ViewMaterial } from './components/view-material/view-material';
 
 export const routes: Routes = [
-    {path: '',
+    { path: '',
         component: TabHeaderLayoutComponent,
         children: [
             { path: 'recomendacoes', component: Recomendacoes },
@@ -22,12 +22,12 @@ export const routes: Routes = [
             { path: 'materiais', component: Materiais },
             { path: 'engine', component: Engine },
             { path: 'progression', component: Progression },
-            { path: '', redirectTo: 'recomendacoes', pathMatch: 'full' }
+            { path: '', redirectTo: 'recomendacoes', pathMatch: 'full' },
+            { path: 'video/watch/:backNav/:videoUrl', component: ViewVideo },
+            { path: 'view/material/:backNav/:materialUrl', component: ViewMaterial },
         ]
     },
-    {path: 'login', component: Login},
-    {path: 'signin', component: Signin},
-    {path: 'video/watch/:backNav/:videoUrl', component: ViewVideo},
-    {path: 'view/material/:backNav/:materialUrl', component: ViewMaterial},
-    {path: 'userConfigs/:backNav', component: UserConfigs},
+    { path: 'login', component: Login },
+    { path: 'signin', component: Signin },
+    { path: 'userConfigs/:backNav', component: UserConfigs },
 ];

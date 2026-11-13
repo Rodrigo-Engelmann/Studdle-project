@@ -69,18 +69,20 @@ export class TabHeaderMobile implements OnInit {
         , 'Progressão'
     ];
     routes: any[] = [
-        'recomendacoes'
-        , 'videos'
-        , 'materiais'
-        , 'engine'
-        , 'progression'
+        'recomendacoes',
+        'videos',
+        'materiais',
+        'engine',
+        'progression',
+        'video',
+        'view'
     ];
 
     // filtros
     showFilters: boolean = false;
     searchQuery: string = '';
-    selectedModule: string | null = null;
-    selectedCategory: string | null = null;
+    selectedModule: any | null = null;
+    selectedCategory: any | null = null;
     pagesConfig: any[] = [
         {page: 'recomendacoes', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
         , {page: 'videos', hasFilterOptions: true, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
@@ -88,6 +90,7 @@ export class TabHeaderMobile implements OnInit {
         , {page: 'engine', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
         , {page: 'progression', hasFilterOptions: false, showFilters: false, searchQuery: '', selectedModule: null, selectedCategory: null}
     ];
+    filtersPageLock: boolean = false;
 
     private userId: number | null = null;
 
@@ -113,14 +116,35 @@ export class TabHeaderMobile implements OnInit {
         this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe(() => {
-            const url = this.router.url.replace('/','');
-            this.selectedIndex = this.routes.indexOf(url);
+            const url = this.router.url.split('/')[1];
+            let urlIndex: number = this.routes.indexOf(url);
+            this.filtersPageLock = false;
+            if (urlIndex === 5) {
+                urlIndex = 1;
+                this.filtersPageLock = true;
+            }
+            else if (urlIndex === 6) {
+                urlIndex = 2;
+                this.filtersPageLock = true;
+            }
+            
+            this.selectedIndex = urlIndex;
         });
     }
 
     ngOnInit() {
-        const url = this.router.url.replace('/','');
-        this.selectedIndex = this.routes.indexOf(url);
+        const url = this.router.url.split('/')[1];
+        let urlIndex: number = this.routes.indexOf(url);
+        if (urlIndex === 5) {
+            urlIndex = 1;
+            this.filtersPageLock = true;
+        }
+        else if (urlIndex === 6) {
+            urlIndex = 2;
+            this.filtersPageLock = true;
+        }
+        
+        this.selectedIndex = urlIndex;
 
         this.userService.getProfile().subscribe({
             next: (res) => {
@@ -170,7 +194,7 @@ export class TabHeaderMobile implements OnInit {
         const filters: any = {
             searchQuery: this.searchQuery,
             selectedModule: this.selectedModule,
-            selectedCategory: this.selectedCategory,
+            selectedCategory: !this.selectedModule || this.selectedModule.id === -1 ? null : this.selectedCategory,
             pageIndex: this.selectedIndex,
         };
         this.filterChanges.emit(filters);
